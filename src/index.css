@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+
+:root {
+  color-scheme: dark;
+  font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+  background: #0f111a;
+  color: #cdd6f4;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+  min-height: 100svh;
+  margin: 0;
+  overflow: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+a {
+  color: inherit;
+}
