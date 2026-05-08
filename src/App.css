@@ -6,6 +6,8 @@
   --button-face: #9fbfcf;
   --border-dark: #3a6070;
   --border-light: #ddeeff;
+  --inner-light: #c8d8e0;
+  --inner-dark: #5f8fa0;
   --select-bg: #000080;
   --terminal-text: #40ff40;
   position: relative;
@@ -20,7 +22,7 @@
 
 .desktop-shell {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) 52px;
+  grid-template-rows: minmax(0, 1fr) 64px;
   height: 100%;
 }
 
@@ -29,10 +31,10 @@
   min-height: 0;
   overflow: hidden;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
     var(--desktop-bg);
-  background-size: 3px 3px;
+  background-size: 4px 4px;
 }
 
 .desktop-windows {
@@ -43,21 +45,21 @@
 .desktop-icons {
   position: absolute;
   z-index: 5;
-  top: 16px;
-  left: 18px;
+  top: 20px;
+  left: 20px;
   display: grid;
-  grid-auto-rows: 90px;
-  width: 96px;
+  grid-auto-rows: 110px;
+  width: 118px;
 }
 
 .desktop-icon {
   display: grid;
-  grid-template-rows: 52px auto;
+  grid-template-rows: 76px auto;
   justify-items: center;
   align-content: start;
-  gap: 4px;
-  width: 96px;
-  height: 84px;
+  gap: 6px;
+  width: 118px;
+  height: 104px;
   padding: 2px;
   background: transparent;
   border: 0;
@@ -75,17 +77,22 @@
   place-items: center;
 }
 
+.desktop-icon__glyph {
+  width: 72px;
+  height: 72px;
+}
+
 .desktop-icon__glyph svg {
-  width: 48px;
-  height: 48px;
+  width: 72px;
+  height: 72px;
 }
 
 .desktop-icon__label {
-  max-width: 92px;
-  padding: 2px 5px;
+  max-width: 112px;
+  padding: 3px 7px;
   color: #000000;
   background: #ffffff;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.1;
   text-align: center;
   overflow-wrap: anywhere;
@@ -98,13 +105,13 @@
 
 .front-panel {
   display: grid;
-  grid-template-columns: 128px minmax(0, 1fr) 136px;
+  grid-template-columns: 150px minmax(0, 1fr) 160px;
   align-items: center;
   gap: 10px;
-  height: 52px;
-  padding: 5px 8px;
+  height: 64px;
+  padding: 7px 10px;
   background: var(--panel-bg);
-  border-width: 2px 0 0;
+  border-width: 3px 0 0;
   border-style: solid;
   border-color: var(--border-light);
 }
@@ -113,7 +120,7 @@
 .front-panel__workspace,
 .front-panel__launcher {
   background: var(--button-face);
-  border-width: 2px;
+  border-width: 3px;
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
 }
@@ -121,22 +128,22 @@
 .front-panel__clock {
   display: grid;
   place-items: center;
-  height: 34px;
-  font: 700 15px 'Courier New', monospace;
+  height: 44px;
+  font: 700 16px 'Courier New', monospace;
 }
 
 .front-panel__launchers {
   display: flex;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   min-width: 0;
 }
 
 .front-panel__launcher {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   padding: 0;
   font: inherit;
   cursor: default;
@@ -147,20 +154,28 @@
 }
 
 .front-panel__launcher svg {
-  width: 24px;
-  height: 24px;
+  width: 34px;
+  height: 34px;
+}
+
+.front-panel__launcher-icon {
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
 }
 
 .front-panel__workspace {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  padding: 5px;
-  height: 36px;
+  gap: 6px;
+  padding: 7px;
+  height: 48px;
 }
 
 .front-panel__workspace-cell {
-  border: 1px solid var(--border-dark);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-dark);
   background: #c8d8e0;
 }
 
@@ -176,23 +191,24 @@
   border-width: 3px;
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  padding: 2px;
 }
 
 .cde-window__body {
-  height: calc(100% - 22px);
+  height: calc(100% - 26px);
   overflow: auto;
   background: var(--body-bg);
   border-width: 2px;
   border-style: solid;
-  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+  border-color: var(--inner-dark) var(--inner-light) var(--inner-light) var(--inner-dark);
 }
 
 .window-chrome {
   display: grid;
-  grid-template-columns: 20px 1fr 66px;
+  grid-template-columns: 24px 1fr 76px;
   align-items: center;
-  height: 22px;
-  padding: 1px 2px;
+  height: 26px;
+  padding: 2px 3px;
   background: var(--chrome-bg);
   color: #000000;
   cursor: move;
@@ -206,12 +222,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 700;
+  font-size: 13px;
 }
 
 .window-chrome__controls {
   display: flex;
   justify-content: flex-end;
-  gap: 2px;
+  gap: 3px;
 }
 
 .window-chrome__button {
@@ -222,10 +239,10 @@
   padding: 0;
   color: #000000;
   background: var(--button-face);
-  border-width: 2px;
+  border-width: 3px;
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
-  font: 700 10px/1 Arial, sans-serif;
+  font: 700 11px/1 Arial, sans-serif;
 }
 
 .window-chrome__button:active {
@@ -234,23 +251,24 @@
 
 .content-window {
   height: 100%;
-  padding: 8px;
+  padding: 10px;
   color: #000000;
   background: var(--body-bg);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .dtpad-toolbar {
   display: flex;
   gap: 12px;
-  padding: 3px 6px;
+  padding: 8px 10px;
   background: var(--button-face);
   border-bottom: 2px solid var(--border-dark);
+  font-size: 13px;
 }
 
 .dtpad-area,
 .white-panel {
-  height: calc(100% - 26px);
+  height: calc(100% - 38px);
   padding: 10px;
   overflow: auto;
   background: #ffffff;
@@ -258,6 +276,7 @@
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
   font-family: 'Courier New', monospace;
+  font-size: 13px;
   white-space: pre-wrap;
 }
 
@@ -268,15 +287,20 @@
 }
 
 .data-table th {
-  padding: 4px 6px;
+  height: 28px;
+  padding: 8px 10px;
   color: #ffffff;
   background: var(--select-bg);
+  font-size: 14px;
+  font-weight: 700;
   text-align: left;
 }
 
 .data-table td {
-  padding: 5px 6px;
+  height: 28px;
+  padding: 8px 10px;
   border-bottom: 1px solid #9fbfcf;
+  font-size: 13px;
 }
 
 .data-table a {
@@ -286,14 +310,15 @@
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 14px;
+  gap: 18px;
 }
 
 .project-tile {
   display: grid;
   justify-items: center;
   gap: 5px;
-  padding: 8px;
+  padding: 10px;
+  font-size: 13px;
   background: transparent;
   border: 1px dotted transparent;
   font: inherit;
@@ -306,7 +331,7 @@
 
 .project-detail {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   padding: 10px;
   background: #ffffff;
   border-width: 2px;
@@ -316,7 +341,7 @@
 
 .cde-button {
   justify-self: start;
-  padding: 3px 12px;
+  padding: 6px 14px;
   color: #000000;
   background: var(--button-face);
   border-width: 2px;
@@ -334,6 +359,7 @@
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
   font-family: 'Courier New', monospace;
+  font-size: 13px;
   white-space: pre-wrap;
 }
 
@@ -347,7 +373,8 @@
   grid-template-rows: 1fr auto;
   gap: 12px;
   height: 100%;
-  padding: 12px;
+  padding: 14px;
+  font-size: 13px;
 }
 
 .motd-body {
@@ -357,6 +384,7 @@
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
   font-family: 'Courier New', monospace;
+  font-size: 13px;
 }
 
 .motd-actions {
@@ -368,7 +396,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 8px;
+  padding: 10px;
   overflow: hidden;
   background: #000000;
   color: var(--terminal-text);
@@ -383,8 +411,8 @@
 
 .terminal-line,
 .terminal-form {
-  min-height: 17px;
-  font-size: 12px;
+  min-height: 20px;
+  font-size: 14px;
   line-height: 1.35;
 }
 
@@ -453,16 +481,16 @@
 
 @media (max-width: 760px) {
   .front-panel {
-    grid-template-columns: 82px minmax(0, 1fr) 92px;
+    grid-template-columns: 96px minmax(0, 1fr) 112px;
     gap: 5px;
   }
 
   .desktop-icons {
-    left: 8px;
-    width: 82px;
+    left: 12px;
+    width: 98px;
   }
 
   .desktop-icon {
-    width: 82px;
+    width: 98px;
   }
 }

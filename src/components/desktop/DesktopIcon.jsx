@@ -1,5 +1,92 @@
 import { useWindowStore } from '../../store/windowStore'
 
+function FolderIcon() {
+  return (
+    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+      <path d="M9 24h54v35H9z" fill="#c79028" stroke="#111" strokeWidth="2" />
+      <path d="M9 18h20l6 6h28v10H9z" fill="#e8b84b" stroke="#111" strokeWidth="2" />
+      <path d="M12 28h48v27H12z" fill="#e8b84b" />
+      <path d="M14 31h44" stroke="#ffe58a" strokeWidth="3" />
+      <path d="M61 35v23H18" stroke="#76551a" strokeWidth="4" fill="none" />
+    </svg>
+  )
+}
+
+function TextIcon() {
+  return (
+    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+      <path d="M17 8h31l8 8v48H17z" fill="#fff" stroke="#111" strokeWidth="2" />
+      <path d="M48 8v10h10" fill="#c8d8e0" stroke="#111" strokeWidth="2" />
+      <path d="M24 24h25M24 31h27M24 38h25M24 45h21M24 52h27" stroke="#286fb0" strokeWidth="3" />
+      <path d="M20 11h25" stroke="#ddeeff" strokeWidth="3" />
+    </svg>
+  )
+}
+
+function SocialsIcon() {
+  return (
+    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+      <ellipse cx="36" cy="16" rx="22" ry="8" fill="#1e5f45" stroke="#111" strokeWidth="2" />
+      <path d="M14 16v34c0 5 10 9 22 9s22-4 22-9V16" fill="#2f7658" stroke="#111" strokeWidth="2" />
+      <ellipse cx="36" cy="50" rx="22" ry="9" fill="#245f48" stroke="#111" strokeWidth="2" />
+      <path d="M15 27c4 5 37 5 42 0M15 39c4 5 37 5 42 0" stroke="#9fbfcf" strokeWidth="3" fill="none" />
+      <rect x="26" y="31" width="20" height="13" fill="#ddeeff" stroke="#111" strokeWidth="2" />
+      <text x="36" y="41" textAnchor="middle" fontFamily="Arial" fontSize="10" fontWeight="700" fill="#111">DB</text>
+    </svg>
+  )
+}
+
+function CertsIcon() {
+  return (
+    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+      <rect x="10" y="12" width="52" height="48" fill="#fff" stroke="#111" strokeWidth="2" />
+      <rect x="10" y="12" width="52" height="11" fill="#2d77bf" stroke="#111" strokeWidth="2" />
+      <path d="M10 35h52M10 47h52M23 23v37M39 23v37" stroke="#3a6070" strokeWidth="2" />
+      <path d="M15 17h10M30 17h10M45 17h11" stroke="#ddeeff" strokeWidth="2" />
+    </svg>
+  )
+}
+
+function SkillsIcon() {
+  return (
+    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+      <path
+        d="M36 8l5 9 10-2 3 10 9 5-5 9 5 9-9 5-3 10-10-2-5 9-5-9-10 2-3-10-9-5 5-9-5-9 9-5 3-10 10 2z"
+        fill="#9fbfcf"
+        stroke="#111"
+        strokeWidth="2"
+      />
+      <circle cx="36" cy="36" r="17" fill="#c8d8e0" stroke="#3a6070" strokeWidth="3" />
+      <circle cx="36" cy="36" r="7" fill="#5f8fa0" stroke="#111" strokeWidth="2" />
+      <path d="M24 36h24M36 24v24" stroke="#ddeeff" strokeWidth="2" />
+    </svg>
+  )
+}
+
+function PdfIcon() {
+  return (
+    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+      <path d="M17 8h31l8 8v48H17z" fill="#fff" stroke="#111" strokeWidth="2" />
+      <path d="M48 8v10h10" fill="#c8d8e0" stroke="#111" strokeWidth="2" />
+      <path d="M24 28h24M24 36h20M24 44h24M24 52h15" stroke="#3a6070" strokeWidth="3" />
+      <rect x="39" y="14" width="22" height="15" fill="#c51616" stroke="#111" strokeWidth="2" />
+      <text x="50" y="25" textAnchor="middle" fontFamily="Arial" fontSize="9" fontWeight="700" fill="#fff">PDF</text>
+    </svg>
+  )
+}
+
+function TerminalIcon() {
+  return (
+    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+      <rect x="10" y="12" width="52" height="42" fill="#111" stroke="#3a6070" strokeWidth="5" />
+      <rect x="14" y="16" width="44" height="34" fill="#000" stroke="#ddeeff" strokeWidth="2" />
+      <path d="M22 27l8 6-8 6M34 41h13" stroke="#40ff40" strokeWidth="4" fill="none" />
+      <rect x="48" y="38" width="7" height="4" fill="#40ff40" />
+      <path d="M10 56h52" stroke="#111" strokeWidth="3" />
+    </svg>
+  )
+}
+
 export function CdeIcon({ type }) {
   const iconType = {
     script: 'skills',
@@ -7,63 +94,17 @@ export function CdeIcon({ type }) {
     network: 'socials',
   }[type] ?? type
 
-  return (
-    <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
-      <rect x="4" y="4" width="40" height="40" fill="#bdbdbd" stroke="#111" />
-      <path d="M5 5h38M5 5v38" stroke="#fff" />
-      <path d="M5 43h38V5" stroke="#555" />
-      {iconType === 'folder' && (
-        <>
-          <path d="M8 18h32v20H8z" fill="#d7a021" stroke="#111" />
-          <path d="M8 14h13l4 4h15v5H8z" fill="#f2cc5c" stroke="#111" />
-          <path d="M10 22h28v3H10z" fill="#fff4a0" />
-        </>
-      )}
-      {iconType === 'text' && (
-        <>
-          <path d="M13 8h19l5 5v27H13z" fill="#fff" stroke="#111" />
-          <path d="M32 8v6h6" fill="#d8d8d8" stroke="#111" />
-          <path d="M17 18h16M17 23h16M17 28h13M17 33h15" stroke="#111" />
-        </>
-      )}
-      {iconType === 'socials' && (
-        <>
-          <rect x="10" y="11" width="13" height="11" fill="#72c7d0" stroke="#111" />
-          <rect x="25" y="11" width="13" height="11" fill="#6f93c8" stroke="#111" />
-          <path d="M17 23v6h14v-6M24 29v7" stroke="#111" strokeWidth="2" fill="none" />
-          <rect x="18" y="36" width="12" height="4" fill="#555" stroke="#111" />
-        </>
-      )}
-      {iconType === 'certs' && (
-        <>
-          <path d="M24 8l13 5v10c0 8-5 13-13 17-8-4-13-9-13-17V13z" fill="#8795a1" stroke="#111" />
-          <path d="M24 12l9 3v8c0 5-3 9-9 12z" fill="#2d77bf" />
-          <path d="M24 12l-9 3v8c0 5 3 9 9 12z" fill="#ddd" />
-        </>
-      )}
-      {iconType === 'skills' && (
-        <>
-          <rect x="11" y="10" width="26" height="28" fill="#222" stroke="#111" />
-          <path d="M15 17l5 4-5 4M22 27h11" stroke="#40ff40" strokeWidth="3" fill="none" />
-          <rect x="13" y="12" width="22" height="3" fill="#777" />
-        </>
-      )}
-      {iconType === 'pdf' && (
-        <>
-          <path d="M13 8h19l5 5v27H13z" fill="#fff" stroke="#111" />
-          <path d="M32 8v6h6" fill="#d8d8d8" stroke="#111" />
-          <rect x="16" y="27" width="19" height="8" fill="#c51616" />
-          <path d="M18 33v-4h3M24 33v-4h3v4M31 33v-4h4" stroke="#fff" fill="none" />
-        </>
-      )}
-      {iconType === 'terminal' && (
-        <>
-          <rect x="9" y="10" width="30" height="27" fill="#111" stroke="#eee" />
-          <path d="M14 18l5 4-5 4M22 29h10" stroke="#ddd" strokeWidth="3" fill="none" />
-        </>
-      )}
-    </svg>
-  )
+  const icons = {
+    folder: FolderIcon,
+    text: TextIcon,
+    socials: SocialsIcon,
+    certs: CertsIcon,
+    skills: SkillsIcon,
+    pdf: PdfIcon,
+    terminal: TerminalIcon,
+  }
+  const Icon = icons[iconType] ?? TextIcon
+  return <Icon />
 }
 
 function DesktopIcon({ icon }) {
