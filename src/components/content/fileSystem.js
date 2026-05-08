@@ -2,29 +2,36 @@ import { portfolioData } from '../../data/portfolioData'
 
 export const fileSystem = {
   '/home/benedikt': {
-    files: portfolioData.commands.files,
+    files: portfolioData.terminal.files,
   },
   '/home/benedikt/projects': {
-    files: portfolioData.projects.map((project) => `${project.name}/`),
-  },
-  '/home/benedikt/writeups': {
-    files: portfolioData.writeups.map((writeup) => `${writeup.title}.md`),
+    files: portfolioData.projects.items.map((project) => `${project.name}/`),
   },
 }
 
 export const readFile = (name) => {
   const readers = {
-    'about.txt': [
-      `${portfolioData.identity.fullName}`,
-      `${portfolioData.identity.role}`,
-      `${portfolioData.system.focus}`,
+    'README.md': [portfolioData.motd.body],
+    'about.txt': portfolioData.about.lines,
+    'socials.db': [
+      '// TODO: Add social links',
+      portfolioData.socials.headers.join('    '),
+      ...portfolioData.socials.rows.map((row) =>
+        Array.isArray(row) ? row.join('    ') : `${row.port}    ${row.service}    ${row.link}`,
+      ),
     ],
-    'skills.txt': portfolioData.skills.categories.map(
-      (category) => `${category.name}: ${category.items.join(', ')}`,
-    ),
-    contacts: portfolioData.contact.map(
-      (contact) => `${contact.port} ${contact.service} ${contact.detail}`,
-    ),
+    'certs.csv': [
+      '// TODO: Add certifications',
+      portfolioData.certs.headers.join(','),
+      ...portfolioData.certs.rows.map((row) =>
+        Array.isArray(row) ? row.join(',') : [row.name, row.issuer, row.date, row.link].join(','),
+      ),
+    ],
+    'skills.ini': portfolioData.skills.sections.flatMap((section) => [
+      `[${section.name}]`,
+      ...section.lines,
+      '',
+    ]),
   }
 
   return readers[name] ?? [`cat: ${name}: No such file or directory`]

@@ -9,13 +9,10 @@ export const runCommand = ({ command, cwd, setCwd }) => {
   const [base, ...args] = trimmed.split(/\s+/)
 
   if (!trimmed) return { lines: [] }
-  if (trimmed === 'sudo rm -rf /') {
-    return { lines: ['permission denied: workstation self-preservation module engaged'] }
-  }
   if (base === 'clear') return { clear: true }
-  if (base === 'whoami') return { lines: [portfolioData.identity.user.toLowerCase()] }
+  if (base === 'whoami') return { lines: [portfolioData.identity.user] }
   if (base === 'pwd') return { lines: [cwd] }
-  if (base === 'help') return { lines: portfolioData.commands.help }
+  if (base === 'help') return { lines: portfolioData.terminal.help }
   if (base === 'ls') return { lines: fileSystem[cwd]?.files ?? [] }
   if (base === 'cat') return { lines: readFile(args[0]) }
   if (base === 'cd') {
@@ -33,37 +30,39 @@ export const runCommand = ({ command, cwd, setCwd }) => {
   if (base === 'neofetch') {
     return {
       lines: [
-        '       /\\        benedikt@portfolio',
-        '      /  \\       -------------------',
-        `     /____\\      OS: ${portfolioData.system.os}`,
-        `    /      \\     Role: ${portfolioData.identity.role}`,
-        `   /   ,,   \\    Focus: ${portfolioData.system.focus}`,
-        `  /___|  |___\\   Shell: ${portfolioData.system.shell}`,
+        '        .          benedikt@0xbene',
+        '       / \\         ---------------',
+        '      /___\\        OS: Solaris/CDE inspired',
+        '     /     \\       WM: dtwm',
+        '    /_______\\      Shell: sh',
       ],
     }
   }
   if (base === 'nmap' && args[0] === 'contacts') {
     return {
       lines: [
-        'PORT     STATE  SERVICE   DETAIL',
-        ...portfolioData.contact.map(
-          (entry) =>
-            `${entry.port.padEnd(8)} ${entry.state.padEnd(6)} ${entry.service.padEnd(9)} ${entry.detail}`,
+        portfolioData.socials.headers.join('    '),
+        ...portfolioData.socials.rows.map((row) =>
+          Array.isArray(row) ? row.join('    ') : `${row.port}    ${row.service}    ${row.link}`,
         ),
       ],
     }
   }
   if (base === 'skills' && args[0] === '--verbose') {
     return {
-      lines: portfolioData.skills.feed.map(
-        (skill) => `[${skill.level}] ${skill.name.padEnd(24, '.')} ${skill.status}`,
-      ),
+      lines: portfolioData.skills.sections.flatMap((section) => [
+        `[${section.name}]`,
+        ...section.lines,
+      ]),
     }
   }
   if (base === 'open') {
     const app = args[0]
     const match = portfolioData.desktopIcons.find(
-      (icon) => icon.appId === app || icon.label.replace(/\/|\.sh|\.pdf/g, '') === app,
+      (icon) =>
+        icon.appId === app ||
+        icon.label === app ||
+        icon.label.replace(/\/|\.(txt|db|csv|ini|pdf)$/g, '') === app,
     )
     if (!match) return { lines: [`open: unknown app: ${app}`] }
     useWindowStore.getState().openWindow(match.appId)

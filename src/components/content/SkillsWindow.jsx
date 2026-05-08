@@ -5,28 +5,16 @@ const { skills } = portfolioData
 function SkillsWindow() {
   return (
     <section className="content-window skills-window">
-      <div className="terminal-feed">
-        {skills.feed.map((entry) => (
-          <div className="feed-line" key={`${entry.level}-${entry.name}`}>
-            <span>[{entry.level}]</span>
-            <span>{entry.name}</span>
-            <strong>{entry.status}</strong>
-          </div>
+      <pre className="ini-text">
+        {skills.sections.map((section) => (
+          <span key={section.name}>
+            <span className="ini-section">[{section.name}]</span>
+            {'\n'}
+            {section.lines.join('\n')}
+            {'\n\n'}
+          </span>
         ))}
-      </div>
-
-      <div className="skill-categories">
-        {skills.categories.map((category) => (
-          <section className="skill-category" key={category.name}>
-            <h3>{category.name}</h3>
-            <ul>
-              {category.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </section>
-        ))}
-      </div>
+      </pre>
     </section>
   )
 }

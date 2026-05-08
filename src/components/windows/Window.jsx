@@ -4,36 +4,6 @@ import { useWindowManager } from './useWindowManager'
 
 const minSize = { width: 320, height: 220 }
 
-const styles = {
-  shell: {
-    background: '#d4d0c8',
-    borderColor: '#ffffff #808080 #808080 #ffffff',
-    borderStyle: 'solid',
-    borderWidth: 2,
-    boxShadow: '1px 1px 0 #000000',
-    boxSizing: 'border-box',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    overflow: 'hidden',
-    width: '100%',
-  },
-  focused: {
-    boxShadow: '1px 1px 0 #000000',
-  },
-  body: {
-    background: '#d4d0c8',
-    borderColor: '#808080 #ffffff #ffffff #808080',
-    borderStyle: 'solid',
-    borderWidth: 2,
-    color: '#000000',
-    flex: 1,
-    minHeight: 0,
-    overflow: 'auto',
-    padding: 2,
-  },
-}
-
 function getGeometry(windowItem) {
   return {
     position: windowItem.position ?? { x: 80, y: 80 },
@@ -45,9 +15,7 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
   const activeWindow = windowItem ?? fallbackWindow
   const { closeWindow, focusWindow, minimizeWindow, updateWindowGeometry } = useWindowManager()
 
-  if (!activeWindow?.isOpen || activeWindow.isMinimized) {
-    return null
-  }
+  if (!activeWindow?.isOpen || activeWindow.isMinimized) return null
 
   const { position, size } = getGeometry(activeWindow)
   const handleFocus = () => focusWindow(activeWindow.id)
@@ -84,11 +52,8 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
       <section
         aria-label={activeWindow.title}
         aria-modal="false"
+        className={activeWindow.isFocused ? 'cde-window is-focused' : 'cde-window'}
         role="dialog"
-        style={{
-          ...styles.shell,
-          ...(activeWindow.isFocused ? styles.focused : null),
-        }}
       >
         <WindowChrome
           isFocused={activeWindow.isFocused}
@@ -96,7 +61,7 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
           onMinimize={() => minimizeWindow(activeWindow.id)}
           title={activeWindow.title}
         />
-        <div style={styles.body}>{children}</div>
+        <div className="cde-window__body">{children}</div>
       </section>
     </Rnd>
   )

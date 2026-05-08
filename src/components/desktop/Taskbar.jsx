@@ -1,32 +1,20 @@
 import { useEffect, useState } from 'react'
-import { useWindowStore } from '../../store/windowStore'
 import { portfolioData } from '../../data/portfolioData'
+import { useWindowStore } from '../../store/windowStore'
+import { CdeIcon } from './DesktopIcon'
 
 function formatClock(date) {
   return new Intl.DateTimeFormat('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   }).format(date)
-}
-
-function StartFlag() {
-  return (
-    <span className="start-flag" aria-hidden="true">
-      <span className="flag-red" />
-      <span className="flag-green" />
-      <span className="flag-blue" />
-      <span className="flag-yellow" />
-    </span>
-  )
 }
 
 function Taskbar() {
   const [clock, setClock] = useState(() => formatClock(new Date()))
-  const windows = useWindowStore((state) => state.windows)
   const openWindow = useWindowStore((state) => state.openWindow)
-  const focusWindow = useWindowStore((state) => state.focusWindow)
-  const openWindows = windows.filter((windowItem) => windowItem.isOpen)
-  const { menuLabel } = portfolioData.ui
+  const launchers = portfolioData.frontPanel ?? portfolioData.desktopIcons
 
   useEffect(() => {
     const timer = window.setInterval(() => setClock(formatClock(new Date())), 1000)
@@ -34,38 +22,32 @@ function Taskbar() {
   }, [])
 
   return (
-    <footer className="taskbar" aria-label="Desktop taskbar">
-      <button
-        type="button"
-        className="taskbar__menu"
-        onClick={() => openWindow('terminal')}
-      >
-        <StartFlag />
-        {menuLabel}
-      </button>
+    <footer className="front-panel" aria-label="CDE Front Panel">
+      <time className="front-panel__clock" dateTime={clock} aria-label={portfolioData.ui.clockLabel}>
+        {clock}
+      </time>
 
-      <nav className="taskbar__windows" aria-label="Open windows">
-        {openWindows.map((windowItem) => (
+      <nav className="front-panel__launchers" aria-label={portfolioData.ui.launcherLabel}>
+        {launchers.map((item) => (
           <button
             type="button"
-            key={windowItem.id}
-            className={[
-              'taskbar__window',
-              windowItem.isFocused ? 'taskbar__window--focused' : '',
-              windowItem.isMinimized ? 'taskbar__window--minimized' : '',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-            onClick={() => focusWindow(windowItem.id)}
+            key={item.id}
+            className="front-panel__launcher"
+            onClick={() => openWindow(item.appId)}
+            title={item.label}
           >
-            {windowItem.title}
+            <span className="front-panel__launcher-icon">
+              <CdeIcon type={item.icon} />
+            </span>
           </button>
         ))}
       </nav>
 
-      <time className="taskbar__tray" dateTime={clock}>
-        {clock}
-      </time>
+      <div className="front-panel__workspace" aria-label={portfolioData.ui.workspaceLabel}>
+        {[0, 1, 2, 3].map((space) => (
+          <span key={space} className="front-panel__workspace-cell" />
+        ))}
+      </div>
     </footer>
   )
 }

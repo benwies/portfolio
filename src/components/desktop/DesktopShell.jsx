@@ -4,9 +4,13 @@ import Taskbar from './Taskbar'
 
 function DesktopShell({ children }) {
   return (
-    <div className="desktop-shell">
+    <div className="desktop-shell" style={{ gridTemplateRows: 'minmax(0, 1fr) 52px' }}>
       <main className="desktop-shell__body">
-        <nav className="desktop-icons" aria-label="Desktop icons">
+        <nav
+          className="desktop-icons"
+          style={{ gridAutoRows: 90, width: 90 }}
+          aria-label="Desktop icons"
+        >
           {portfolioData.desktopIcons.map((icon) => (
             <DesktopIcon key={icon.id} icon={icon} />
           ))}

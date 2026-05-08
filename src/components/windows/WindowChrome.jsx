@@ -1,30 +1,40 @@
-function ChromeButton({ label, title, onClick }) {
+import { portfolioData } from '../../data/portfolioData'
+
+function ChromeButton({ children, onClick, title }) {
   return (
     <button
       aria-label={title}
       className="window-chrome__button"
       onClick={(event) => {
         event.stopPropagation()
-        onClick()
+        onClick?.()
       }}
       title={title}
       type="button"
     >
-      {label}
+      {children}
     </button>
   )
 }
 
 export function WindowChrome({ isFocused, onClose, onMinimize, title }) {
+  const { closeButton, maximizeButton, menuButton, minimizeButton } = portfolioData.ui
+  const { closeLabel, maximizeLabel, minimizeLabel, windowMenuLabel } = portfolioData.ui
+
   return (
     <div
       className={isFocused ? 'window-chrome window-drag-handle' : 'window-chrome is-inactive window-drag-handle'}
     >
+      <ChromeButton title={windowMenuLabel}>{menuButton}</ChromeButton>
       <div className="window-chrome__title">{title}</div>
       <div className="window-chrome__controls">
-        <ChromeButton label="_" onClick={onMinimize} title="Minimize" />
-        <ChromeButton label="□" onClick={() => {}} title="Maximize" />
-        <ChromeButton label="X" onClick={onClose} title="Close" />
+        <ChromeButton onClick={onMinimize} title={minimizeLabel}>
+          {minimizeButton}
+        </ChromeButton>
+        <ChromeButton title={maximizeLabel}>{maximizeButton}</ChromeButton>
+        <ChromeButton onClick={onClose} title={closeLabel}>
+          {closeButton}
+        </ChromeButton>
       </div>
     </div>
   )

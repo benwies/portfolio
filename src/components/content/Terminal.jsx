@@ -3,8 +3,8 @@ import { portfolioData } from '../../data/portfolioData'
 import { runCommand } from './commandRegistry'
 
 const initialLines = [
-  portfolioData.ui.terminalBanner,
-  portfolioData.ui.terminalHint,
+  portfolioData.terminal.banner,
+  portfolioData.terminal.hint,
 ]
 
 export default function Terminal() {
@@ -17,7 +17,7 @@ export default function Terminal() {
     inputRef.current?.focus()
   }, [lines])
 
-  const prompt = `${portfolioData.identity.user.toLowerCase()}@${portfolioData.identity.host}:${cwd.replace('/home/benedikt', '~')}$`
+  const prompt = `${portfolioData.identity.user}@${portfolioData.identity.host}:${cwd.replace('/home/benedikt', '~')}$`
 
   const submitCommand = () => {
     const result = runCommand({ command: input, cwd, setCwd })
@@ -57,7 +57,7 @@ export default function Terminal() {
           value={input}
           onChange={(event) => setInput(event.target.value)}
           onKeyDown={handleKeyDown}
-          aria-label="Terminal command"
+          aria-label={portfolioData.ui.terminalCommandLabel}
           autoComplete="off"
         />
       </form>

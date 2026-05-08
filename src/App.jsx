@@ -1,31 +1,40 @@
+import { useEffect } from 'react'
 import DesktopShell from './components/desktop/DesktopShell'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
 import {
   AboutWindow,
-  ClassifiedWindow,
-  ContactWindow,
+  CertsWindow,
+  MOTDWindow,
   ProjectsWindow,
+  SocialsWindow,
   SkillsWindow,
   Terminal,
-  WriteupsWindow,
 } from './components/content'
 import { useWindowStore } from './store/windowStore'
 import './App.css'
 
 const windowComponents = {
+  motd: MOTDWindow,
   about: AboutWindow,
+  socials: SocialsWindow,
+  certs: CertsWindow,
   projects: ProjectsWindow,
   skills: SkillsWindow,
-  contact: ContactWindow,
-  writeups: WriteupsWindow,
   terminal: Terminal,
-  classified: ClassifiedWindow,
 }
 
 function App() {
   const windows = useWindowStore((state) => state.windows)
   const bootComplete = useWindowStore((state) => state.bootComplete)
+  const openWindow = useWindowStore((state) => state.openWindow)
+
+  useEffect(() => {
+    if (!bootComplete || localStorage.getItem('motd-dismissed') === 'true') return
+
+    const timer = window.setTimeout(() => openWindow('motd'), 500)
+    return () => window.clearTimeout(timer)
+  }, [bootComplete, openWindow])
 
   return (
     <main className="workstation">

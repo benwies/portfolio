@@ -1,50 +1,19 @@
 import { portfolioData } from '../../data/portfolioData'
 
-const { identity, system } = portfolioData
+const { about } = portfolioData
 
 function AboutWindow() {
-  const profileRows = [
-    ['user', `${identity.user}@${identity.host}`],
-    ['name', identity.fullName],
-    ['role', identity.role],
-    ['status', identity.status],
-    ['location', identity.location],
-  ]
-
-  const systemRows = [
-    ['os', system.os],
-    ['focus', system.focus],
-    ['shell', system.shell],
-    ['uptime', system.uptime],
-    ['packages', system.packages],
-  ]
-
   return (
     <section className="content-window about-window">
-      <header className="content-header">
-        <p className="content-kicker">{identity.user}</p>
-        <h2>{identity.fullName}</h2>
-        <p>{identity.role}</p>
-      </header>
-
-      <div className="content-grid">
-        <dl className="content-list">
-          {profileRows.map(([label, value]) => (
-            <div className="content-row" key={label}>
-              <dt>{label}</dt>
-              <dd>{value}</dd>
-            </div>
+      <div className="dtpad-document">
+        <header className="dtpad-toolbar">
+          {about.toolbar.map((item) => (
+            <span key={item}>{item}</span>
           ))}
-        </dl>
-
-        <dl className="content-list">
-          {systemRows.map(([label, value]) => (
-            <div className="content-row" key={label}>
-              <dt>{label}</dt>
-              <dd>{value}</dd>
-            </div>
-          ))}
-        </dl>
+        </header>
+        <div className="dtpad-area">
+          {[about.title, '', ...about.lines].join('\n')}
+        </div>
       </div>
     </section>
   )
