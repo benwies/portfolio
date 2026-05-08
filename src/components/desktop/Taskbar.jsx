@@ -44,7 +44,7 @@ function Taskbar() {
             title={item.label}
           >
             <span className="front-panel__launcher-icon">
-              <CdeIcon type={item.icon} />
+              <CdeIcon type={item.icon} label={item.label} />
             </span>
           </button>
         ))}

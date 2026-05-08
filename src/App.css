@@ -84,9 +84,11 @@
   height: 64px;
 }
 
-.desktop-icon__glyph svg {
+.desktop-icon__glyph .cde-theme-icon {
   width: 64px;
   height: 64px;
+  object-fit: contain;
+  image-rendering: auto;
 }
 
 .desktop-icon__label {
@@ -170,9 +172,10 @@
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
-.front-panel__launcher svg {
+.front-panel__launcher .cde-theme-icon {
   width: 34px;
   height: 34px;
+  object-fit: contain;
 }
 
 .front-panel__launcher-icon {
