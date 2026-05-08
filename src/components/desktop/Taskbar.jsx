@@ -4,11 +4,17 @@ import { useWindowStore } from '../../store/windowStore'
 import { CdeIcon } from './DesktopIcon'
 
 function formatClock(date) {
-  return new Intl.DateTimeFormat('en-GB', {
+  return {
+    date: new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'short',
+    }).format(date),
+    time: new Intl.DateTimeFormat('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
-  }).format(date)
+    }).format(date),
+  }
 }
 
 function Taskbar() {
@@ -23,8 +29,9 @@ function Taskbar() {
 
   return (
     <footer className="front-panel" aria-label="CDE Front Panel">
-      <time className="front-panel__clock" dateTime={clock} aria-label={portfolioData.ui.clockLabel}>
-        {clock}
+      <time className="front-panel__clock" dateTime={`${clock.date} ${clock.time}`} aria-label={portfolioData.ui.clockLabel}>
+        <span>{clock.date}</span>
+        <strong>{clock.time}</strong>
       </time>
 
       <nav className="front-panel__launchers" aria-label={portfolioData.ui.launcherLabel}>
@@ -44,8 +51,10 @@ function Taskbar() {
       </nav>
 
       <div className="front-panel__workspace" aria-label={portfolioData.ui.workspaceLabel}>
-        {[0, 1, 2, 3].map((space) => (
-          <span key={space} className="front-panel__workspace-cell" />
+        {['One', 'Two', 'Three', 'Four'].map((space) => (
+          <span key={space} className="front-panel__workspace-cell">
+            {space}
+          </span>
         ))}
       </div>
     </footer>

@@ -114,7 +114,6 @@ export const portfolioData = {
     { id: 'socials', label: 'socials.db', appId: 'socials', icon: 'socials' },
     { id: 'certs', label: 'certs.csv', appId: 'certs', icon: 'certs' },
     { id: 'skills', label: 'skills.ini', appId: 'skills', icon: 'skills' },
-    { id: 'resume', label: 'resume.pdf', appId: 'about', icon: 'pdf' },
     { id: 'terminal', label: 'terminal', appId: 'terminal', icon: 'terminal' },
   ],
   bootLines: [

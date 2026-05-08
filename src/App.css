@@ -1,8 +1,9 @@
 .workstation {
-  --desktop-bg: #2f4f5a;
-  --panel-bg: #5f8fa0;
-  --chrome-bg: #8eb0be;
-  --body-bg: #c8d8e0;
+  --desktop-bg: #6e8b8b;
+  --panel-bg: #8eb0be;
+  --chrome-bg: #5f9ea0;
+  --body-bg: #c8b8a8;
+  --window-inner: #b8a898;
   --button-face: #9fbfcf;
   --border-dark: #3a6070;
   --border-light: #ddeeff;
@@ -21,18 +22,18 @@
 }
 
 .desktop-shell {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) 64px;
+  display: block;
   height: 100%;
 }
 
 .desktop-shell__body {
   position: relative;
   min-height: 0;
+  height: 100%;
   overflow: hidden;
+  padding-bottom: 64px;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
     var(--desktop-bg);
   background-size: 4px 4px;
 }
@@ -43,13 +44,13 @@
 }
 
 .desktop-icons {
-  position: absolute;
+  position: relative;
   z-index: 5;
-  top: 20px;
-  left: 16px;
-  display: grid;
-  grid-auto-rows: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   width: 80px;
+  padding: 16px 12px;
 }
 
 .desktop-icon {
@@ -59,7 +60,8 @@
   align-content: start;
   gap: 6px;
   width: 80px;
-  height: 100px;
+  height: auto;
+  min-height: 92px;
   padding: 2px;
   background: transparent;
   border: 0;
@@ -78,13 +80,13 @@
 }
 
 .desktop-icon__glyph {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
 }
 
 .desktop-icon__glyph svg {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
 }
 
 .desktop-icon__label {
@@ -108,16 +110,21 @@
 }
 
 .front-panel {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 800;
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr) 160px;
+  grid-template-columns: 150px minmax(0, 1fr) 260px;
   align-items: center;
   gap: 10px;
   height: 64px;
   padding: 7px 10px;
   background: var(--panel-bg);
-  border-width: 3px 0 0;
+  border-width: 2px 0 2px;
   border-style: solid;
-  border-color: var(--border-light);
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
 }
 
 .front-panel__clock,
@@ -133,7 +140,12 @@
   display: grid;
   place-items: center;
   height: 44px;
-  font: 700 16px 'Courier New', monospace;
+  font: 700 13px 'Courier New', monospace;
+  line-height: 1.15;
+}
+
+.front-panel__clock strong {
+  font-size: 16px;
 }
 
 .front-panel__launchers {
@@ -141,6 +153,7 @@
   justify-content: center;
   gap: 8px;
   min-width: 0;
+  overflow: hidden;
 }
 
 .front-panel__launcher {
@@ -170,21 +183,29 @@
 
 .front-panel__workspace {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  padding: 7px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  padding: 5px;
   height: 48px;
 }
 
 .front-panel__workspace-cell {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--border-dark);
-  background: #c8d8e0;
+  display: grid;
+  place-items: center;
+  min-width: 70px;
+  height: 17px;
+  color: #ffffff;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  background: #3f8d96;
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .front-panel__workspace-cell:first-child {
-  background: var(--select-bg);
+  background: #718090;
 }
 
 .cde-window {
@@ -213,7 +234,7 @@
   align-items: center;
   height: 26px;
   padding: 2px 3px;
-  background: linear-gradient(90deg, #6080a0, #406080);
+  background: linear-gradient(90deg, var(--chrome-bg), #3a7080);
   color: #ffffff;
   cursor: move;
   user-select: none;
@@ -267,7 +288,7 @@
   gap: 12px;
   padding: 8px 10px;
   background: var(--button-face);
-  border-bottom: 2px solid var(--border-dark);
+  border-bottom: 1px solid var(--border-dark);
   font-size: 13px;
 }
 
@@ -276,7 +297,7 @@
   height: calc(100% - 38px);
   padding: 10px;
   overflow: auto;
-  background: #ffffff;
+  background: #f2ecdf;
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
@@ -289,7 +310,7 @@
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  background: #ffffff;
+  background: #f2ecdf;
 }
 
 .data-table th {
@@ -339,7 +360,7 @@
   display: grid;
   gap: 10px;
   padding: 10px;
-  background: #ffffff;
+  background: #f2ecdf;
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
@@ -360,7 +381,7 @@
   height: 100%;
   padding: 10px;
   overflow: auto;
-  background: #ffffff;
+  background: #f2ecdf;
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
@@ -386,7 +407,7 @@
 .motd-body {
   padding: 10px;
   overflow: auto;
-  background: #ffffff;
+  background: #f2ecdf;
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
@@ -513,16 +534,21 @@
 
 @media (max-width: 760px) {
   .front-panel {
-    grid-template-columns: 96px minmax(0, 1fr) 112px;
+    grid-template-columns: 96px minmax(0, 1fr) 160px;
     gap: 5px;
   }
 
   .desktop-icons {
-    left: 12px;
     width: 80px;
+    padding: 12px 8px;
   }
 
   .desktop-icon {
     width: 80px;
+  }
+
+  .front-panel__workspace-cell {
+    min-width: 0;
+    font-size: 10px;
   }
 }
