@@ -278,6 +278,21 @@
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
+.cde-window--dtterm {
+  border-color: #f0d4a0 #6f5838 #6f5838 #f0d4a0;
+}
+
+.cde-window--dtterm .window-chrome {
+  background: #c8a060;
+  color: #000000;
+}
+
+.cde-window--dtterm .cde-window__body {
+  background: #2e3a4a;
+  border-color: #6f5838 #f0d4a0 #f0d4a0 #6f5838;
+  scrollbar-color: #9b8a74 #233040;
+}
+
 .content-window {
   height: 100%;
   padding: 10px;
@@ -485,6 +500,61 @@
   border: 0;
   outline: 0;
   font-family: 'Courier New', monospace;
+}
+
+.neofetch-window {
+  height: 100%;
+  padding: 14px;
+  overflow: auto;
+  background: #2e3a4a;
+  color: #c8d8c8;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.neofetch-grid {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.neofetch-ascii {
+  margin: 0;
+  color: #e2e8e2;
+  font: inherit;
+  white-space: pre;
+}
+
+.neofetch-info {
+  min-width: 0;
+}
+
+.neofetch-user,
+.neofetch-rule {
+  color: #f0f4f0;
+}
+
+.neofetch-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 8px;
+  min-height: 18px;
+}
+
+.neofetch-key {
+  color: #88cccc;
+  font-weight: 700;
+}
+
+.neofetch-prompt {
+  margin-top: 18px;
+  color: #f0f4f0;
+}
+
+.neofetch-cursor {
+  animation: cde-cursor 1s steps(2) infinite;
 }
 
 .boot-sequence {

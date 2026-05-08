@@ -8,7 +8,6 @@ function MOTDWindow() {
   const openWindow = useWindowStore((state) => state.openWindow)
 
   const closeMotd = () => {
-    localStorage.setItem('motd_seen', 'true')
     closeWindow('motd')
   }
 

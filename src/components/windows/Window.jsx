@@ -52,7 +52,13 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
       <section
         aria-label={activeWindow.title}
         aria-modal="false"
-        className={activeWindow.isFocused ? 'cde-window is-focused' : 'cde-window'}
+        className={[
+          'cde-window',
+          activeWindow.variant ? `cde-window--${activeWindow.variant}` : '',
+          activeWindow.isFocused ? 'is-focused' : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
         role="dialog"
       >
         <WindowChrome

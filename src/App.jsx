@@ -6,6 +6,7 @@ import {
   AboutWindow,
   CertsWindow,
   MOTDWindow,
+  NeofetchWindow,
   ProjectsWindow,
   SocialsWindow,
   SkillsWindow,
@@ -16,6 +17,7 @@ import './App.css'
 
 const windowComponents = {
   motd: MOTDWindow,
+  neofetch: NeofetchWindow,
   about: AboutWindow,
   socials: SocialsWindow,
   certs: CertsWindow,
@@ -30,10 +32,15 @@ function App() {
   const openWindow = useWindowStore((state) => state.openWindow)
 
   useEffect(() => {
-    if (!bootComplete || localStorage.getItem('motd_seen') === 'true') return
+    if (!bootComplete) return
 
-    const timer = window.setTimeout(() => openWindow('motd'), 500)
-    return () => window.clearTimeout(timer)
+    const neofetchTimer = window.setTimeout(() => openWindow('neofetch'), 300)
+    const motdTimer = window.setTimeout(() => openWindow('motd'), 500)
+
+    return () => {
+      window.clearTimeout(neofetchTimer)
+      window.clearTimeout(motdTimer)
+    }
   }, [bootComplete, openWindow])
 
   return (

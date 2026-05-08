@@ -2,6 +2,10 @@ export const portfolioData = {
   identity: {
     user: 'benedikt',
     host: '0xbene',
+    name: 'Benedikt',
+    role: 'Blue Team / Defensive Sec',
+    focus: 'Linux · Networking · SecOps',
+    status: '[ACTIVE] Open to work',
     prompt: 'benedikt@0xbene:~$',
   },
   ui: {
@@ -57,6 +61,31 @@ export const portfolioData = {
       'Close this window to get started.',
       '',
       '================================================',
+    ],
+  },
+  neofetch: {
+    title: 'dtterm',
+    ascii: [
+      '    ██████████████',
+      '   ████░░░░░░░████',
+      '  ████░░░░░░░░████',
+      '  ████░░░░░░░░████',
+      '  ████░░░░░░░░████',
+      '  ████░░░░░░░░████',
+      '   ████░░░░░░████',
+      '    ██████████████',
+    ],
+    rows: [
+      ['OS', 'Arch Linux x86_64'],
+      ['Host', 'Portfolio Workstation'],
+      ['Kernel', '6.x.x-arch1'],
+      ['Shell', 'zsh'],
+      ['DE', 'CDE / Hyprland'],
+      ['WM', 'Hyprland'],
+      ['Theme', 'Catppuccin Mocha'],
+      ['Role', 'Blue Team / Defensive Sec'],
+      ['Focus', 'Linux · Networking · SecOps'],
+      ['Status', '[ACTIVE] Open to work'],
     ],
   },
   about: {
@@ -135,6 +164,14 @@ export const windowDefinitions = [
     component: 'motd',
     position: { x: 330, y: 90 },
     size: { width: 620, height: 560 },
+  },
+  {
+    id: 'neofetch',
+    title: 'dtterm',
+    component: 'neofetch',
+    position: { x: 690, y: 40 },
+    size: { width: 580, height: 420 },
+    variant: 'dtterm',
   },
   {
     id: 'about',

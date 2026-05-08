@@ -9,14 +9,17 @@ const initialWindows = windowDefinitions.map((windowDef, index) => ({
   zIndex: 10 + index,
 }))
 
-const markMotdSeen = (id) => {
-  if (id === 'motd' && typeof localStorage !== 'undefined') {
-    localStorage.setItem('motd_seen', 'true')
-  }
-}
-
 const centeredPosition = (windowItem) => {
-  if (windowItem.id !== 'motd' || typeof window === 'undefined') return windowItem.position
+  if (typeof window === 'undefined') return windowItem.position
+
+  if (windowItem.id === 'neofetch') {
+    return {
+      x: Math.max(160, Math.round(window.innerWidth * 0.6)),
+      y: 40,
+    }
+  }
+
+  if (windowItem.id !== 'motd') return windowItem.position
 
   return {
     x: Math.max(16, Math.round((window.innerWidth - windowItem.size.width) / 2)),
@@ -42,7 +45,6 @@ export const useWindowStore = create((set, get) => ({
       }
     }),
   closeWindow: (id) => {
-    markMotdSeen(id)
     set((state) => ({
       windows: state.windows.map((windowItem) => ({
         ...windowItem,
