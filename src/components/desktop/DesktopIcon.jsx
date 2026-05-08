@@ -1,4 +1,5 @@
 import { useWindowStore } from '../../store/windowStore'
+import { useState } from 'react'
 
 function FolderIcon() {
   return (
@@ -108,12 +109,14 @@ export function CdeIcon({ type }) {
 }
 
 function DesktopIcon({ icon }) {
+  const [selected, setSelected] = useState(false)
   const openWindow = useWindowStore((state) => state.openWindow)
 
   return (
     <button
       type="button"
-      className="desktop-icon"
+      className={selected ? 'desktop-icon is-selected' : 'desktop-icon'}
+      onClick={() => setSelected(true)}
       onDoubleClick={() => openWindow(icon.appId)}
       aria-label={`Open ${icon.label}`}
     >

@@ -3,11 +3,26 @@ import { windowDefinitions } from '../data/portfolioData'
 
 const initialWindows = windowDefinitions.map((windowDef, index) => ({
   ...windowDef,
-  isOpen: windowDef.id === 'terminal',
+  isOpen: false,
   isMinimized: false,
-  isFocused: windowDef.id === 'terminal',
+  isFocused: false,
   zIndex: 10 + index,
 }))
+
+const markMotdSeen = (id) => {
+  if (id === 'motd' && typeof localStorage !== 'undefined') {
+    localStorage.setItem('motd_seen', 'true')
+  }
+}
+
+const centeredPosition = (windowItem) => {
+  if (windowItem.id !== 'motd' || typeof window === 'undefined') return windowItem.position
+
+  return {
+    x: Math.max(16, Math.round((window.innerWidth - windowItem.size.width) / 2)),
+    y: Math.max(16, Math.round((window.innerHeight - windowItem.size.height) / 2) - 24),
+  }
+}
 
 export const useWindowStore = create((set, get) => ({
   windows: initialWindows,
@@ -21,18 +36,21 @@ export const useWindowStore = create((set, get) => ({
           isOpen: windowItem.id === id ? true : windowItem.isOpen,
           isMinimized: windowItem.id === id ? false : windowItem.isMinimized,
           isFocused: windowItem.id === id,
+          position: windowItem.id === id ? centeredPosition(windowItem) : windowItem.position,
           zIndex: windowItem.id === id ? topZ : windowItem.zIndex,
         })),
       }
     }),
-  closeWindow: (id) =>
+  closeWindow: (id) => {
+    markMotdSeen(id)
     set((state) => ({
       windows: state.windows.map((windowItem) => ({
         ...windowItem,
         isOpen: windowItem.id === id ? false : windowItem.isOpen,
         isFocused: windowItem.id === id ? false : windowItem.isFocused,
       })),
-    })),
+    }))
+  },
   minimizeWindow: (id) =>
     set((state) => ({
       windows: state.windows.map((windowItem) => ({

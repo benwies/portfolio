@@ -11,7 +11,11 @@ export const fileSystem = {
 
 export const readFile = (name) => {
   const readers = {
-    'README.md': [portfolioData.motd.body],
+    'README.md': [
+      ...portfolioData.motd.linesBefore,
+      ...portfolioData.motd.links.map((link) => link.label),
+      ...portfolioData.motd.linesAfter,
+    ],
     'about.txt': portfolioData.about.lines,
     'socials.db': [
       '// TODO: Add social links',

@@ -17,7 +17,14 @@ function ChromeButton({ children, onClick, title }) {
   )
 }
 
-export function WindowChrome({ isFocused, onClose, onMinimize, title }) {
+export function WindowChrome({
+  canMaximize = true,
+  canMinimize = true,
+  isFocused,
+  onClose,
+  onMinimize,
+  title,
+}) {
   const { closeButton, maximizeButton, menuButton, minimizeButton } = portfolioData.ui
   const { closeLabel, maximizeLabel, minimizeLabel, windowMenuLabel } = portfolioData.ui
 
@@ -28,10 +35,12 @@ export function WindowChrome({ isFocused, onClose, onMinimize, title }) {
       <ChromeButton title={windowMenuLabel}>{menuButton}</ChromeButton>
       <div className="window-chrome__title">{title}</div>
       <div className="window-chrome__controls">
-        <ChromeButton onClick={onMinimize} title={minimizeLabel}>
-          {minimizeButton}
-        </ChromeButton>
-        <ChromeButton title={maximizeLabel}>{maximizeButton}</ChromeButton>
+        {canMinimize ? (
+          <ChromeButton onClick={onMinimize} title={minimizeLabel}>
+            {minimizeButton}
+          </ChromeButton>
+        ) : null}
+        {canMaximize ? <ChromeButton title={maximizeLabel}>{maximizeButton}</ChromeButton> : null}
         <ChromeButton onClick={onClose} title={closeLabel}>
           {closeButton}
         </ChromeButton>

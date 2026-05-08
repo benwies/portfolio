@@ -46,10 +46,10 @@
   position: absolute;
   z-index: 5;
   top: 20px;
-  left: 20px;
+  left: 16px;
   display: grid;
-  grid-auto-rows: 110px;
-  width: 118px;
+  grid-auto-rows: 120px;
+  width: 80px;
 }
 
 .desktop-icon {
@@ -58,8 +58,8 @@
   justify-items: center;
   align-content: start;
   gap: 6px;
-  width: 118px;
-  height: 104px;
+  width: 80px;
+  height: 100px;
   padding: 2px;
   background: transparent;
   border: 0;
@@ -88,14 +88,18 @@
 }
 
 .desktop-icon__label {
-  max-width: 112px;
-  padding: 3px 7px;
-  color: #000000;
-  background: #ffffff;
-  font-size: 13px;
+  max-width: 80px;
+  padding: 2px 4px;
+  color: #ffffff;
+  background: transparent;
+  font-size: 12px;
   line-height: 1.1;
   text-align: center;
+  text-shadow: 1px 1px 0 #000000;
   overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .desktop-icon.is-selected .desktop-icon__label {
@@ -209,8 +213,8 @@
   align-items: center;
   height: 26px;
   padding: 2px 3px;
-  background: var(--chrome-bg);
-  color: #000000;
+  background: linear-gradient(90deg, #6080a0, #406080);
+  color: #ffffff;
   cursor: move;
   user-select: none;
 }
@@ -222,7 +226,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .window-chrome__controls {
@@ -239,6 +243,7 @@
   padding: 0;
   color: #000000;
   background: var(--button-face);
+  box-sizing: border-box;
   border-width: 3px;
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
@@ -277,6 +282,7 @@
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
   font-family: 'Courier New', monospace;
   font-size: 13px;
+  line-height: 1.8;
   white-space: pre-wrap;
 }
 
@@ -370,8 +376,8 @@
 
 .motd-window {
   display: grid;
-  grid-template-rows: 1fr auto;
-  gap: 12px;
+  grid-template-rows: auto 1fr auto;
+  gap: 0;
   height: 100%;
   padding: 14px;
   font-size: 13px;
@@ -379,17 +385,43 @@
 
 .motd-body {
   padding: 10px;
+  overflow: auto;
   background: #ffffff;
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
   font-family: 'Courier New', monospace;
   font-size: 13px;
+  line-height: 1.8;
+  white-space: pre;
 }
 
 .motd-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.motd-link {
+  display: block;
+  width: 100%;
+  padding: 0;
+  color: #0000ee;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  line-height: 1.8;
+  text-align: left;
+  text-decoration: underline;
+  white-space: pre;
+  cursor: pointer;
+}
+
+.motd-link:hover,
+.motd-link:focus-visible {
+  color: #ffffff;
+  background: var(--select-bg);
+  outline: 0;
 }
 
 .terminal {
@@ -487,10 +519,10 @@
 
   .desktop-icons {
     left: 12px;
-    width: 98px;
+    width: 80px;
   }
 
   .desktop-icon {
-    width: 98px;
+    width: 80px;
   }
 }

@@ -30,7 +30,7 @@ function App() {
   const openWindow = useWindowStore((state) => state.openWindow)
 
   useEffect(() => {
-    if (!bootComplete || localStorage.getItem('motd-dismissed') === 'true') return
+    if (!bootComplete || localStorage.getItem('motd_seen') === 'true') return
 
     const timer = window.setTimeout(() => openWindow('motd'), 500)
     return () => window.clearTimeout(timer)

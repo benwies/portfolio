@@ -56,6 +56,8 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
         role="dialog"
       >
         <WindowChrome
+          canMaximize={activeWindow.id !== 'motd'}
+          canMinimize={activeWindow.id !== 'motd'}
           isFocused={activeWindow.isFocused}
           onClose={() => closeWindow(activeWindow.id)}
           onMinimize={() => minimizeWindow(activeWindow.id)}
