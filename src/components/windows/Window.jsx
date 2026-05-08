@@ -6,11 +6,11 @@ const minSize = { width: 320, height: 220 }
 
 const styles = {
   shell: {
-    background: '#c0c0c0',
-    borderColor: '#ffffff #303030 #303030 #ffffff',
+    background: '#d4d0c8',
+    borderColor: '#ffffff #808080 #808080 #ffffff',
     borderStyle: 'solid',
-    borderWidth: 3,
-    boxShadow: '6px 6px 0 rgba(0, 0, 0, 0.35)',
+    borderWidth: 2,
+    boxShadow: '1px 1px 0 #000000',
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
@@ -19,17 +19,18 @@ const styles = {
     width: '100%',
   },
   focused: {
-    boxShadow: '8px 8px 0 rgba(0, 0, 0, 0.45)',
+    boxShadow: '1px 1px 0 #000000',
   },
   body: {
-    background: '#101010',
-    borderColor: '#404040 #ffffff #ffffff #404040',
+    background: '#d4d0c8',
+    borderColor: '#808080 #ffffff #ffffff #808080',
     borderStyle: 'solid',
     borderWidth: 2,
-    color: '#f2f2f2',
+    color: '#000000',
     flex: 1,
     minHeight: 0,
     overflow: 'auto',
+    padding: 2,
   },
 }
 

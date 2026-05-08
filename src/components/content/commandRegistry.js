@@ -69,21 +69,5 @@ export const runCommand = ({ command, cwd, setCwd }) => {
     useWindowStore.getState().openWindow(match.appId)
     return { lines: [`opening ${match.label}`] }
   }
-  if (base === 'matrix') {
-    useWindowStore.getState().setMatrixMode(true)
-    window.setTimeout(() => useWindowStore.getState().setMatrixMode(false), 12000)
-    return { lines: ['matrix rain overlay enabled'] }
-  }
-  if (base === 'hack') {
-    return {
-      lines: [
-        'trace route initialized...',
-        'spoofing dramatic terminal output...',
-        'uplink refused by ethics module',
-        'status: contained',
-      ],
-    }
-  }
-
   return { lines: [`${base}: command not found. Try help from ${promptPath(cwd)}.`] }
 }

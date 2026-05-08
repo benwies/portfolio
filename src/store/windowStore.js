@@ -12,10 +12,6 @@ const initialWindows = windowDefinitions.map((windowDef, index) => ({
 export const useWindowStore = create((set, get) => ({
   windows: initialWindows,
   bootComplete: false,
-  crtEnabled: true,
-  matrixMode: false,
-  activeAlerts: [],
-  idsClicks: 0,
   openWindow: (id) =>
     set((state) => {
       const topZ = Math.max(...state.windows.map((windowItem) => windowItem.zIndex), 10) + 1
@@ -63,25 +59,4 @@ export const useWindowStore = create((set, get) => ({
       ),
     })),
   setBootComplete: (bootComplete) => set({ bootComplete }),
-  toggleCrt: () => set((state) => ({ crtEnabled: !state.crtEnabled })),
-  setMatrixMode: (matrixMode) => set({ matrixMode }),
-  pushAlert: (alert) =>
-    set((state) => ({
-      activeAlerts: [
-        ...state.activeAlerts,
-        { id: crypto.randomUUID(), createdAt: Date.now(), ...alert },
-      ],
-    })),
-  dismissAlert: (id) =>
-    set((state) => ({
-      activeAlerts: state.activeAlerts.filter((alert) => alert.id !== id),
-    })),
-  registerIdsClick: () => {
-    const next = get().idsClicks + 1
-    set({ idsClicks: next })
-    if (next >= 5) {
-      get().openWindow('classified')
-      set({ idsClicks: 0 })
-    }
-  },
 }))

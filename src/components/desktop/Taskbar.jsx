@@ -1,14 +1,37 @@
+import { useEffect, useState } from 'react'
 import { useWindowStore } from '../../store/windowStore'
 import { portfolioData } from '../../data/portfolioData'
 
+function formatClock(date) {
+  return new Intl.DateTimeFormat('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date)
+}
+
+function StartFlag() {
+  return (
+    <span className="start-flag" aria-hidden="true">
+      <span className="flag-red" />
+      <span className="flag-green" />
+      <span className="flag-blue" />
+      <span className="flag-yellow" />
+    </span>
+  )
+}
+
 function Taskbar() {
+  const [clock, setClock] = useState(() => formatClock(new Date()))
   const windows = useWindowStore((state) => state.windows)
-  const crtEnabled = useWindowStore((state) => state.crtEnabled)
   const openWindow = useWindowStore((state) => state.openWindow)
   const focusWindow = useWindowStore((state) => state.focusWindow)
-  const toggleCrt = useWindowStore((state) => state.toggleCrt)
   const openWindows = windows.filter((windowItem) => windowItem.isOpen)
-  const { menuLabel, crtOn, crtOff } = portfolioData.ui
+  const { menuLabel } = portfolioData.ui
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setClock(formatClock(new Date())), 1000)
+    return () => window.clearInterval(timer)
+  }, [])
 
   return (
     <footer className="taskbar" aria-label="Desktop taskbar">
@@ -17,6 +40,7 @@ function Taskbar() {
         className="taskbar__menu"
         onClick={() => openWindow('terminal')}
       >
+        <StartFlag />
         {menuLabel}
       </button>
 
@@ -39,14 +63,9 @@ function Taskbar() {
         ))}
       </nav>
 
-      <button
-        type="button"
-        className={crtEnabled ? 'taskbar__tray is-active' : 'taskbar__tray'}
-        onClick={toggleCrt}
-        aria-pressed={crtEnabled}
-      >
-        {crtEnabled ? crtOn : crtOff}
-      </button>
+      <time className="taskbar__tray" dateTime={clock}>
+        {clock}
+      </time>
     </footer>
   )
 }

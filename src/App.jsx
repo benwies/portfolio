@@ -1,10 +1,6 @@
 import DesktopShell from './components/desktop/DesktopShell'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
-import CRTOverlay from './components/atmosphere/CRTOverlay'
-import IDSAlert from './components/atmosphere/IDSAlert'
-import LogTicker from './components/atmosphere/LogTicker'
-import MatrixRain from './components/atmosphere/MatrixRain'
 import {
   AboutWindow,
   ClassifiedWindow,
@@ -46,10 +42,6 @@ function App() {
           })}
       </DesktopShell>
       {!bootComplete && <BootSequence />}
-      <CRTOverlay />
-      <MatrixRain />
-      <IDSAlert />
-      <LogTicker />
     </main>
   )
 }
