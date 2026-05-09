@@ -18,7 +18,7 @@ function MobileAbout() {
         window.clearInterval(interval)
         cursorTimer = window.setTimeout(() => setShowCursor(false), 2000)
       }
-    }, 8)
+    }, 1)
     return () => {
       window.clearInterval(interval)
       window.clearTimeout(cursorTimer)

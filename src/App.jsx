@@ -73,19 +73,22 @@ function App() {
 
   return (
     <main className="workstation">
-      <DesktopShell>
-        {windows
-          .filter((windowItem) => windowItem.isOpen && !windowItem.isMinimized)
-          .map((windowItem) => {
-            const Content = windowComponents[windowItem.component]
-            return (
-              <Window key={windowItem.id} windowItem={windowItem}>
-                {Content ? <Content /> : null}
-              </Window>
-            )
-          })}
-      </DesktopShell>
-      {!bootComplete && <BootSequence />}
+      {!bootComplete ? (
+        <BootSequence />
+      ) : (
+        <DesktopShell>
+          {windows
+            .filter((windowItem) => windowItem.isOpen && !windowItem.isMinimized)
+            .map((windowItem) => {
+              const Content = windowComponents[windowItem.component]
+              return (
+                <Window key={windowItem.id} windowItem={windowItem}>
+                  {Content ? <Content /> : null}
+                </Window>
+              )
+            })}
+        </DesktopShell>
+      )}
     </main>
   )
 }
