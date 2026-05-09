@@ -389,6 +389,22 @@
   color: #000080;
 }
 
+.cert-row.is-in-progress td:first-child {
+  font-style: italic;
+}
+
+.cert-status {
+  font: 700 13px 'Courier New', monospace;
+}
+
+.cert-status--completed {
+  color: #006600;
+}
+
+.cert-status--in_progress {
+  color: #cc6600;
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -421,6 +437,81 @@
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
+.project-subwindow {
+  position: absolute;
+  top: 58px;
+  left: 72px;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: 26px 1fr;
+  width: min(560px, calc(100% - 96px));
+  max-height: calc(100% - 84px);
+  background: var(--body-bg);
+  border-width: 3px;
+  border-style: solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+}
+
+.project-subwindow__title {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 6px;
+  color: #ffffff;
+  background: linear-gradient(90deg, var(--chrome-bg), #3a7080);
+  font: 700 12px 'Courier New', monospace;
+}
+
+.project-subwindow__title button {
+  padding: 2px 8px;
+  color: #000000;
+  background: var(--button-face);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  font: inherit;
+}
+
+.project-subwindow__body {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  overflow: auto;
+  background: #f2ecdf;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.project-subwindow__body h2 {
+  margin: 0;
+  font: 700 15px 'Courier New', monospace;
+}
+
+.project-subwindow__body pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font: inherit;
+}
+
+.project-status {
+  justify-self: start;
+  font: 700 12px 'Courier New', monospace;
+}
+
+.project-status--active {
+  color: #006600;
+}
+
+.project-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .cde-button {
   justify-self: start;
   padding: 6px 14px;
@@ -442,12 +533,28 @@
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
   font-family: 'Courier New', monospace;
   font-size: 13px;
-  white-space: pre-wrap;
+  line-height: 1.55;
+}
+
+.skills-window .ini-text {
+  background: #ffffff;
+}
+
+.ini-block {
+  margin-bottom: 14px;
 }
 
 .ini-section {
   color: #000080;
   font-weight: 700;
+}
+
+.ini-comment {
+  color: #666666;
+}
+
+.ini-item {
+  color: #000000;
 }
 
 .motd-window {

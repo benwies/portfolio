@@ -17,22 +17,22 @@ function CertsWindow() {
           </tr>
         </thead>
         <tbody>
-          {certs.rows.map((row, index) => {
-            const cells = Array.isArray(row) ? row : [row.name, row.issuer, row.date, row.link]
-            const href = row.href ?? row.link
+          {certs.rows.map((row) => {
+            const statusLabel = certs.statusLabels[row.status] ?? row.status
             return (
-              <tr key={`cert-${index}`}>
-                {cells.map((cell, cellIndex) => (
-                  <td key={`${cell}-${cellIndex}`}>
-                    {cellIndex === cells.length - 1 && href ? (
-                      <a href={href} target="_blank" rel="noreferrer">
-                        {cell}
-                      </a>
-                    ) : (
-                      cell
-                    )}
-                  </td>
-                ))}
+              <tr key={row.name} className={row.status === 'in_progress' ? 'cert-row is-in-progress' : 'cert-row'}>
+                <td>{row.name}</td>
+                <td>{row.issuer}</td>
+                <td>
+                  <span className={`cert-status cert-status--${row.status}`}>
+                    {statusLabel}
+                  </span>
+                </td>
+                <td>
+                  <a href={row.link} target="_blank" rel="noreferrer">
+                    {certs.viewLabel}
+                  </a>
+                </td>
               </tr>
             )
           })}

@@ -5,7 +5,7 @@ export const fileSystem = {
     files: portfolioData.terminal.files,
   },
   '/home/benedikt/projects': {
-    files: portfolioData.projects.items.map((project) => `${project.name}/`),
+    files: portfolioData.projects.items.map((project) => project.folder),
   },
 }
 
@@ -23,18 +23,19 @@ export const readFile = (name) => {
     ],
     'about.txt': portfolioData.about.lines,
     'socials.db': [
-      '// TODO: Add social links',
       portfolioData.socials.headers.join('    '),
       ...portfolioData.socials.rows.map((row) =>
         Array.isArray(row) ? row.join('    ') : `${row.port}    ${row.service}    ${row.link}`,
       ),
     ],
     'certs.csv': [
-      '// TODO: Add certifications',
       portfolioData.certs.headers.join(','),
-      ...portfolioData.certs.rows.map((row) =>
-        Array.isArray(row) ? row.join(',') : [row.name, row.issuer, row.date, row.link].join(','),
-      ),
+      ...portfolioData.certs.rows.map((row) => [
+        row.name,
+        row.issuer,
+        portfolioData.certs.statusLabels[row.status] ?? row.status,
+        row.link,
+      ].join(',')),
     ],
     'skills.ini': portfolioData.skills.sections.flatMap((section) => [
       `[${section.name}]`,
