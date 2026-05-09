@@ -1,6 +1,7 @@
 export { default as AboutWindow } from './AboutWindow'
 export { default as SocialsWindow } from './SocialsWindow'
 export { default as CertsWindow } from './CertsWindow'
+export { default as CalcWindow } from './CalcWindow'
 export { default as ProjectsWindow } from './ProjectsWindow'
 export { default as SkillsWindow } from './SkillsWindow'
 export { default as MOTDWindow } from './MOTDWindow'

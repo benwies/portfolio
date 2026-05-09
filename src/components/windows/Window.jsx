@@ -69,8 +69,8 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
       dragHandleClassName="window-drag-handle"
       disableDragging={false}
       enableResizing={!activeWindow.fixedSize}
-      minHeight={minSize.height}
-      minWidth={minSize.width}
+      minHeight={activeWindow.fixedSize ? size.height : minSize.height}
+      minWidth={activeWindow.fixedSize ? size.width : minSize.width}
       onDragStart={handleFocus}
       onDragStop={handleDragStop}
       onMouseDown={handleFocus}
@@ -107,7 +107,7 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
         role="dialog"
       >
         <WindowChrome
-          canMaximize={!isDialog}
+          canMaximize={!isDialog && !activeWindow.fixedSize}
           canMinimize={!isDialog}
           isFocused={activeWindow.isFocused}
           onClose={() => closeWindow(activeWindow.id)}

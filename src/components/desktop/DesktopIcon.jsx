@@ -11,6 +11,7 @@ import terminalIcon from '../../assets/cde-icons/terminal.png'
 import textIcon from '../../assets/cde-icons/text.png'
 
 const iconFiles = {
+  calculator: settingsIcon,
   certs: spreadsheetIcon,
   folder: folderIcon,
   skills: settingsIcon,
@@ -47,6 +48,7 @@ const defaultCells = {
   freewifi: { col: 1, row: 1 },
   paint: { col: 1, row: 2 },
   pnptprep: { col: 1, row: 3 },
+  calculator: { col: 1, row: 4 },
 }
 
 const clamp = (value, min, max) => Math.max(min, Math.min(value, max))

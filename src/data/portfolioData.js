@@ -364,6 +364,7 @@
     { id: 'snake', label: 'snake', appId: 'snake', icon: 'snake' },
     { id: 'paint', label: 'paint.sh', appId: 'paint', icon: 'paint' },
     { id: 'pnptprep', label: 'pnpt-prep/', icon: 'folder', action: 'link', url: 'https://github.com/benwies/PNPT-Study-Notes' },
+    { id: 'calculator', label: 'calculator', appId: 'calculator', icon: 'calculator' },
     { id: 'freewifi', label: 'free-wifi.sh', action: 'kernelPanic', icon: 'freeWifi' },
   ],
   bootLines: [
@@ -457,6 +458,14 @@ export const windowDefinitions = [
     component: 'paint',
     position: { x: 180, y: 80 },
     size: { width: 600, height: 500 },
+  },
+  {
+    id: 'calculator',
+    title: 'calculator - dtcalc',
+    component: 'calculator',
+    position: { x: 360, y: 120 },
+    size: { width: 220, height: 320 },
+    fixedSize: true,
   },
   {
     id: 'workstationAbout',

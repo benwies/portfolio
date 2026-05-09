@@ -5,6 +5,7 @@ import BootSequence from './components/atmosphere/BootSequence'
 import MobileView from './components/mobile/MobileView'
 import {
   AboutWindow,
+  CalcWindow,
   CertsWindow,
   MOTDWindow,
   NeofetchWindow,
@@ -28,6 +29,7 @@ const windowComponents = {
   about: AboutWindow,
   socials: SocialsWindow,
   certs: CertsWindow,
+  calculator: CalcWindow,
   projects: ProjectsWindow,
   skills: SkillsWindow,
   terminal: Terminal,
