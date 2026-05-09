@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import DesktopShell from './components/desktop/DesktopShell'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
+import MobileView from './components/mobile/MobileView'
 import {
   AboutWindow,
   CertsWindow,
@@ -29,12 +30,19 @@ const windowComponents = {
 }
 
 function App() {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
   const windows = useWindowStore((state) => state.windows)
   const bootComplete = useWindowStore((state) => state.bootComplete)
   const openWindow = useWindowStore((state) => state.openWindow)
 
   useEffect(() => {
-    if (!bootComplete) return
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    if (!bootComplete || isMobile) return
 
     const neofetchTimer = window.setTimeout(() => openWindow('neofetch'), 300)
     const motdTimer = window.setTimeout(() => openWindow('motd'), 500)
@@ -43,7 +51,9 @@ function App() {
       window.clearTimeout(neofetchTimer)
       window.clearTimeout(motdTimer)
     }
-  }, [bootComplete, openWindow])
+  }, [bootComplete, isMobile, openWindow])
+
+  if (isMobile) return <MobileView />
 
   return (
     <main className="workstation">
