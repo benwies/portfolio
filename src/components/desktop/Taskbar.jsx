@@ -4,10 +4,10 @@ import { useWindowStore } from '../../store/windowStore'
 import { CdeIcon } from './DesktopIcon'
 
 const visualWorkspaces = [
-  { name: 'One', label: 'HOME' },
-  { name: 'Two', label: 'WORK' },
-  { name: 'Three', label: 'PORT' },
-  { name: 'Four', label: 'FUN' },
+  { name: 'One', label: 'One' },
+  { name: 'Two', label: 'Two' },
+  { name: 'Three', label: 'Three' },
+  { name: 'Four', label: 'Four' },
 ]
 
 function formatClock(date) {
