@@ -69,11 +69,20 @@
   border: 0;
   font: inherit;
   cursor: default;
+  filter: none;
+  opacity: 1;
   pointer-events: auto;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   outline: none;
+  transition: opacity 100ms ease, filter 100ms ease;
+}
+
+.desktop-icon:hover {
+  cursor: pointer;
+  filter: brightness(1.15);
+  opacity: 0.85;
 }
 
 .desktop-icon:focus,
@@ -103,8 +112,14 @@
 .desktop-icon__glyph .cde-theme-icon {
   width: 64px;
   height: 64px;
+  filter: none;
   object-fit: contain;
+  transition: filter 100ms ease;
   image-rendering: auto;
+}
+
+.desktop-icon:hover .desktop-icon__glyph .cde-theme-icon {
+  filter: brightness(1.1) saturate(1.1);
 }
 
 .trash-icon {
@@ -161,6 +176,12 @@
   text-overflow: ellipsis;
   user-select: none;
   -webkit-user-select: none;
+  transition: background-color 100ms ease, color 100ms ease;
+}
+
+.desktop-icon:hover .desktop-icon__label {
+  color: #ffffff;
+  background-color: #000080;
 }
 
 .front-panel {
@@ -717,7 +738,7 @@
 .sysstats-widget {
   display: grid;
   gap: 2px;
-  width: 190px;
+  width: 240px;
   min-height: 160px;
   padding: 8px;
   align-content: start;
@@ -740,6 +761,10 @@
   gap: 4px;
   align-items: center;
   white-space: nowrap;
+}
+
+.sysstats-row span:last-child {
+  text-align: right;
 }
 
 .sysstats-row span:first-child,

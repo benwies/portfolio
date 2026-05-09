@@ -5,8 +5,8 @@ const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) 
 const stepValue = (current, min, max) => clamp(current + randomBetween(-15, 15), min, max)
 
 const renderBar = (value) => {
-  const filled = Math.round(value / 10)
-  return `[${'|'.repeat(filled)}${'-'.repeat(10 - filled)}]`
+  const filled = Math.round((value / 100) * 12)
+  return `[${'|'.repeat(filled)}${'-'.repeat(12 - filled)}]`
 }
 
 function SysStatsWidget() {
