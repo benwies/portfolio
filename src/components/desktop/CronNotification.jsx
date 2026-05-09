@@ -59,7 +59,7 @@ function CronNotification() {
     }
 
     function schedule(isFirst) {
-      const delay = isFirst ? randomBetween(90000, 120000) : randomBetween(120000, 240000)
+      const delay = isFirst ? 5000 : randomBetween(30000, 120000)
       scheduleTimer.current = window.setTimeout(showNotification, delay)
     }
 
