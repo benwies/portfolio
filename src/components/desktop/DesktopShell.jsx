@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
 import ClockWidget from './ClockWidget'
 import CronNotification from './CronNotification'
+import ContextMenu from './ContextMenu'
 import DesktopIcon from './DesktopIcon'
 import KernelPanicOverlay from './KernelPanicOverlay'
 import SysStatsWidget from './SysStatsWidget'
@@ -45,6 +46,9 @@ function DesktopShell({ children }) {
   const bootComplete = useWindowStore((state) => state.bootComplete)
   const [panicState, setPanicState] = useState('idle')
   const [fakeTerminals, setFakeTerminals] = useState([])
+  const [menu, setMenu] = useState(null)
+  const desktopRef = useRef(null)
+  const windowLayerRef = useRef(null)
 
   useEffect(() => {
     if (panicState !== 'animating') return undefined
@@ -76,11 +80,24 @@ function DesktopShell({ children }) {
     setPanicState('idle')
   }
 
+  const handleContextMenu = (event) => {
+    if (![desktopRef.current, windowLayerRef.current].includes(event.target)) return
+    event.preventDefault()
+    setMenu({ x: event.clientX, y: event.clientY })
+  }
+
+  const closeMenu = () => setMenu(null)
+
   return (
     <div className="desktop-shell">
       {bootComplete && (
         <>
-          <main className="desktop-shell__body">
+          <main
+            className="desktop-shell__body"
+            ref={desktopRef}
+            onClick={closeMenu}
+            onContextMenu={handleContextMenu}
+          >
             <nav className="desktop-icons" aria-label="Desktop icons">
               {portfolioData.desktopIcons.map((icon, index) => (
                 <DesktopIcon
@@ -102,12 +119,13 @@ function DesktopShell({ children }) {
               </div>
             </div>
             <TrashIcon />
-            <section className="desktop-windows" aria-label="Open windows">
+            <section className="desktop-windows" ref={windowLayerRef} aria-label="Open windows">
               {children}
             </section>
             {fakeTerminals.map((terminal) => (
               <FakeTerminal key={terminal.id} terminal={terminal} />
             ))}
+            {menu ? <ContextMenu position={menu} onClose={closeMenu} /> : null}
           </main>
 
           <Taskbar />

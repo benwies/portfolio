@@ -15,6 +15,7 @@ import {
   SnakeWindow,
   Terminal,
   TrashWindow,
+  WorkstationAboutWindow,
 } from './components/content'
 import { useWindowStore } from './store/windowStore'
 import './App.css'
@@ -31,6 +32,7 @@ const windowComponents = {
   skills: SkillsWindow,
   terminal: Terminal,
   trash: TrashWindow,
+  workstationAbout: WorkstationAboutWindow,
 }
 
 function App() {

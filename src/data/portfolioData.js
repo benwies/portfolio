@@ -24,6 +24,23 @@
     bootTitle: 'CDE boot',
     bootSkip: 'Skip',
     launcherLabel: 'Front Panel Launchers',
+    contextMenu: {
+      newTerminal: 'New Terminal',
+      resetDesktop: 'Reset Desktop',
+      aboutWorkstation: 'About this Workstation',
+    },
+    workstationAbout: {
+      ok: 'OK',
+      lines: [
+        '0xbene Portfolio',
+        'SunOS 5.11 CDE 1.6',
+        '',
+        'Built by Benedikt Wiesner',
+        'Stack: React + Vite',
+        'Hosted on Vercel',
+        'Domain: 0xbene.dev',
+      ],
+    },
   },
   mobile: {
     warning: {
@@ -439,6 +456,14 @@ export const windowDefinitions = [
     component: 'paint',
     position: { x: 180, y: 80 },
     size: { width: 600, height: 500 },
+  },
+  {
+    id: 'workstationAbout',
+    title: 'About this Workstation',
+    component: 'workstationAbout',
+    position: { x: 420, y: 180 },
+    size: { width: 360, height: 260 },
+    fixedSize: true,
   },
 ]
 

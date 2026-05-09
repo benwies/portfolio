@@ -236,6 +236,10 @@ function DesktopIcon({ icon, index, icons, onKernelPanic = () => {} }) {
       onPointerUp={endPointer}
       onPointerCancel={endPointer}
       onDragStart={(event) => event.preventDefault()}
+      onContextMenu={(event) => {
+        event.preventDefault()
+        event.stopPropagation()
+      }}
       tabIndex={-1}
       aria-label={`Open ${icon.label}`}
     >

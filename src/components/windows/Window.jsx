@@ -19,6 +19,7 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
 
   const { position, size } = getGeometry(activeWindow)
   const handleFocus = () => focusWindow(activeWindow.id)
+  const isDialog = ['motd', 'workstationAbout'].includes(activeWindow.id)
 
   const handleDragStop = (_event, data) => {
     updateWindowGeometry(activeWindow.id, { position: { x: data.x, y: data.y } })
@@ -64,8 +65,8 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
         role="dialog"
       >
         <WindowChrome
-          canMaximize={activeWindow.id !== 'motd'}
-          canMinimize={activeWindow.id !== 'motd'}
+          canMaximize={!isDialog}
+          canMinimize={!isDialog}
           isFocused={activeWindow.isFocused}
           onClose={() => closeWindow(activeWindow.id)}
           onMinimize={() => minimizeWindow(activeWindow.id)}
