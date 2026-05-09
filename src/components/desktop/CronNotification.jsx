@@ -49,14 +49,14 @@ function CronNotification() {
         time: formatTime(new Date()),
       })
       setVisible(true)
-      autoDismissTimer.current = window.setTimeout(() => dismiss(), 8000)
+      autoDismissTimer.current = window.setTimeout(() => dismiss(), 5000)
     }
 
     const schedule = (delay) => {
       scheduleTimer.current = window.setTimeout(showNotification, delay)
     }
 
-    scheduleNext.current = () => schedule(randomBetween(30000, 120000))
+    scheduleNext.current = () => schedule(randomBetween(20000, 40000))
     schedule(5000)
     return clearTimers
   }, [])

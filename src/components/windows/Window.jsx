@@ -3,6 +3,16 @@ import WindowChrome from './WindowChrome'
 import { useWindowManager } from './useWindowManager'
 
 const minSize = { width: 320, height: 220 }
+const resizeHandleStyles = {
+  bottom: { bottom: 0, height: 6, left: 12, right: 12, zIndex: 10 },
+  bottomLeft: { bottom: 0, height: 12, left: 0, width: 12, zIndex: 11 },
+  bottomRight: { bottom: 0, height: 12, right: 0, width: 12, zIndex: 11 },
+  left: { bottom: 12, left: 0, top: 12, width: 6, zIndex: 10 },
+  right: { bottom: 12, right: 0, top: 12, width: 6, zIndex: 10 },
+  top: { height: 6, left: 12, right: 12, top: 0, zIndex: 10 },
+  topLeft: { height: 12, left: 0, top: 0, width: 12, zIndex: 11 },
+  topRight: { height: 12, right: 0, top: 0, width: 12, zIndex: 11 },
+}
 
 function getGeometry(windowItem) {
   return {
@@ -49,6 +59,17 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
       onResizeStart={handleFocus}
       onResizeStop={handleResizeStop}
       position={position}
+      resizeHandleClasses={{
+        bottom: 'resize-handle resize-s',
+        bottomLeft: 'resize-handle resize-sw',
+        bottomRight: 'resize-handle resize-se',
+        left: 'resize-handle resize-w',
+        right: 'resize-handle resize-e',
+        top: 'resize-handle resize-n',
+        topLeft: 'resize-handle resize-nw',
+        topRight: 'resize-handle resize-ne',
+      }}
+      resizeHandleStyles={resizeHandleStyles}
       size={size}
       style={{ zIndex: activeWindow.zIndex }}
     >

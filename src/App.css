@@ -16,6 +16,26 @@
   cursor: url('/cursors/cursor-default.svg') 2 2, default !important;
 }
 
+.workstation .resize-n,
+.workstation .resize-s {
+  cursor: url('/cursors/cursor-resize-ns.svg') 12 6, ns-resize !important;
+}
+
+.workstation .resize-e,
+.workstation .resize-w {
+  cursor: url('/cursors/cursor-resize-ew.svg') 6 12, ew-resize !important;
+}
+
+.workstation .resize-nw,
+.workstation .resize-se {
+  cursor: url('/cursors/cursor-resize-nw.svg') 8 8, nwse-resize !important;
+}
+
+.workstation .resize-ne,
+.workstation .resize-sw {
+  cursor: url('/cursors/cursor-resize-ne.svg') 8 8, nesw-resize !important;
+}
+
 @media (hover: none) {
   .workstation,
   .workstation *,

@@ -41,12 +41,12 @@ const defaultCells = {
   socials: { col: 0, row: 2 },
   certs: { col: 0, row: 3 },
   terminal: { col: 0, row: 4 },
-  pnptprep: { col: 0, row: 5 },
-  skills: { col: 0, row: 6 },
-  welcome: { col: 0, row: 7 },
+  skills: { col: 0, row: 5 },
+  welcome: { col: 0, row: 6 },
   snake: { col: 1, row: 0 },
   freewifi: { col: 1, row: 1 },
   paint: { col: 1, row: 2 },
+  pnptprep: { col: 1, row: 3 },
 }
 
 const clamp = (value, min, max) => Math.max(min, Math.min(value, max))
