@@ -236,7 +236,7 @@
   left: 0;
   z-index: 800;
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr) 260px;
+  grid-template-columns: 110px minmax(0, 1fr) 132px;
   align-items: center;
   gap: 10px;
   height: 64px;
@@ -257,15 +257,24 @@
 }
 
 .front-panel__clock {
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
   height: 44px;
-  font: 700 13px 'Courier New', monospace;
-  line-height: 1.15;
+  margin: 6px 8px;
+  padding: 2px 8px;
+  background: #9fbfcf;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+  font: 700 11px 'Courier New', monospace;
+  line-height: 1.2;
 }
 
 .front-panel__clock strong {
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .front-panel__launchers {
@@ -289,6 +298,11 @@
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
+.front-panel__launcher.is-active {
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+  background: #7090a0;
+}
+
 .front-panel__launcher .cde-theme-icon {
   width: 34px;
   height: 34px;
@@ -304,28 +318,34 @@
 .front-panel__workspace {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 4px;
-  padding: 5px;
-  height: 48px;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2px;
+  width: 100px;
+  height: 44px;
+  margin: 4px 8px;
+  padding: 0;
+  background: transparent;
+  border: 0;
 }
 
 .front-panel__workspace-cell {
-  display: grid;
-  place-items: center;
-  min-width: 70px;
-  height: 17px;
-  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  color: #000000;
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
-  background: #3f8d96;
-  font-size: 12px;
+  background: #9fbfcf;
+  font: 700 9px 'Courier New', monospace;
   overflow: hidden;
   white-space: nowrap;
 }
 
-.front-panel__workspace-cell:first-child {
-  background: #718090;
+.front-panel__workspace-cell.is-active {
+  background: #7090a0;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
 .cde-window {

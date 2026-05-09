@@ -24,6 +24,7 @@ function getGeometry(windowItem) {
 export function Window({ children, window: windowItem, windowItem: fallbackWindow }) {
   const activeWindow = windowItem ?? fallbackWindow
   const {
+    activeWorkspace,
     clearWindowAnimation,
     closeWindow,
     focusWindow,
@@ -32,11 +33,12 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
     updateWindowGeometry,
   } = useWindowManager()
 
-  if (!activeWindow?.isOpen || activeWindow.isMinimized) return null
+  if (!activeWindow?.isOpen) return null
 
   const { position, size } = getGeometry(activeWindow)
   const handleFocus = () => focusWindow(activeWindow.id)
   const isDialog = ['motd', 'workstationAbout'].includes(activeWindow.id)
+  const isVisible = activeWindow.workspace === activeWorkspace && !activeWindow.isMinimized
 
   const handleDragStop = (_event, data) => {
     updateWindowGeometry(activeWindow.id, { position: { x: data.x, y: data.y } })
@@ -89,7 +91,10 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
       }}
       resizeHandleStyles={resizeHandleStyles}
       size={size}
-      style={{ zIndex: activeWindow.zIndex }}
+      style={{
+        display: isVisible ? 'block' : 'none',
+        zIndex: activeWindow.zIndex,
+      }}
     >
       <section
         aria-label={activeWindow.title}

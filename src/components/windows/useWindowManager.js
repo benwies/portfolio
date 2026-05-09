@@ -3,6 +3,7 @@ import { useWindowStore } from '../../store/windowStore'
 
 export function useWindowManager() {
   const windows = useWindowStore((state) => state.windows)
+  const activeWorkspace = useWindowStore((state) => state.activeWorkspace)
   const openWindow = useWindowStore((state) => state.openWindow)
   const closeWindow = useWindowStore((state) => state.closeWindow)
   const clearWindowAnimation = useWindowStore((state) => state.clearWindowAnimation)
@@ -28,6 +29,7 @@ export function useWindowManager() {
 
   return {
     windows,
+    activeWorkspace,
     visibleWindows,
     minimizedWindows,
     focusedWindow,
