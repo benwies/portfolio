@@ -30,8 +30,20 @@ const gridStartY = 16
 const gridCellWidth = 120
 const gridCellHeight = 130
 const dragThreshold = 8
-const iconGridStoragePrefix = 'icon_grid_v2_'
+const iconGridStoragePrefix = 'icon_grid_v4_'
 const iconGridEvent = 'cde-icon-grid-update'
+const defaultCells = {
+  projects: { col: 0, row: 0 },
+  about: { col: 0, row: 1 },
+  socials: { col: 0, row: 2 },
+  certs: { col: 0, row: 3 },
+  terminal: { col: 0, row: 4 },
+  skills: { col: 0, row: 5 },
+  welcome: { col: 0, row: 6 },
+  snake: { col: 1, row: 0 },
+  freewifi: { col: 1, row: 1 },
+  paint: { col: 1, row: 2 },
+}
 
 const clamp = (value, min, max) => Math.max(min, Math.min(value, max))
 const cellKey = (cell) => `${cell.col}:${cell.row}`
@@ -80,7 +92,7 @@ function clampPosition(position) {
 }
 
 function loadGridCell(icon, index) {
-  const fallback = { col: 0, row: index }
+  const fallback = defaultCells[icon.id] ?? { col: 0, row: index }
   const stored = localStorage.getItem(storageKey(icon.id))
   if (!stored) return fallback
 

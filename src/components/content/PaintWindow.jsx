@@ -1,5 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
+import clearIcon from '../../assets/cde-icons/paint_clear.png'
+import eraserIcon from '../../assets/cde-icons/paint_eraser.png'
+import fillIcon from '../../assets/cde-icons/paint_fill.png'
+import pencilIcon from '../../assets/cde-icons/paint_pencil.png'
+
+const toolIcons = {
+  pencil: pencilIcon,
+  eraser: eraserIcon,
+  fill: fillIcon,
+}
 
 const pointFromEvent = (event, canvas) => {
   const source = event.touches?.[0] ?? event
@@ -130,7 +140,11 @@ function PaintWindow() {
         <div className="paint-tools">
           {portfolioData.paint.tools.map((item) => (
             <button key={item.id} type="button" className={tool === item.id ? 'is-active' : ''} onClick={() => setTool(item.id)} title={item.label}>
-              {item.label.slice(0, 1)}
+              {toolIcons[item.id] ? (
+                <img src={toolIcons[item.id]} alt="" draggable="false" />
+              ) : (
+                portfolioData.paint.toolFallbacks[item.id]
+              )}
             </button>
           ))}
           {portfolioData.paint.sizes.map((item) => (
@@ -138,7 +152,9 @@ function PaintWindow() {
               {item.label}
             </button>
           ))}
-          <button type="button" onClick={clear}>{portfolioData.paint.clearLabel}</button>
+          <button type="button" onClick={clear} title={portfolioData.paint.clearLabel}>
+            <img src={clearIcon} alt="" draggable="false" />
+          </button>
         </div>
         <div className="paint-colors">
           {portfolioData.paint.colors.map((item) => (

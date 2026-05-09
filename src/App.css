@@ -822,6 +822,13 @@
   font: 700 11px 'Courier New', monospace;
 }
 
+.paint-tools button img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
 .paint-tools button.is-active,
 .paint-colors button.is-active,
 .paint-tools button:active {
@@ -871,6 +878,40 @@
   margin: 0;
   color: #ffffff;
   font: 16px 'Courier New', monospace;
+}
+
+.fake-terminal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 900;
+  display: grid;
+  grid-template-rows: 22px 1fr;
+  overflow: hidden;
+  background: #000000;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  pointer-events: none;
+}
+
+.fake-terminal header {
+  overflow: hidden;
+  padding: 3px 6px;
+  color: #ffffff;
+  background: linear-gradient(90deg, var(--chrome-bg), #3a7080);
+  font: 700 12px 'Courier New', monospace;
+  white-space: nowrap;
+}
+
+.fake-terminal pre {
+  margin: 0;
+  padding: 6px;
+  overflow: hidden;
+  color: #00ff00;
+  background: #000000;
+  font: 11px/1.25 'Courier New', monospace;
+  white-space: pre-wrap;
 }
 
 .neofetch-grid {
