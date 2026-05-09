@@ -12,7 +12,7 @@ export const runCommand = ({ command, cwd, setCwd }) => {
   if (base === 'clear') return { clear: true }
   if (base === 'reset' && args[0] === 'desktop') {
     Object.keys(localStorage)
-      .filter((key) => key.startsWith('icon_pos_'))
+      .filter((key) => key.startsWith('icon_grid_') || key.startsWith('icon_pos_'))
       .forEach((key) => localStorage.removeItem(key))
     window.location.reload()
     return { lines: ['desktop icon positions reset'] }

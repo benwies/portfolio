@@ -12,8 +12,8 @@ function VisitorWidget() {
 
   return (
     <div className="desktop-widget compact-widget visitor-widget">
-      <strong>VISITORS</strong>
-      <span>{count}</span>
+      <span className="widget-label">VISITORS</span>
+      <span className="widget-value">{count}</span>
     </div>
   )
 }

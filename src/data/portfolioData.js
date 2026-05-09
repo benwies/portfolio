@@ -135,7 +135,7 @@ export const portfolioData = {
     banner: 'CDE xterm - 0xbene',
     hint: 'Type help for available commands.',
     help: ['whoami', 'ls', 'cat [file]', 'cd', 'help', 'clear', 'neofetch', 'nmap contacts', 'skills --verbose', 'open [app]', 'reset desktop'],
-    files: ['README.md', 'about.txt', 'socials.db', 'certs.csv', 'projects/', 'skills.ini', 'welcome.txt', 'notes.txt', 'snake.exe'],
+    files: ['README.md', 'about.txt', 'socials.db', 'certs.csv', 'projects/', 'skills.ini', 'welcome.txt'],
   },
   desktopIcons: [
     { id: 'projects', label: 'projects/', appId: 'projects', icon: 'folder' },
@@ -145,8 +145,6 @@ export const portfolioData = {
     { id: 'skills', label: 'skills.ini', appId: 'skills', icon: 'skills' },
     { id: 'terminal', label: 'terminal', appId: 'terminal', icon: 'terminal' },
     { id: 'welcome', label: 'welcome.txt', appId: 'motd', icon: 'welcome' },
-    { id: 'notes', label: 'notes.txt', appId: 'notes', icon: 'text' },
-    { id: 'snake', label: 'snake.exe', appId: 'snake', icon: 'snake' },
   ],
   bootLines: [
     'SunOS Release 5.8 Version Generic_108528-29 64-bit',
@@ -182,20 +180,6 @@ export const windowDefinitions = [
     component: 'trash',
     position: { x: 420, y: 140 },
     size: { width: 420, height: 260 },
-  },
-  {
-    id: 'notes',
-    title: 'dtpad - notes.txt',
-    component: 'notes',
-    position: { x: 260, y: 96 },
-    size: { width: 520, height: 360 },
-  },
-  {
-    id: 'snake',
-    title: 'snake.exe',
-    component: 'snake',
-    position: { x: 300, y: 120 },
-    size: { width: 420, height: 320 },
   },
   {
     id: 'about',

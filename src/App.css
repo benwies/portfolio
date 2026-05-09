@@ -10,7 +10,7 @@
   --inner-light: #c8d8e0;
   --inner-dark: #5f8fa0;
   --select-bg: #000080;
-  --terminal-text: #40ff40;
+  --terminal-text: #ffffff;
   position: relative;
   width: 100vw;
   height: 100svh;
@@ -72,6 +72,7 @@
   pointer-events: auto;
   touch-action: none;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 .desktop-icon:focus-visible {
@@ -111,11 +112,19 @@
   color: #ffffff;
   font: inherit;
   text-shadow: 1px 1px 0 #000000;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .trash-icon__glyph {
   width: 64px;
   height: 64px;
+}
+
+.trash-icon__glyph .cde-theme-icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
 }
 
 .trash-icon__label {
@@ -139,11 +148,17 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .desktop-icon.is-selected .desktop-icon__label {
-  color: #ffffff;
-  background: var(--select-bg);
+  background: transparent;
+}
+
+.desktop-icon.is-selected .desktop-icon__glyph {
+  outline: 1px dotted #303030;
+  outline-offset: 2px;
 }
 
 .front-panel {
@@ -313,19 +328,9 @@
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
-.cde-window--dtterm {
-  border-color: #f0d4a0 #6f5838 #6f5838 #f0d4a0;
-}
-
-.cde-window--dtterm .window-chrome {
-  background: #c8a060;
-  color: #000000;
-}
-
 .cde-window--dtterm .cde-window__body {
-  background: #2e3a4a;
-  border-color: #6f5838 #f0d4a0 #f0d4a0 #6f5838;
-  scrollbar-color: #9b8a74 #233040;
+  background: #000000;
+  scrollbar-color: var(--button-face) #000000;
 }
 
 .content-window {
@@ -531,6 +536,7 @@
   flex: 1;
   min-width: 0;
   color: var(--terminal-text);
+  caret-color: #ffffff;
   background: transparent;
   border: 0;
   outline: 0;
@@ -541,8 +547,8 @@
   height: 100%;
   padding: 14px;
   overflow: auto;
-  background: #2e3a4a;
-  color: #c8d8c8;
+  background: #000000;
+  color: #ffffff;
   font-family: 'Courier New', monospace;
   font-size: 13px;
   line-height: 1.35;
@@ -552,76 +558,116 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 10;
+  z-index: 850;
   display: grid;
-  gap: 8px;
+  gap: 4px;
   justify-items: end;
+  pointer-events: none;
 }
 
 .desktop-widget {
   width: 130px;
-  color: #ffffff;
-  background: #2a3a3a;
-  border: 2px solid #5f9ea0;
+  color: #000000;
+  background: #aeb8c0;
+  border-width: 3px;
+  border-style: solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
   font-family: 'Courier New', monospace;
 }
 
 .clock-widget {
   display: grid;
-  justify-items: center;
-  gap: 4px;
-  padding: 8px;
-}
-
-.clock-face {
-  width: 96px;
-  height: 96px;
-}
-
-.clock-face circle {
-  fill: #c8b8a8;
-  stroke: #ddeeff;
-  stroke-width: 3;
-}
-
-.clock-face path,
-.clock-face line {
-  stroke: #101818;
-  stroke-linecap: square;
-  stroke-width: 3;
-  transform-origin: 50px 50px;
-}
-
-.clock-face .clock-second {
-  stroke: #5f0000;
-  stroke-width: 2;
+  place-items: center;
+  height: 60px;
+  padding: 7px;
 }
 
 .widget-value {
-  font: 700 13px 'Courier New', monospace;
+  color: #000000;
+  font: 700 18px 'Courier New', monospace;
+}
+
+.widget-label {
+  color: #4b555a;
+  font: 700 9px 'Courier New', monospace;
+  letter-spacing: 0;
 }
 
 .compact-widget {
   display: grid;
-  gap: 3px;
-  padding: 8px;
-  font-size: 11px;
+  place-items: center;
+  height: 50px;
+  padding: 6px;
   text-align: center;
 }
 
-.compact-widget strong {
-  color: #c8d8c8;
+.compact-widget .widget-value {
+  font-size: 13px;
+}
+
+.visitor-widget .widget-value {
+  font-size: 16px;
 }
 
 .trash-window {
   display: grid;
-  place-items: center;
-  background: var(--window-inner);
+  grid-template-rows: 1fr 24px;
+  padding: 0;
+  background: var(--body-bg);
 }
 
-.trash-empty {
+.trash-file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+  align-content: start;
+  gap: 10px;
+  padding: 12px;
+  overflow: auto;
+  background: var(--window-inner);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+}
+
+.trash-file-icon {
+  position: relative;
+  display: block;
+  width: 26px;
+  height: 32px;
+  background: #ddd8cc;
+  border: 2px solid #303030;
+}
+
+.trash-file-icon::before {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 9px;
+  height: 9px;
+  background: #a8a098;
+  border-left: 2px solid #303030;
+  border-bottom: 2px solid #303030;
+  content: '';
+}
+
+.trash-file-icon span {
+  position: absolute;
+  top: 13px;
+  left: 4px;
+  width: 15px;
+  height: 2px;
+  background: #777777;
+  box-shadow: 0 5px 0 #777777, 0 10px 0 #777777;
+}
+
+.trash-status {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
   color: #000000;
-  font: 700 14px 'Courier New', monospace;
+  background: var(--body-bg);
+  border-top: 1px solid var(--border-dark);
+  font: 700 13px 'Courier New', monospace;
 }
 
 .neofetch-grid {
@@ -633,7 +679,7 @@
 
 .neofetch-ascii {
   margin: 0;
-  color: #e2e8e2;
+  color: #ffffff;
   font: inherit;
   white-space: pre;
 }
@@ -644,7 +690,7 @@
 
 .neofetch-user,
 .neofetch-rule {
-  color: #f0f4f0;
+  color: #ffffff;
 }
 
 .neofetch-row {
@@ -655,13 +701,13 @@
 }
 
 .neofetch-key {
-  color: #88cccc;
+  color: #ffffff;
   font-weight: 700;
 }
 
 .neofetch-prompt {
   margin-top: 18px;
-  color: #f0f4f0;
+  color: #ffffff;
 }
 
 .neofetch-cursor {

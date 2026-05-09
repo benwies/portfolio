@@ -9,7 +9,7 @@ function NeofetchWindow() {
         <pre className="neofetch-ascii">{ascii.join('\n')}</pre>
         <div className="neofetch-info">
           <div className="neofetch-user">benedikt@0xbene</div>
-          <div className="neofetch-rule">───────────────────────────</div>
+          <div className="neofetch-rule">---------------------------</div>
           {rows.map(([key, value]) => (
             <div className="neofetch-row" key={key}>
               <span className="neofetch-key">{key}:</span>

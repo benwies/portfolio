@@ -12,7 +12,12 @@ function DesktopShell({ children }) {
       <main className="desktop-shell__body">
         <nav className="desktop-icons" aria-label="Desktop icons">
           {portfolioData.desktopIcons.map((icon, index) => (
-            <DesktopIcon key={icon.id} icon={icon} index={index} />
+            <DesktopIcon
+              key={icon.id}
+              icon={icon}
+              index={index}
+              icons={portfolioData.desktopIcons}
+            />
           ))}
         </nav>
 

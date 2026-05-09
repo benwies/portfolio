@@ -7,11 +7,9 @@ import {
   CertsWindow,
   MOTDWindow,
   NeofetchWindow,
-  NotesWindow,
   ProjectsWindow,
   SocialsWindow,
   SkillsWindow,
-  SnakeWindow,
   Terminal,
   TrashWindow,
 } from './components/content'
@@ -21,14 +19,12 @@ import './App.css'
 const windowComponents = {
   motd: MOTDWindow,
   neofetch: NeofetchWindow,
-  notes: NotesWindow,
   about: AboutWindow,
   socials: SocialsWindow,
   certs: CertsWindow,
   projects: ProjectsWindow,
   skills: SkillsWindow,
   terminal: Terminal,
-  snake: SnakeWindow,
   trash: TrashWindow,
 }
 

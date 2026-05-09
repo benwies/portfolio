@@ -15,15 +15,17 @@ const iconFiles = {
   terminal: terminalIcon,
   text: textIcon,
   welcome: textIcon,
-  snake: terminalIcon,
 }
 
 const iconWidth = 84
 const iconHeight = 96
-const grid = 10
+const gridStartX = 16
+const gridStartY = 16
+const gridCellWidth = 90
+const gridCellHeight = 110
+const dragThreshold = 8
 
 const clamp = (value, min, max) => Math.max(min, Math.min(value, max))
-const snap = (value) => Math.round(value / grid) * grid
 
 export function CdeIcon({ label, type }) {
   const src = iconFiles[type] ?? textIcon
@@ -46,14 +48,14 @@ export function TrashSvg() {
 }
 
 function loadPosition(icon, index) {
-  const fallback = { x: 16, y: 16 + index * 104 }
-  const stored = localStorage.getItem(`icon_pos_${icon.id}`)
-  if (!stored) return clampPosition(fallback)
+  const fallback = gridToPosition({ col: 0, row: index })
+  const stored = localStorage.getItem(`icon_grid_${icon.id}`)
+  if (!stored) return fallback
 
   try {
-    return clampPosition({ ...fallback, ...JSON.parse(stored) })
+    return gridToPosition(JSON.parse(stored))
   } catch {
-    return clampPosition(fallback)
+    return fallback
   }
 }
 
@@ -64,38 +66,117 @@ function clampPosition(position) {
   }
 }
 
-function DesktopIcon({ icon, index }) {
+function maxGrid() {
+  return {
+    col: Math.max(0, Math.floor((window.innerWidth - iconWidth - gridStartX) / gridCellWidth)),
+    row: Math.max(0, Math.floor((window.innerHeight - 64 - iconHeight - gridStartY) / gridCellHeight)),
+  }
+}
+
+function gridToPosition(cell) {
+  const max = maxGrid()
+  return {
+    x: gridStartX + clamp(cell.col ?? 0, 0, max.col) * gridCellWidth,
+    y: gridStartY + clamp(cell.row ?? 0, 0, max.row) * gridCellHeight,
+  }
+}
+
+function positionToGrid(position) {
+  const max = maxGrid()
+  return {
+    col: clamp(Math.round((position.x - gridStartX) / gridCellWidth), 0, max.col),
+    row: clamp(Math.round((position.y - gridStartY) / gridCellHeight), 0, max.row),
+  }
+}
+
+function cellKey(cell) {
+  return `${cell.col}:${cell.row}`
+}
+
+function loadGridCell(icon, index) {
+  const fallback = { col: 0, row: index }
+  const stored = localStorage.getItem(`icon_grid_${icon.id}`)
+  if (!stored) return fallback
+
+  try {
+    return { ...fallback, ...JSON.parse(stored) }
+  } catch {
+    return fallback
+  }
+}
+
+function nextFreeCell(targetCell, icons, currentIconId) {
+  const max = maxGrid()
+  const occupied = new Set(
+    icons
+      .filter((item) => item.id !== currentIconId)
+      .map((item, itemIndex) => cellKey(loadGridCell(item, itemIndex))),
+  )
+
+  for (let row = targetCell.row; row <= max.row; row += 1) {
+    for (let col = row === targetCell.row ? targetCell.col : 0; col <= max.col; col += 1) {
+      const candidate = { col, row }
+      if (!occupied.has(cellKey(candidate))) return candidate
+    }
+  }
+
+  for (let row = targetCell.row; row >= 0; row -= 1) {
+    for (let col = row === targetCell.row ? targetCell.col : max.col; col >= 0; col -= 1) {
+      const candidate = { col, row }
+      if (!occupied.has(cellKey(candidate))) return candidate
+    }
+  }
+
+  return targetCell
+}
+
+function DesktopIcon({ icon, index, icons }) {
   const [selected, setSelected] = useState(false)
   const [position, setPosition] = useState(() => loadPosition(icon, index))
-  const [dragOffset, setDragOffset] = useState(null)
+  const [dragState, setDragState] = useState(null)
   const openWindow = useWindowStore((state) => state.openWindow)
 
-  const startDrag = (event) => {
+  const startPointer = (event) => {
+    event.preventDefault()
     event.currentTarget.setPointerCapture(event.pointerId)
     setSelected(true)
-    setDragOffset({
-      x: event.clientX - position.x,
-      y: event.clientY - position.y,
+    setDragState({
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: position.x,
+      originY: position.y,
+      started: false,
     })
   }
 
-  const moveDrag = (event) => {
-    if (!dragOffset) return
+  const movePointer = (event) => {
+    if (!dragState) return
+    const deltaX = event.clientX - dragState.startX
+    const deltaY = event.clientY - dragState.startY
+    const movedEnough = Math.hypot(deltaX, deltaY) > dragThreshold
+    if (!dragState.started && !movedEnough) return
+    if (!dragState.started) {
+      setDragState((current) => (current ? { ...current, started: true } : current))
+    }
     setPosition(clampPosition({
-      x: event.clientX - dragOffset.x,
-      y: event.clientY - dragOffset.y,
+      x: dragState.originX + deltaX,
+      y: dragState.originY + deltaY,
     }))
   }
 
-  const endDrag = () => {
-    if (!dragOffset) return
-    const next = {
-      x: snap(clamp(position.x, 0, window.innerWidth - iconWidth)),
-      y: snap(clamp(position.y, 0, window.innerHeight - 64 - iconHeight)),
+  const endPointer = (event) => {
+    if (!dragState) return
+    if (dragState.started) {
+      const currentPosition = clampPosition({
+        x: dragState.originX + event.clientX - dragState.startX,
+        y: dragState.originY + event.clientY - dragState.startY,
+      })
+      const nextCell = nextFreeCell(positionToGrid(currentPosition), icons, icon.id)
+      const nextPosition = gridToPosition(nextCell)
+      setPosition(nextPosition)
+      localStorage.setItem(`icon_grid_${icon.id}`, JSON.stringify(nextCell))
     }
-    setDragOffset(null)
-    setPosition(next)
-    localStorage.setItem(`icon_pos_${icon.id}`, JSON.stringify(next))
+    setDragState(null)
   }
 
   return (
@@ -105,10 +186,11 @@ function DesktopIcon({ icon, index }) {
       style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
       onClick={() => setSelected(true)}
       onDoubleClick={() => openWindow(icon.appId)}
-      onPointerDown={startDrag}
-      onPointerMove={moveDrag}
-      onPointerUp={endDrag}
-      onPointerCancel={endDrag}
+      onPointerDown={startPointer}
+      onPointerMove={movePointer}
+      onPointerUp={endPointer}
+      onPointerCancel={endPointer}
+      onDragStart={(event) => event.preventDefault()}
       aria-label={`Open ${icon.label}`}
     >
       <span className="desktop-icon__glyph">

@@ -18,8 +18,8 @@ function UptimeWidget() {
 
   return (
     <div className="desktop-widget compact-widget uptime-widget">
-      <strong>UPTIME</strong>
-      <span>{formatUptime(seconds)}</span>
+      <span className="widget-label">UPTIME</span>
+      <span className="widget-value">{formatUptime(seconds)}</span>
     </div>
   )
 }
