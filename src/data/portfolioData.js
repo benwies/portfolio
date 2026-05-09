@@ -64,7 +64,7 @@ export const portfolioData = {
     ],
   },
   neofetch: {
-    title: 'dtterm',
+    title: 'xterm',
     ascii: [
       '    ██████████████',
       '   ████░░░░░░░████',
@@ -168,11 +168,10 @@ export const windowDefinitions = [
   },
   {
     id: 'neofetch',
-    title: 'dtterm',
+    title: 'xterm',
     component: 'neofetch',
     position: { x: 690, y: 40 },
     size: { width: 580, height: 420 },
-    variant: 'dtterm',
   },
   {
     id: 'trash',

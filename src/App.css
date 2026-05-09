@@ -330,11 +330,6 @@
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
-.cde-window--dtterm .cde-window__body {
-  background: #000000;
-  scrollbar-color: var(--button-face) #000000;
-}
-
 .content-window {
   height: 100%;
   padding: 10px;

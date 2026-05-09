@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useWindowStore } from '../../store/windowStore'
 import addressbookIcon from '../../assets/cde-icons/netscape_addressbook.png'
 import folderIcon from '../../assets/cde-icons/folder.png'
@@ -25,46 +25,15 @@ const gridCellWidth = 120
 const gridCellHeight = 130
 const dragThreshold = 8
 const iconGridStoragePrefix = 'icon_grid_v2_'
+const iconGridEvent = 'cde-icon-grid-update'
 
 const clamp = (value, min, max) => Math.max(min, Math.min(value, max))
+const cellKey = (cell) => `${cell.col}:${cell.row}`
+const storageKey = (iconId) => `${iconGridStoragePrefix}${iconId}`
 
 export function CdeIcon({ label, type }) {
   const src = iconFiles[type] ?? textIcon
-
-  if (type === 'trash') return <TrashSvg />
-
   return <img className="cde-theme-icon" src={src} alt={label ?? ''} draggable="false" />
-}
-
-export function TrashSvg() {
-  return (
-    <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M18 22h28l-3 33H21z" fill="#9a9a9a" stroke="#222" strokeWidth="2" />
-      <path d="M15 17h34v7H15z" fill="#c0c0c0" stroke="#222" strokeWidth="2" />
-      <path d="M23 13h18v5H23z" fill="#808080" stroke="#222" strokeWidth="2" />
-      <path d="M24 27v22M32 27v22M40 27v22" stroke="#555" strokeWidth="2" />
-      <path d="M18 22h28M21 54h22" stroke="#ddeeff" strokeWidth="2" />
-    </svg>
-  )
-}
-
-function loadPosition(icon, index) {
-  const fallback = gridToPosition({ col: 0, row: index })
-  const stored = localStorage.getItem(`${iconGridStoragePrefix}${icon.id}`)
-  if (!stored) return fallback
-
-  try {
-    return gridToPosition(JSON.parse(stored))
-  } catch {
-    return fallback
-  }
-}
-
-function clampPosition(position) {
-  return {
-    x: clamp(position.x, 0, window.innerWidth - iconWidth),
-    y: clamp(position.y, 0, window.innerHeight - 64 - iconHeight),
-  }
 }
 
 function maxGrid() {
@@ -74,108 +43,121 @@ function maxGrid() {
   }
 }
 
-function gridToPosition(cell) {
+function clampCell(cell) {
   const max = maxGrid()
   return {
-    x: gridStartX + clamp(cell.col ?? 0, 0, max.col) * gridCellWidth,
-    y: gridStartY + clamp(cell.row ?? 0, 0, max.row) * gridCellHeight,
+    col: clamp(cell.col ?? 0, 0, max.col),
+    row: clamp(cell.row ?? 0, 0, max.row),
+  }
+}
+
+function gridToPosition(cell) {
+  const next = clampCell(cell)
+  return {
+    x: gridStartX + next.col * gridCellWidth,
+    y: gridStartY + next.row * gridCellHeight,
   }
 }
 
 function positionToGrid(position) {
-  const max = maxGrid()
-  return {
-    col: clamp(Math.round((position.x - gridStartX) / gridCellWidth), 0, max.col),
-    row: clamp(Math.round((position.y - gridStartY) / gridCellHeight), 0, max.row),
-  }
+  return clampCell({
+    col: Math.round((position.x - gridStartX) / gridCellWidth),
+    row: Math.round((position.y - gridStartY) / gridCellHeight),
+  })
 }
 
-function cellKey(cell) {
-  return `${cell.col}:${cell.row}`
+function clampPosition(position) {
+  return {
+    x: clamp(position.x, 0, window.innerWidth - iconWidth),
+    y: clamp(position.y, 0, window.innerHeight - 64 - iconHeight),
+  }
 }
 
 function loadGridCell(icon, index) {
   const fallback = { col: 0, row: index }
-  const stored = localStorage.getItem(`${iconGridStoragePrefix}${icon.id}`)
+  const stored = localStorage.getItem(storageKey(icon.id))
   if (!stored) return fallback
 
   try {
-    return { ...fallback, ...JSON.parse(stored) }
+    return clampCell({ ...fallback, ...JSON.parse(stored) })
   } catch {
     return fallback
   }
 }
 
-function nextFreeCell(targetCell, icons, currentIconId) {
-  const max = maxGrid()
-  const occupied = new Set(
-    icons
-      .filter((item) => item.id !== currentIconId)
-      .map((item, itemIndex) => cellKey(loadGridCell(item, itemIndex))),
-  )
+function saveGridCell(iconId, cell) {
+  localStorage.setItem(storageKey(iconId), JSON.stringify(clampCell(cell)))
+}
 
-  for (let row = targetCell.row; row <= max.row; row += 1) {
-    for (let col = row === targetCell.row ? targetCell.col : 0; col <= max.col; col += 1) {
-      const candidate = { col, row }
-      if (!occupied.has(cellKey(candidate))) return candidate
-    }
-  }
-
-  for (let row = targetCell.row; row >= 0; row -= 1) {
-    for (let col = row === targetCell.row ? targetCell.col : max.col; col >= 0; col -= 1) {
-      const candidate = { col, row }
-      if (!occupied.has(cellKey(candidate))) return candidate
-    }
-  }
-
-  return targetCell
+function findIconAtCell(icons, targetCell, currentIconId) {
+  return icons.find((item, itemIndex) => {
+    if (item.id === currentIconId) return false
+    return cellKey(loadGridCell(item, itemIndex)) === cellKey(targetCell)
+  })
 }
 
 function DesktopIcon({ icon, index, icons }) {
-  const [position, setPosition] = useState(() => loadPosition(icon, index))
-  const [dragState, setDragState] = useState(null)
+  const [position, setPosition] = useState(() => gridToPosition(loadGridCell(icon, index)))
+  const dragRef = useRef(null)
   const openWindow = useWindowStore((state) => state.openWindow)
+
+  useEffect(() => {
+    const handleGridUpdate = (event) => {
+      const nextCell = event.detail?.[icon.id]
+      if (nextCell) setPosition(gridToPosition(nextCell))
+    }
+
+    window.addEventListener(iconGridEvent, handleGridUpdate)
+    return () => window.removeEventListener(iconGridEvent, handleGridUpdate)
+  }, [icon.id])
 
   const startPointer = (event) => {
     event.preventDefault()
     event.currentTarget.setPointerCapture(event.pointerId)
-    setDragState({
+    dragRef.current = {
       startX: event.clientX,
       startY: event.clientY,
       originX: position.x,
       originY: position.y,
+      originCell: loadGridCell(icon, index),
       started: false,
-    })
+    }
   }
 
   const movePointer = (event) => {
-    if (!dragState) return
-    const deltaX = event.clientX - dragState.startX
-    const deltaY = event.clientY - dragState.startY
-    const movedEnough = Math.hypot(deltaX, deltaY) > dragThreshold
-    if (!dragState.started && !movedEnough) return
-    if (!dragState.started) {
-      setDragState((current) => (current ? { ...current, started: true } : current))
-    }
+    const drag = dragRef.current
+    if (!drag) return
+
+    const deltaX = event.clientX - drag.startX
+    const deltaY = event.clientY - drag.startY
+    if (!drag.started && Math.hypot(deltaX, deltaY) <= dragThreshold) return
+
+    drag.started = true
     setPosition(clampPosition({
-      x: dragState.originX + deltaX,
-      y: dragState.originY + deltaY,
+      x: drag.originX + deltaX,
+      y: drag.originY + deltaY,
     }))
   }
 
   const endPointer = (event) => {
-    if (!dragState) return
-    if (dragState.started) {
-      const currentPosition = clampPosition({
-        x: dragState.originX + event.clientX - dragState.startX,
-        y: dragState.originY + event.clientY - dragState.startY,
-      })
-      const nextCell = nextFreeCell(positionToGrid(currentPosition), icons, icon.id)
-      const nextPosition = gridToPosition(nextCell)
-      setPosition(nextPosition)
-      localStorage.setItem(`${iconGridStoragePrefix}${icon.id}`, JSON.stringify(nextCell))
-    }
-    setDragState(null)
+    const drag = dragRef.current
+    if (!drag) return
+    dragRef.current = null
+
+    if (!drag.started) return
+
+    const droppedPosition = clampPosition({
+      x: drag.originX + event.clientX - drag.startX,
+      y: drag.originY + event.clientY - drag.startY,
+    })
+    const targetCell = positionToGrid(droppedPosition)
+    const updates = { [icon.id]: targetCell }
+    const occupant = findIconAtCell(icons, targetCell, icon.id)
+
+    if (occupant) updates[occupant.id] = drag.originCell
+
+    Object.entries(updates).forEach(([iconId, cell]) => saveGridCell(iconId, cell))
+    window.dispatchEvent(new CustomEvent(iconGridEvent, { detail: updates }))
   }
 
   return (

@@ -4,6 +4,23 @@ import { useWindowStore } from '../../store/windowStore'
 
 const promptPath = (cwd) => cwd.replace('/home/benedikt', '~')
 
+const formatNeofetch = () => {
+  const { ascii, rows } = portfolioData.neofetch
+  const header = [
+    'benedikt@0xbene',
+    '---------------------------',
+    ...rows.map(([key, value]) => `${key}:`.padEnd(8, ' ') + value),
+  ]
+  const width = Math.max(...ascii.map((line) => line.length)) + 5
+  const length = Math.max(ascii.length, header.length)
+
+  return Array.from({ length }, (_, index) => {
+    const left = ascii[index] ?? ''
+    const right = header[index] ?? ''
+    return left.padEnd(width, ' ') + right
+  })
+}
+
 export const runCommand = ({ command, cwd, setCwd }) => {
   const trimmed = command.trim()
   const [base, ...args] = trimmed.split(/\s+/)
@@ -36,13 +53,7 @@ export const runCommand = ({ command, cwd, setCwd }) => {
   }
   if (base === 'neofetch') {
     return {
-      lines: [
-        '        .          benedikt@0xbene',
-        '       / \\         ---------------',
-        '      /___\\        OS: SunOS 5.11 (Solaris)',
-        '     /     \\       WM: dtwm',
-        '    /_______\\      Shell: /bin/ksh',
-      ],
+      lines: [...formatNeofetch(), '', '#'],
     }
   }
   if (base === 'nmap' && args[0] === 'contacts') {
