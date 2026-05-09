@@ -359,6 +359,7 @@
     { id: 'socials', label: 'socials.db', appId: 'socials', icon: 'socials' },
     { id: 'certs', label: 'certs.csv', appId: 'certs', icon: 'certs' },
     { id: 'terminal', label: 'terminal', appId: 'terminal', icon: 'terminal' },
+    { id: 'pnptprep', label: 'pnpt-prep/', icon: 'folder', action: 'link', url: 'https://github.com/benwies/PNPT-Study-Notes' },
     { id: 'skills', label: 'skills.ini', appId: 'skills', icon: 'skills' },
     { id: 'welcome', label: 'welcome.txt', appId: 'motd', icon: 'welcome' },
     { id: 'snake', label: 'snake', appId: 'snake', icon: 'snake' },

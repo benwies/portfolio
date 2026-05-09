@@ -33,7 +33,7 @@ const resizeDebounce = 150
 const widgetZoneWidth = 380
 const widgetZoneHeight = 620
 const dragThreshold = 8
-const iconGridStoragePrefix = 'icon_grid_v4_'
+const iconGridStoragePrefix = 'icon_grid_v5_'
 const iconGridEvent = 'cde-icon-grid-update'
 const defaultCells = {
   projects: { col: 0, row: 0 },
@@ -41,8 +41,9 @@ const defaultCells = {
   socials: { col: 0, row: 2 },
   certs: { col: 0, row: 3 },
   terminal: { col: 0, row: 4 },
-  skills: { col: 0, row: 5 },
-  welcome: { col: 0, row: 6 },
+  pnptprep: { col: 0, row: 5 },
+  skills: { col: 0, row: 6 },
+  welcome: { col: 0, row: 7 },
   snake: { col: 1, row: 0 },
   freewifi: { col: 1, row: 1 },
   paint: { col: 1, row: 2 },
@@ -225,12 +226,26 @@ function DesktopIcon({ icon, index, icons, onKernelPanic = () => {} }) {
     window.dispatchEvent(new CustomEvent(iconGridEvent, { detail: updates }))
   }
 
+  const handleDoubleClick = () => {
+    if (icon.action === 'kernelPanic') {
+      onKernelPanic()
+      return
+    }
+
+    if (icon.action === 'link') {
+      window.open(icon.url, '_blank', 'noopener,noreferrer')
+      return
+    }
+
+    openWindow(icon.appId)
+  }
+
   return (
     <button
       type="button"
       className="desktop-icon"
       style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
-      onDoubleClick={() => (icon.action === 'kernelPanic' ? onKernelPanic() : openWindow(icon.appId))}
+      onDoubleClick={handleDoubleClick}
       onPointerDown={startPointer}
       onPointerMove={movePointer}
       onPointerUp={endPointer}

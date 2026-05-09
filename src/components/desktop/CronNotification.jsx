@@ -34,7 +34,7 @@ function CronNotification() {
       window.clearTimeout(clearTimer.current)
     }
 
-    const dismiss = (scheduleNext) => {
+    const dismiss = () => {
       window.clearTimeout(autoDismissTimer.current)
       setVisible(false)
       clearTimer.current = window.setTimeout(() => {
@@ -49,7 +49,7 @@ function CronNotification() {
         time: formatTime(new Date()),
       })
       setVisible(true)
-      autoDismissTimer.current = window.setTimeout(() => dismiss(true), 3000)
+      autoDismissTimer.current = window.setTimeout(() => dismiss(), 8000)
     }
 
     const schedule = (delay) => {

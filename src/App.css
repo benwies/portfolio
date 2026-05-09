@@ -1,31 +1,26 @@
 .workstation,
-.workstation * {
-  cursor: url('/cursors/cursor-default.svg') 2 2, default !important;
-}
-
-.workstation button,
+.workstation *,
+.workstation *::before,
+.workstation *::after,
 .workstation a,
-.workstation .desktop-icon,
-.workstation .front-panel__launcher,
-.workstation .context-menu-item,
-.workstation .cert-link,
-.workstation [role="button"] {
-  cursor: url('/cursors/cursor-pointer.svg') 8 4, pointer !important;
-}
-
+.workstation button,
 .workstation input,
 .workstation textarea,
+.workstation .desktop-icon,
+.workstation [role="button"],
+.workstation .front-panel__launcher,
+.workstation .window-chrome__button,
+.workstation .context-menu-item,
+.workstation .window-drag-handle,
 .workstation [contenteditable] {
-  cursor: url('/cursors/cursor-text.svg') 12 12, text !important;
-}
-
-.workstation .window-drag-handle {
-  cursor: url('/cursors/cursor-move.svg') 12 12, move !important;
+  cursor: url('/cursors/cursor-default.svg') 2 2, default !important;
 }
 
 @media (hover: none) {
   .workstation,
-  .workstation * {
+  .workstation *,
+  .workstation *::before,
+  .workstation *::after {
     cursor: auto !important;
   }
 }
@@ -100,7 +95,6 @@
   background: transparent;
   border: 0;
   font: inherit;
-  cursor: default;
   filter: none;
   opacity: 1;
   pointer-events: auto;
@@ -112,7 +106,6 @@
 }
 
 .desktop-icon:hover {
-  cursor: pointer;
   filter: brightness(1.15);
   opacity: 0.85;
 }
@@ -270,7 +263,6 @@
   height: 48px;
   padding: 0;
   font: inherit;
-  cursor: default;
 }
 
 .front-panel__launcher:active {
@@ -346,7 +338,6 @@
   padding: 2px 3px;
   background: linear-gradient(90deg, var(--chrome-bg), #3a7080);
   color: #ffffff;
-  cursor: move;
   user-select: none;
 }
 
@@ -678,7 +669,6 @@
   text-align: left;
   text-decoration: underline;
   white-space: pre;
-  cursor: pointer;
 }
 
 .motd-link:hover,
