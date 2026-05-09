@@ -3,6 +3,15 @@ import { useWindowStore } from '../../store/windowStore'
 
 const { motd, ui } = portfolioData
 
+const motdLinks = [
+  { label: '  > About Me       -> click to open about.txt', appId: 'about' },
+  { label: '  > Projects       -> click to open projects/', appId: 'projects' },
+  { label: '  > Certifications -> click to open certs.csv', appId: 'certs' },
+  { label: '  > Skills         -> click to open skills.ini', appId: 'skills' },
+  { label: '  > Socials        -> click to open socials.db', appId: 'socials' },
+  { label: '  > Terminal       -> click to open terminal', appId: 'terminal' },
+]
+
 function MOTDWindow() {
   const closeWindow = useWindowStore((state) => state.closeWindow)
   const openWindow = useWindowStore((state) => state.openWindow)
@@ -11,18 +20,7 @@ function MOTDWindow() {
     closeWindow('motd')
   }
 
-  const downloadResume = (href) => {
-    const link = document.createElement('a')
-    link.href = href
-    link.download = 'resume.pdf'
-    link.click()
-  }
-
   const activateLink = (link) => {
-    if (link.download) {
-      downloadResume(link.download)
-      return
-    }
     openWindow(link.appId)
   }
 
@@ -37,7 +35,7 @@ function MOTDWindow() {
         {motd.linesBefore.map((line, index) => (
           <div key={`before-${index}`}>{line || '\u00a0'}</div>
         ))}
-        {motd.links.map((link) => (
+        {motdLinks.map((link) => (
           <button
             type="button"
             className="motd-link"

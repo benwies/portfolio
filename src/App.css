@@ -264,6 +264,7 @@
 }
 
 .cde-window {
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -275,6 +276,7 @@
 }
 
 .cde-window__body {
+  box-sizing: border-box;
   height: calc(100% - 26px);
   overflow: auto;
   background: var(--body-bg);
@@ -328,6 +330,11 @@
 
 .window-chrome__button:active {
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+}
+
+.cde-window--game .cde-window__body {
+  overflow: hidden;
+  background: #000000;
 }
 
 .content-window {
@@ -752,11 +759,12 @@
 
 .snake-window {
   display: grid;
-  grid-template-rows: 28px 400px;
+  grid-template-rows: 30px 500px;
   justify-content: center;
   align-content: start;
   height: 100%;
-  padding: 8px;
+  padding: 0;
+  overflow: hidden;
   background: #000000;
   color: #00ff00;
   font-family: 'Courier New', monospace;
@@ -765,13 +773,14 @@
 
 .snake-score {
   font: 700 14px 'Courier New', monospace;
-  line-height: 24px;
+  height: 30px;
+  line-height: 30px;
 }
 
 .snake-window canvas {
   display: block;
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   background: #000000;
   border: 1px solid #00ff00;
 }

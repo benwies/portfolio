@@ -20,11 +20,11 @@ const centeredPosition = (windowItem) => {
     }
   }
 
-  if (windowItem.id !== 'motd') return windowItem.position
+  if (!['motd', 'snake'].includes(windowItem.id)) return windowItem.position
 
   return {
     x: Math.max(16, Math.round((window.innerWidth - windowItem.size.width) / 2)),
-    y: Math.max(16, Math.round((window.innerHeight - windowItem.size.height) / 2) - 24),
+    y: Math.max(16, Math.round((window.innerHeight - windowItem.size.height) / 2) - (windowItem.id === 'motd' ? 24 : 0)),
   }
 }
 
