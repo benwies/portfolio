@@ -53,8 +53,26 @@ function App() {
   useEffect(() => {
     if (!bootComplete || isMobile) return
 
-    const neofetchTimer = window.setTimeout(() => openWindow('neofetch'), 300)
-    const motdTimer = window.setTimeout(() => openWindow('motd'), 500)
+    const viewportWidth = window.innerWidth
+    const viewportHeight = window.innerHeight
+    const neofetchTimer = window.setTimeout(() => openWindow({
+      id: 'neofetch',
+      position: {
+        x: Math.round(viewportWidth * 0.55),
+        y: Math.round(viewportHeight * 0.12),
+      },
+      size: { width: 340, height: 260 },
+      zIndex: 1,
+    }), 300)
+    const motdTimer = window.setTimeout(() => openWindow({
+      id: 'motd',
+      position: {
+        x: Math.round(viewportWidth * 0.3),
+        y: Math.round(viewportHeight * 0.35),
+      },
+      size: { width: 370, height: 340 },
+      zIndex: 2,
+    }), 500)
 
     return () => {
       window.clearTimeout(neofetchTimer)

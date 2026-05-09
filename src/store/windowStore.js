@@ -31,18 +31,37 @@ const centeredPosition = (windowItem) => {
 export const useWindowStore = create((set, get) => ({
   windows: initialWindows,
   bootComplete: false,
-  openWindow: (id) =>
+  openWindow: (request) =>
     set((state) => {
+      const config = typeof request === 'string' ? { id: request } : request
+      const { id } = config
+      const configuredSize = config.size
+        ? {
+            width: config.size.width ?? config.size.w,
+            height: config.size.height ?? config.size.h,
+          }
+        : null
       const topZ = Math.max(...state.windows.map((windowItem) => windowItem.zIndex), 10) + 1
       return {
-        windows: state.windows.map((windowItem) => ({
-          ...windowItem,
-          isOpen: windowItem.id === id ? true : windowItem.isOpen,
-          isMinimized: windowItem.id === id ? false : windowItem.isMinimized,
-          isFocused: windowItem.id === id,
-          position: windowItem.id === id ? centeredPosition(windowItem) : windowItem.position,
-          zIndex: windowItem.id === id ? topZ : windowItem.zIndex,
-        })),
+        windows: state.windows.map((windowItem) => {
+          if (windowItem.id !== id) {
+            return {
+              ...windowItem,
+              isFocused: false,
+            }
+          }
+
+          const nextSize = configuredSize ?? windowItem.size
+          return {
+            ...windowItem,
+            isOpen: true,
+            isMinimized: false,
+            isFocused: true,
+            position: config.position ?? centeredPosition({ ...windowItem, size: nextSize }),
+            size: nextSize,
+            zIndex: config.zIndex ?? topZ,
+          }
+        }),
       }
     }),
   closeWindow: (id) => {
