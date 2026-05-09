@@ -976,7 +976,7 @@
 .cron-notification {
   position: fixed;
   right: 20px;
-  bottom: 60px;
+  bottom: 76px;
   z-index: 9500;
   width: 280px;
   overflow: hidden;

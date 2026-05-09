@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { useWindowStore } from '../../store/windowStore'
 
 const cronMessages = [
   'cron: backup complete',
@@ -21,17 +20,14 @@ const pickMessage = () => cronMessages[Math.floor(Math.random() * cronMessages.l
 const formatTime = (date) => date.toLocaleTimeString('en-GB', { hour12: false })
 
 function CronNotification() {
-  const bootComplete = useWindowStore((state) => state.bootComplete)
   const [notification, setNotification] = useState(null)
   const [visible, setVisible] = useState(false)
   const scheduleTimer = useRef(null)
   const autoDismissTimer = useRef(null)
   const clearTimer = useRef(null)
-  const dismissRef = useRef(null)
+  const scheduleNext = useRef(null)
 
   useEffect(() => {
-    if (!bootComplete) return undefined
-
     const clearTimers = () => {
       window.clearTimeout(scheduleTimer.current)
       window.clearTimeout(autoDismissTimer.current)
@@ -43,9 +39,7 @@ function CronNotification() {
       setVisible(false)
       clearTimer.current = window.setTimeout(() => {
         setNotification(null)
-        if (scheduleNext) {
-          schedule(false)
-        }
+        scheduleNext.current?.()
       }, 300)
     }
 
@@ -58,21 +52,22 @@ function CronNotification() {
       autoDismissTimer.current = window.setTimeout(() => dismiss(true), 3000)
     }
 
-    function schedule(isFirst) {
-      const delay = isFirst ? 5000 : randomBetween(30000, 120000)
+    const schedule = (delay) => {
       scheduleTimer.current = window.setTimeout(showNotification, delay)
     }
 
-    dismissRef.current = () => dismiss(true)
-    schedule(true)
-    return () => {
-      dismissRef.current = null
-      clearTimers()
-    }
-  }, [bootComplete])
+    scheduleNext.current = () => schedule(randomBetween(30000, 120000))
+    schedule(5000)
+    return clearTimers
+  }, [])
 
   const dismissNow = () => {
-    dismissRef.current?.()
+    window.clearTimeout(autoDismissTimer.current)
+    setVisible(false)
+    clearTimer.current = window.setTimeout(() => {
+      setNotification(null)
+      scheduleNext.current?.()
+    }, 300)
   }
 
   if (!notification) return null
