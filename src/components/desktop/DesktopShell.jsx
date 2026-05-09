@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
 import ClockWidget from './ClockWidget'
+import CronNotification from './CronNotification'
 import DesktopIcon from './DesktopIcon'
 import KernelPanicOverlay from './KernelPanicOverlay'
 import SysStatsWidget from './SysStatsWidget'
@@ -110,6 +111,7 @@ function DesktopShell({ children }) {
           </main>
 
           <Taskbar />
+          <CronNotification />
           {panicState === 'panic' && <KernelPanicOverlay onDismiss={dismissPanic} />}
         </>
       )}
