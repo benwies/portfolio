@@ -39,7 +39,6 @@
         'please use a desktop browser.',
       ],
       continueLabel: 'Continue',
-      storageKey: 'mobile_warning_seen',
     },
     topBarLabel: 'benedikt@0xbene',
     workspaces: ['One', 'Two', 'Three', 'Four'],

@@ -88,11 +88,13 @@ function DesktopShell({ children }) {
           ))}
         </nav>
 
-        <div className="widget-stack">
+        <div className="desktop-widget-zone">
           <SysStatsWidget />
-          <ClockWidget />
-          <UptimeWidget />
-          <VisitorWidget />
+          <div className="widget-stack">
+            <ClockWidget />
+            <UptimeWidget />
+            <VisitorWidget />
+          </div>
         </div>
         <TrashIcon />
         <section className="desktop-windows" aria-label="Open windows">

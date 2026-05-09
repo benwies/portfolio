@@ -35,12 +35,17 @@ const windowComponents = {
 
 function App() {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
+  const [warningDismissed, setWarningDismissed] = useState(false)
   const windows = useWindowStore((state) => state.windows)
   const bootComplete = useWindowStore((state) => state.bootComplete)
   const openWindow = useWindowStore((state) => state.openWindow)
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+      if (mobile) setWarningDismissed(false)
+    }
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
@@ -57,7 +62,14 @@ function App() {
     }
   }, [bootComplete, isMobile, openWindow])
 
-  if (isMobile) return <MobileView />
+  if (isMobile) {
+    return (
+      <MobileView
+        showWarning={!warningDismissed}
+        onContinueWarning={() => setWarningDismissed(true)}
+      />
+    )
+  }
 
   return (
     <main className="workstation">

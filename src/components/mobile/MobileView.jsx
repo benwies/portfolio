@@ -70,18 +70,10 @@ function MobileIconGrid({ onOpen }) {
   )
 }
 
-function MobileView() {
-  const [showWarning, setShowWarning] = useState(() => (
-    localStorage.getItem(portfolioData.mobile.warning.storageKey) !== 'true'
-  ))
+function MobileView({ onContinueWarning, showWarning }) {
   const [openAppId, setOpenAppId] = useState(null)
   const openApp = mobileApps.find((app) => app.id === openAppId)
   const Content = openApp?.Content
-
-  const dismissWarning = () => {
-    localStorage.setItem(portfolioData.mobile.warning.storageKey, 'true')
-    setShowWarning(false)
-  }
 
   return (
     <main className="mobile-view">
@@ -93,7 +85,7 @@ function MobileView() {
           <Content />
         </MobileWindow>
       )}
-      {showWarning && <MobileWarningDialog onContinue={dismissWarning} />}
+      {showWarning && <MobileWarningDialog onContinue={onContinueWarning} />}
     </main>
   )
 }

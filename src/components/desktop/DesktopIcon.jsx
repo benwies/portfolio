@@ -24,11 +24,14 @@ const iconFiles = {
 }
 
 const iconWidth = 84
-const iconHeight = 96
 const gridStartX = 16
 const gridStartY = 16
 const gridCellWidth = 120
 const gridCellHeight = 130
+const taskbarHeight = 64
+const resizeDebounce = 150
+const widgetZoneWidth = 380
+const widgetZoneHeight = 620
 const dragThreshold = 8
 const iconGridStoragePrefix = 'icon_grid_v4_'
 const iconGridEvent = 'cde-icon-grid-update'
@@ -56,8 +59,8 @@ export function CdeIcon({ label, type }) {
 
 function maxGrid() {
   return {
-    col: Math.max(0, Math.floor((window.innerWidth - iconWidth - gridStartX) / gridCellWidth)),
-    row: Math.max(0, Math.floor((window.innerHeight - 64 - iconHeight - gridStartY) / gridCellHeight)),
+    col: Math.max(0, Math.floor((window.innerWidth - gridCellWidth - 20 - gridStartX) / gridCellWidth)),
+    row: Math.max(0, Math.floor((window.innerHeight - taskbarHeight - gridCellHeight - 8 - gridStartY) / gridCellHeight)),
   }
 }
 
@@ -86,8 +89,8 @@ function positionToGrid(position) {
 
 function clampPosition(position) {
   return {
-    x: clamp(position.x, 0, window.innerWidth - iconWidth),
-    y: clamp(position.y, 0, window.innerHeight - 64 - iconHeight),
+    x: clamp(position.x, gridStartX, window.innerWidth - gridCellWidth - 20),
+    y: clamp(position.y, gridStartY, window.innerHeight - taskbarHeight - gridCellHeight - 8),
   }
 }
 
@@ -105,6 +108,36 @@ function loadGridCell(icon, index) {
 
 function saveGridCell(iconId, cell) {
   localStorage.setItem(storageKey(iconId), JSON.stringify(clampCell(cell)))
+}
+
+function isInsideWidgetZone(position) {
+  return (
+    position.x + iconWidth > window.innerWidth - widgetZoneWidth &&
+    position.y < widgetZoneHeight
+  )
+}
+
+function avoidWidgetZone(cell) {
+  let next = clampCell(cell)
+  while (next.col > 0 && isInsideWidgetZone(gridToPosition(next))) {
+    next = { ...next, col: next.col - 1 }
+  }
+  return next
+}
+
+function sanitizeStoredCells(icons) {
+  const updates = {}
+  icons.forEach((item, itemIndex) => {
+    const current = loadGridCell(item, itemIndex)
+    const safe = avoidWidgetZone(current)
+    if (cellKey(current) !== cellKey(safe)) {
+      saveGridCell(item.id, safe)
+      updates[item.id] = safe
+    }
+  })
+  if (Object.keys(updates).length) {
+    window.dispatchEvent(new CustomEvent(iconGridEvent, { detail: updates }))
+  }
 }
 
 function findIconAtCell(icons, targetCell, currentIconId) {
@@ -128,6 +161,20 @@ function DesktopIcon({ icon, index, icons, onKernelPanic = () => {} }) {
     window.addEventListener(iconGridEvent, handleGridUpdate)
     return () => window.removeEventListener(iconGridEvent, handleGridUpdate)
   }, [icon.id])
+
+  useEffect(() => {
+    let timer
+    const handleResize = () => {
+      window.clearTimeout(timer)
+      timer = window.setTimeout(() => sanitizeStoredCells(icons), resizeDebounce)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.clearTimeout(timer)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [icons])
 
   const startPointer = (event) => {
     event.preventDefault()
@@ -168,7 +215,7 @@ function DesktopIcon({ icon, index, icons, onKernelPanic = () => {} }) {
       x: drag.originX + event.clientX - drag.startX,
       y: drag.originY + event.clientY - drag.startY,
     })
-    const targetCell = positionToGrid(droppedPosition)
+    const targetCell = avoidWidgetZone(positionToGrid(droppedPosition))
     const updates = { [icon.id]: targetCell }
     const occupant = findIconAtCell(icons, targetCell, icon.id)
 
