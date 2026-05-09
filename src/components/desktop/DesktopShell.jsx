@@ -3,6 +3,7 @@ import { portfolioData } from '../../data/portfolioData'
 import ClockWidget from './ClockWidget'
 import DesktopIcon from './DesktopIcon'
 import KernelPanicOverlay from './KernelPanicOverlay'
+import SysStatsWidget from './SysStatsWidget'
 import Taskbar from './Taskbar'
 import TrashIcon from './TrashIcon'
 import UptimeWidget from './UptimeWidget'
@@ -26,8 +27,8 @@ const fakeTerminalLines = [
 const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
 function createFakeTerminal(index) {
-  const width = randomBetween(180, 280)
-  const height = randomBetween(120, 180)
+  const width = randomBetween(260, 380)
+  const height = randomBetween(160, 240)
   return {
     id: `fake-terminal-${Date.now()}-${index}`,
     title: fakeTerminalTitles[randomBetween(0, fakeTerminalTitles.length - 1)],
@@ -88,6 +89,7 @@ function DesktopShell({ children }) {
         </nav>
 
         <div className="widget-stack">
+          <SysStatsWidget />
           <ClockWidget />
           <UptimeWidget />
           <VisitorWidget />
