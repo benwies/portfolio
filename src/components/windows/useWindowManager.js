@@ -5,7 +5,9 @@ export function useWindowManager() {
   const windows = useWindowStore((state) => state.windows)
   const openWindow = useWindowStore((state) => state.openWindow)
   const closeWindow = useWindowStore((state) => state.closeWindow)
+  const clearWindowAnimation = useWindowStore((state) => state.clearWindowAnimation)
   const minimizeWindow = useWindowStore((state) => state.minimizeWindow)
+  const requestMinimizeWindow = useWindowStore((state) => state.requestMinimizeWindow)
   const focusWindow = useWindowStore((state) => state.focusWindow)
   const updateWindowGeometry = useWindowStore((state) => state.updateWindowGeometry)
 
@@ -31,7 +33,9 @@ export function useWindowManager() {
     focusedWindow,
     openWindow,
     closeWindow,
+    clearWindowAnimation,
     minimizeWindow,
+    requestMinimizeWindow,
     focusWindow,
     updateWindowGeometry: updateGeometry,
   }

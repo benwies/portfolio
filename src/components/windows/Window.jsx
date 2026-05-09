@@ -23,7 +23,14 @@ function getGeometry(windowItem) {
 
 export function Window({ children, window: windowItem, windowItem: fallbackWindow }) {
   const activeWindow = windowItem ?? fallbackWindow
-  const { closeWindow, focusWindow, minimizeWindow, updateWindowGeometry } = useWindowManager()
+  const {
+    clearWindowAnimation,
+    closeWindow,
+    focusWindow,
+    minimizeWindow,
+    requestMinimizeWindow,
+    updateWindowGeometry,
+  } = useWindowManager()
 
   if (!activeWindow?.isOpen || activeWindow.isMinimized) return null
 
@@ -43,6 +50,17 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
         width: Math.max(ref.offsetWidth, minSize.width),
       },
     })
+  }
+
+  const handleAnimationEnd = () => {
+    if (activeWindow.animation === 'minimizing') {
+      minimizeWindow(activeWindow.id)
+      return
+    }
+
+    if (activeWindow.animation === 'restoring') {
+      clearWindowAnimation(activeWindow.id)
+    }
   }
 
   return (
@@ -80,9 +98,12 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
           'cde-window',
           activeWindow.variant ? `cde-window--${activeWindow.variant}` : '',
           activeWindow.isFocused ? 'is-focused' : '',
+          activeWindow.animation === 'minimizing' ? 'window-minimizing' : '',
+          activeWindow.animation === 'restoring' ? 'window-restoring' : '',
         ]
           .filter(Boolean)
           .join(' ')}
+        onAnimationEnd={handleAnimationEnd}
         role="dialog"
       >
         <WindowChrome
@@ -90,7 +111,7 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
           canMinimize={!isDialog}
           isFocused={activeWindow.isFocused}
           onClose={() => closeWindow(activeWindow.id)}
-          onMinimize={() => minimizeWindow(activeWindow.id)}
+          onMinimize={() => requestMinimizeWindow(activeWindow.id)}
           title={activeWindow.title}
         />
         <div className="cde-window__body">{children}</div>

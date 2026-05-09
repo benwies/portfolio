@@ -5,6 +5,7 @@ import CronNotification from './CronNotification'
 import ContextMenu from './ContextMenu'
 import DesktopIcon from './DesktopIcon'
 import KernelPanicOverlay from './KernelPanicOverlay'
+import ScreensaverOverlay from './ScreensaverOverlay'
 import SysStatsWidget from './SysStatsWidget'
 import Taskbar from './Taskbar'
 import TrashIcon from './TrashIcon'
@@ -28,6 +29,7 @@ const fakeTerminalLines = [
 ]
 
 const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+const idleTimeout = 60000
 
 function createFakeTerminal(index) {
   const width = randomBetween(260, 380)
@@ -47,8 +49,34 @@ function DesktopShell({ children }) {
   const [panicState, setPanicState] = useState('idle')
   const [fakeTerminals, setFakeTerminals] = useState([])
   const [menu, setMenu] = useState(null)
+  const [screensaverActive, setScreensaverActive] = useState(false)
   const desktopRef = useRef(null)
   const windowLayerRef = useRef(null)
+
+  useEffect(() => {
+    if (!bootComplete) return undefined
+    let timer
+
+    const resetTimer = () => {
+      window.clearTimeout(timer)
+      setScreensaverActive(false)
+      timer = window.setTimeout(() => setScreensaverActive(true), idleTimeout)
+    }
+
+    window.addEventListener('mousemove', resetTimer)
+    window.addEventListener('mousedown', resetTimer)
+    window.addEventListener('keydown', resetTimer)
+    window.addEventListener('touchstart', resetTimer)
+    timer = window.setTimeout(() => setScreensaverActive(true), idleTimeout)
+
+    return () => {
+      window.clearTimeout(timer)
+      window.removeEventListener('mousemove', resetTimer)
+      window.removeEventListener('mousedown', resetTimer)
+      window.removeEventListener('keydown', resetTimer)
+      window.removeEventListener('touchstart', resetTimer)
+    }
+  }, [bootComplete])
 
   useEffect(() => {
     if (panicState !== 'animating') return undefined
@@ -130,6 +158,9 @@ function DesktopShell({ children }) {
 
           <Taskbar />
           <CronNotification />
+          {screensaverActive ? (
+            <ScreensaverOverlay onDeactivate={() => setScreensaverActive(false)} />
+          ) : null}
           {panicState === 'panic' && <KernelPanicOverlay onDismiss={dismissPanic} />}
         </>
       )}

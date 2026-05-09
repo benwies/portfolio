@@ -19,13 +19,25 @@ function formatClock(date) {
 
 function Taskbar() {
   const [clock, setClock] = useState(() => formatClock(new Date()))
+  const windows = useWindowStore((state) => state.windows)
   const openWindow = useWindowStore((state) => state.openWindow)
+  const requestMinimizeWindow = useWindowStore((state) => state.requestMinimizeWindow)
   const launchers = (portfolioData.frontPanel ?? portfolioData.desktopIcons).filter((item) => item.appId)
 
   useEffect(() => {
     const timer = window.setInterval(() => setClock(formatClock(new Date())), 1000)
     return () => window.clearInterval(timer)
   }, [])
+
+  const handleLauncherClick = (appId) => {
+    const windowItem = windows.find((item) => item.id === appId)
+    if (windowItem?.isOpen && !windowItem.isMinimized && windowItem.isFocused) {
+      requestMinimizeWindow(appId)
+      return
+    }
+
+    openWindow(appId)
+  }
 
   return (
     <footer className="front-panel" aria-label="CDE Front Panel">
@@ -40,7 +52,7 @@ function Taskbar() {
             type="button"
             key={item.id}
             className="front-panel__launcher"
-            onClick={() => openWindow(item.appId)}
+            onClick={() => handleLauncherClick(item.appId)}
             title={item.label}
           >
             <span className="front-panel__launcher-icon">

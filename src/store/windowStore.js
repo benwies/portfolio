@@ -6,6 +6,7 @@ const initialWindows = windowDefinitions.map((windowDef, index) => ({
   isOpen: false,
   isMinimized: false,
   isFocused: false,
+  animation: null,
   zIndex: 10 + index,
 }))
 
@@ -57,6 +58,7 @@ export const useWindowStore = create((set, get) => ({
             isOpen: true,
             isMinimized: false,
             isFocused: true,
+            animation: windowItem.isOpen && windowItem.isMinimized ? 'restoring' : null,
             position: config.position ?? centeredPosition({ ...windowItem, size: nextSize }),
             size: nextSize,
             zIndex: config.zIndex ?? topZ,
@@ -70,15 +72,24 @@ export const useWindowStore = create((set, get) => ({
         ...windowItem,
         isOpen: windowItem.id === id ? false : windowItem.isOpen,
         isFocused: windowItem.id === id ? false : windowItem.isFocused,
+        animation: windowItem.id === id ? null : windowItem.animation,
       })),
     }))
   },
+  requestMinimizeWindow: (id) =>
+    set((state) => ({
+      windows: state.windows.map((windowItem) => ({
+        ...windowItem,
+        animation: windowItem.id === id ? 'minimizing' : windowItem.animation,
+      })),
+    })),
   minimizeWindow: (id) =>
     set((state) => ({
       windows: state.windows.map((windowItem) => ({
         ...windowItem,
         isMinimized: windowItem.id === id ? true : windowItem.isMinimized,
         isFocused: windowItem.id === id ? false : windowItem.isFocused,
+        animation: windowItem.id === id ? null : windowItem.animation,
       })),
     })),
   focusWindow: (id) => {
@@ -92,6 +103,13 @@ export const useWindowStore = create((set, get) => ({
       })),
     }))
   },
+  clearWindowAnimation: (id) =>
+    set((state) => ({
+      windows: state.windows.map((windowItem) => ({
+        ...windowItem,
+        animation: windowItem.id === id ? null : windowItem.animation,
+      })),
+    })),
   updateWindowGeometry: (id, geometry) =>
     set((state) => ({
       windows: state.windows.map((windowItem) =>
