@@ -40,7 +40,7 @@ function App() {
   const [warningDismissed, setWarningDismissed] = useState(false)
   const windows = useWindowStore((state) => state.windows)
   const bootComplete = useWindowStore((state) => state.bootComplete)
-  const switchWorkspace = useWindowStore((state) => state.switchWorkspace)
+  const openWindow = useWindowStore((state) => state.openWindow)
 
   useEffect(() => {
     const handleResize = () => {
@@ -54,8 +54,41 @@ function App() {
 
   useEffect(() => {
     if (!bootComplete || isMobile) return
-    switchWorkspace(1)
-  }, [bootComplete, isMobile, switchWorkspace])
+
+    const viewportWidth = window.innerWidth
+    const viewportHeight = window.innerHeight
+    const taskbarHeight = 52
+    const usableHeight = viewportHeight - taskbarHeight
+    const neofetchTimer = window.setTimeout(() => openWindow({
+      id: 'neofetch',
+      position: {
+        x: Math.round(viewportWidth * 0.52),
+        y: Math.round(usableHeight * 0.13),
+      },
+      size: {
+        w: Math.max(Math.round(viewportWidth * 0.28), 340),
+        h: Math.max(Math.round(usableHeight * 0.4), 260),
+      },
+      zIndex: 10,
+    }), 300)
+    const motdTimer = window.setTimeout(() => openWindow({
+      id: 'motd',
+      position: {
+        x: Math.round(viewportWidth * 0.3),
+        y: Math.round(usableHeight * 0.37),
+      },
+      size: {
+        w: Math.max(Math.round(viewportWidth * 0.24), 320),
+        h: Math.max(Math.round(usableHeight * 0.42), 300),
+      },
+      zIndex: 20,
+    }), 500)
+
+    return () => {
+      window.clearTimeout(neofetchTimer)
+      window.clearTimeout(motdTimer)
+    }
+  }, [bootComplete, isMobile, openWindow])
 
   if (isMobile) {
     return (
@@ -73,7 +106,7 @@ function App() {
       ) : (
         <DesktopShell>
           {windows
-            .filter((windowItem) => windowItem.isOpen)
+            .filter((windowItem) => windowItem.isOpen && !windowItem.isMinimized)
             .map((windowItem) => {
               const Content = windowComponents[windowItem.component]
               return (

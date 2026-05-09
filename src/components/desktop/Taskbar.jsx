@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
-import { useWindowStore, WORKSPACES } from '../../store/windowStore'
+import { useWindowStore } from '../../store/windowStore'
 import { CdeIcon } from './DesktopIcon'
+
+const visualWorkspaces = [
+  { name: 'One', label: 'HOME' },
+  { name: 'Two', label: 'WORK' },
+  { name: 'Three', label: 'PORT' },
+  { name: 'Four', label: 'FUN' },
+]
 
 function formatClock(date) {
   return {
@@ -19,14 +26,10 @@ function formatClock(date) {
 
 function Taskbar() {
   const [clock, setClock] = useState(() => formatClock(new Date()))
-  const activeWorkspace = useWindowStore((state) => state.activeWorkspace)
   const windows = useWindowStore((state) => state.windows)
   const openWindow = useWindowStore((state) => state.openWindow)
   const requestMinimizeWindow = useWindowStore((state) => state.requestMinimizeWindow)
-  const switchWorkspace = useWindowStore((state) => state.switchWorkspace)
-  const visibleInTaskbar = windows.filter(
-    (windowItem) => windowItem.workspace === activeWorkspace && windowItem.isOpen,
-  )
+  const visibleInTaskbar = windows.filter((windowItem) => windowItem.isOpen)
 
   useEffect(() => {
     const timer = window.setInterval(() => setClock(formatClock(new Date())), 1000)
@@ -73,14 +76,12 @@ function Taskbar() {
       </nav>
 
       <div className="front-panel__workspace" aria-label={portfolioData.ui.workspaceLabel}>
-        {Object.entries(WORKSPACES).map(([number, workspace]) => (
+        {visualWorkspaces.map((workspace, index) => (
           <button
             key={workspace.name}
             type="button"
-            className={activeWorkspace === Number(number)
-              ? 'front-panel__workspace-cell is-active'
-              : 'front-panel__workspace-cell'}
-            onClick={() => switchWorkspace(Number(number))}
+            className={index === 0 ? 'front-panel__workspace-cell is-active' : 'front-panel__workspace-cell'}
+            tabIndex={-1}
           >
             {workspace.label}
           </button>
