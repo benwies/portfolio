@@ -58,17 +58,17 @@ function App() {
     const neofetchTimer = window.setTimeout(() => openWindow({
       id: 'neofetch',
       position: {
-        x: Math.round(viewportWidth * 0.55),
-        y: Math.round(viewportHeight * 0.12),
+        x: Math.round(viewportWidth * 0.52),
+        y: Math.round(viewportHeight * 0.13),
       },
-      size: { width: 340, height: 260 },
+      size: { width: 430, height: 310 },
       zIndex: 1,
     }), 300)
     const motdTimer = window.setTimeout(() => openWindow({
       id: 'motd',
       position: {
         x: Math.round(viewportWidth * 0.3),
-        y: Math.round(viewportHeight * 0.35),
+        y: Math.round(viewportHeight * 0.37),
       },
       size: { width: 370, height: 340 },
       zIndex: 2,

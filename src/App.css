@@ -677,13 +677,13 @@
 
 .neofetch-window {
   height: 100%;
-  padding: 14px;
-  overflow: auto;
+  padding: 10px;
+  overflow: hidden;
   background: #000000;
   color: #ffffff;
   font-family: 'Courier New', monospace;
-  font-size: 13px;
-  line-height: 1.35;
+  font-size: 11px;
+  line-height: 1.25;
 }
 
 .desktop-widget-zone {
@@ -986,8 +986,8 @@
 
 .neofetch-grid {
   display: grid;
-  grid-template-columns: 210px minmax(0, 1fr);
-  gap: 16px;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 12px;
   align-items: start;
 }
 
@@ -1009,9 +1009,10 @@
 
 .neofetch-row {
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
-  gap: 8px;
-  min-height: 18px;
+  grid-template-columns: 50px minmax(0, 1fr);
+  gap: 6px;
+  min-height: 14px;
+  white-space: nowrap;
 }
 
 .neofetch-key {
@@ -1020,7 +1021,7 @@
 }
 
 .neofetch-prompt {
-  margin-top: 18px;
+  margin-top: 12px;
   color: #ffffff;
 }
 
