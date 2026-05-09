@@ -1,24 +1,19 @@
 import { useEffect, useState } from 'react'
 
 function VisitorWidget() {
-  const [count, setCount] = useState('??????')
+  const [count, setCount] = useState('......')
 
   useEffect(() => {
-    const fetchCount = async () => {
-      try {
-        const response = await fetch('/api/visitors')
-        const data = await response.json()
-        if (data.value !== null) {
+    fetch('/api/visitors')
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.value !== null && data.value !== undefined) {
           setCount(String(data.value).padStart(6, '0'))
         } else {
           setCount('??????')
         }
-      } catch {
-        setCount('??????')
-      }
-    }
-
-    fetchCount()
+      })
+      .catch(() => setCount('??????'))
   }, [])
 
   return (
