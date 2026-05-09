@@ -22,7 +22,7 @@ function AboutWindow() {
         setIsTyping(false)
         cursorTimer = window.setTimeout(() => setShowCursor(false), 2000)
       }
-    }, 8)
+    }, 2)
 
     return () => {
       window.clearInterval(interval)

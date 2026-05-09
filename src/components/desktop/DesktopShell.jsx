@@ -8,6 +8,7 @@ import Taskbar from './Taskbar'
 import TrashIcon from './TrashIcon'
 import UptimeWidget from './UptimeWidget'
 import VisitorWidget from './VisitorWidget'
+import { useWindowStore } from '../../store/windowStore'
 
 const fakeTerminalTitles = ['bash', 'sh', 'root@0xbene', 'exploit.sh', 'payload.sh', 'dropper']
 const fakeTerminalLines = [
@@ -40,6 +41,7 @@ function createFakeTerminal(index) {
 }
 
 function DesktopShell({ children }) {
+  const bootComplete = useWindowStore((state) => state.bootComplete)
   const [panicState, setPanicState] = useState('idle')
   const [fakeTerminals, setFakeTerminals] = useState([])
 
@@ -75,38 +77,42 @@ function DesktopShell({ children }) {
 
   return (
     <div className="desktop-shell">
-      <main className="desktop-shell__body">
-        <nav className="desktop-icons" aria-label="Desktop icons">
-          {portfolioData.desktopIcons.map((icon, index) => (
-            <DesktopIcon
-              key={icon.id}
-              icon={icon}
-              index={index}
-              icons={portfolioData.desktopIcons}
-              onKernelPanic={triggerKernelPanic}
-            />
-          ))}
-        </nav>
+      {bootComplete && (
+        <>
+          <main className="desktop-shell__body">
+            <nav className="desktop-icons" aria-label="Desktop icons">
+              {portfolioData.desktopIcons.map((icon, index) => (
+                <DesktopIcon
+                  key={icon.id}
+                  icon={icon}
+                  index={index}
+                  icons={portfolioData.desktopIcons}
+                  onKernelPanic={triggerKernelPanic}
+                />
+              ))}
+            </nav>
 
-        <div className="desktop-widget-zone">
-          <SysStatsWidget />
-          <div className="widget-stack">
-            <ClockWidget />
-            <UptimeWidget />
-            <VisitorWidget />
-          </div>
-        </div>
-        <TrashIcon />
-        <section className="desktop-windows" aria-label="Open windows">
-          {children}
-        </section>
-        {fakeTerminals.map((terminal) => (
-          <FakeTerminal key={terminal.id} terminal={terminal} />
-        ))}
-      </main>
+            <div className="desktop-widget-zone">
+              <SysStatsWidget />
+              <div className="widget-stack">
+                <ClockWidget />
+                <UptimeWidget />
+                <VisitorWidget />
+              </div>
+            </div>
+            <TrashIcon />
+            <section className="desktop-windows" aria-label="Open windows">
+              {children}
+            </section>
+            {fakeTerminals.map((terminal) => (
+              <FakeTerminal key={terminal.id} terminal={terminal} />
+            ))}
+          </main>
 
-      <Taskbar />
-      {panicState === 'panic' && <KernelPanicOverlay onDismiss={dismissPanic} />}
+          <Taskbar />
+          {panicState === 'panic' && <KernelPanicOverlay onDismiss={dismissPanic} />}
+        </>
+      )}
     </div>
   )
 }

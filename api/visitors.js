@@ -1,9 +1,11 @@
+import { kv } from '@vercel/kv'
+
 export default async function handler(req, res) {
   try {
-    const { kv } = await import('@vercel/kv')
     const count = await kv.incr('visitor_count')
     res.status(200).json({ value: count })
-  } catch {
-    res.status(503).json({ value: null })
+  } catch (error) {
+    console.error('KV error:', error)
+    res.status(500).json({ value: null, error: 'KV unavailable' })
   }
 }
