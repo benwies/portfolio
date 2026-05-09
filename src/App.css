@@ -1116,6 +1116,145 @@
   padding: 48px 10px 32px;
 }
 
+.mobile-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 140px);
+  justify-content: center;
+  align-content: start;
+  gap: 16px;
+  height: 100svh;
+  padding: 56px 20px 60px;
+  overflow-y: auto;
+}
+
+.mobile-app-icon {
+  display: grid;
+  grid-template-rows: 82px auto;
+  place-items: center;
+  gap: 8px;
+  width: 140px;
+  height: 140px;
+  padding: 12px 8px;
+  color: #ffffff;
+  background: transparent;
+  border: 0;
+  font: 700 12px 'Courier New', monospace;
+  text-align: center;
+  text-shadow: 1px 1px 0 #000000;
+}
+
+.mobile-app-icon:active {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.mobile-app-icon__image,
+.mobile-app-icon__image .cde-theme-icon {
+  width: 72px;
+  height: 72px;
+}
+
+.mobile-app-icon__image .cde-theme-icon {
+  object-fit: contain;
+}
+
+.mobile-taskbar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  height: 44px;
+  padding: 6px 8px;
+  background: #5f8fa0;
+  border-top: 2px solid #ddeeff;
+  font: 700 12px 'Courier New', monospace;
+}
+
+.mobile-taskbar span {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: #9fbfcf;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+}
+
+.mobile-window {
+  position: fixed;
+  top: 36px;
+  right: 0;
+  bottom: 44px;
+  left: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-rows: 28px 22px 1fr;
+  background: var(--body-bg);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  animation: mobile-window-open 150ms ease-out;
+}
+
+.mobile-window__title {
+  display: grid;
+  grid-template-columns: 26px 1fr 26px;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px;
+  color: #ffffff;
+  background: linear-gradient(180deg, #6080a0, #406080);
+  font: 700 12px 'Courier New', monospace;
+}
+
+.mobile-window__title span,
+.mobile-window__title button {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  color: #000000;
+  background: var(--button-face);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  font: 700 11px 'Courier New', monospace;
+}
+
+.mobile-window__title strong {
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-window__menu {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 22px;
+  padding: 0 8px;
+  background: var(--body-bg);
+  border-bottom: 1px solid var(--border-dark);
+  color: #000000;
+  font: 11px 'Courier New', monospace;
+}
+
+.mobile-window__body {
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  background: var(--body-bg);
+  color: #000000;
+  font: 13px/1.55 'Courier New', monospace;
+}
+
 .mobile-section {
   margin-bottom: 14px;
   border-width: 2px;
@@ -1142,6 +1281,12 @@
   margin: 0;
   white-space: pre-wrap;
   font: inherit;
+}
+
+.mobile-about-text {
+  min-height: 100%;
+  color: #000000;
+  background: #ffffff;
 }
 
 .mobile-ini__block,
@@ -1228,6 +1373,40 @@
   font: 13px 'Courier New', monospace;
 }
 
+.mobile-terminal {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 100%;
+  margin: -16px;
+  padding: 12px;
+  background: #000000;
+  color: #ffffff;
+  font: 13px/1.45 'Courier New', monospace;
+}
+
+.mobile-terminal__output {
+  min-height: 0;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.mobile-terminal__form {
+  display: grid;
+  grid-template-columns: auto minmax(80px, 1fr);
+  gap: 6px;
+  align-items: center;
+  min-height: 42px;
+}
+
+.mobile-terminal__form input {
+  min-width: 0;
+  min-height: 34px;
+  color: #ffffff;
+  background: #000000;
+  border: 1px solid #ffffff;
+  font: inherit;
+}
+
 .mobile-cursor {
   animation: cde-cursor 1s steps(2) infinite;
 }
@@ -1240,6 +1419,18 @@
   place-items: center;
   padding: 18px;
   background: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes mobile-window-open {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mobile-warning {

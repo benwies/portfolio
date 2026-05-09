@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
+import { CdeIcon } from '../desktop/DesktopIcon'
+import MobileAbout from './content/MobileAbout'
+import MobileCerts from './content/MobileCerts'
+import MobileProjects from './content/MobileProjects'
+import MobileSkills from './content/MobileSkills'
+import MobileSocials from './content/MobileSocials'
+import MobileTerminal from './content/MobileTerminal'
 import MobileWarningDialog from './MobileWarningDialog'
+import MobileWindow from './MobileWindow'
 
 const formatClock = (date) =>
   new Intl.DateTimeFormat('en-GB', {
@@ -9,16 +17,14 @@ const formatClock = (date) =>
     hour12: false,
   }).format(date)
 
-const displayUrl = (url) => url.replace(/^https?:\/\//, '').replace(/\/$/, '')
-
-function MobileSection({ title, children }) {
-  return (
-    <section className="mobile-section">
-      <header className="mobile-section__title">{title}</header>
-      <div className="mobile-section__body">{children}</div>
-    </section>
-  )
-}
+const mobileApps = [
+  { id: 'projects', title: portfolioData.mobile.sections.projects, Content: MobileProjects },
+  { id: 'about', title: portfolioData.mobile.sections.about, Content: MobileAbout },
+  { id: 'socials', title: portfolioData.mobile.sections.socials, Content: MobileSocials },
+  { id: 'certs', title: portfolioData.mobile.sections.certs, Content: MobileCerts },
+  { id: 'skills', title: portfolioData.mobile.sections.skills, Content: MobileSkills },
+  { id: 'terminal', title: portfolioData.mobile.sections.terminal, Content: MobileTerminal },
+]
 
 function MobileTopBar() {
   const [clock, setClock] = useState(() => formatClock(new Date()))
@@ -36,114 +42,31 @@ function MobileTopBar() {
   )
 }
 
-function MobileAbout() {
+function MobileTaskbar() {
   return (
-    <MobileSection title={portfolioData.mobile.sections.about}>
-      <pre className="mobile-pre">{portfolioData.about.lines.join('\n')}</pre>
-    </MobileSection>
+    <footer className="mobile-taskbar">
+      {portfolioData.mobile.workspaces.map((workspace) => (
+        <span key={workspace}>{workspace}</span>
+      ))}
+    </footer>
   )
 }
 
-function MobileSkills() {
+function MobileIconGrid({ onOpen }) {
   return (
-    <MobileSection title={portfolioData.mobile.sections.skills}>
-      <div className="mobile-ini">
-        {portfolioData.skills.sections.map((section) => (
-          <div className="mobile-ini__block" key={section.name}>
-            <div className="mobile-ini__section">[{section.name}]</div>
-            <div>{`  ${section.lines.join(', ')}`}</div>
-          </div>
-        ))}
-      </div>
-    </MobileSection>
-  )
-}
-
-function MobileProjects() {
-  const { projectLabels } = portfolioData.mobile
-
-  return (
-    <MobileSection title={portfolioData.mobile.sections.projects}>
-      <div className="mobile-projects">
-        {portfolioData.projects.items.map((project) => (
-          <article className="mobile-project" key={project.id}>
-            <h2>
-              <span aria-hidden="true">{projectLabels.folderPrefix}</span> {project.name}
-            </h2>
-            <pre>{project.description}</pre>
-            <p>
-              <strong>{portfolioData.projects.stackLabel}</strong> {project.tech.join(', ')}
-            </p>
-            {project.link && (
-              <a href={project.link} target="_blank" rel="noreferrer">
-                {projectLabels.live} {displayUrl(project.link)}
-              </a>
-            )}
-            {project.github && (
-              <a href={project.github} target="_blank" rel="noreferrer">
-                {projectLabels.github} {displayUrl(project.github)}
-              </a>
-            )}
-            {!project.link && !project.github && <p>{projectLabels.noLink}</p>}
-          </article>
-        ))}
-      </div>
-    </MobileSection>
-  )
-}
-
-function MobileCerts() {
-  const { certLabels } = portfolioData.mobile
-
-  return (
-    <MobileSection title={portfolioData.mobile.sections.certs}>
-      <div className="mobile-certs">
-        {portfolioData.certs.rows.map((cert) => (
-          <article className="mobile-cert" key={cert.name}>
-            <h2>{cert.name}</h2>
-            <p>
-              {certLabels.issuer} {cert.issuer}
-            </p>
-            <p className={`mobile-status mobile-status--${cert.status}`}>
-              {certLabels.status} {certLabels[cert.status]}
-            </p>
-            <a href={cert.link} target="_blank" rel="noreferrer">
-              {cert.status === 'completed' ? certLabels.viewCertificate : certLabels.viewCourse}
-            </a>
-          </article>
-        ))}
-      </div>
-    </MobileSection>
-  )
-}
-
-function MobileSocials() {
-  return (
-    <MobileSection title={portfolioData.mobile.sections.socials}>
-      <div className="mobile-socials" role="table">
-        <div className="mobile-socials__row mobile-socials__head" role="row">
-          {portfolioData.socials.headers.map((header) => (
-            <span key={header} role="columnheader">
-              {header}
+    <nav className="mobile-icon-grid" aria-label="Mobile apps">
+      {mobileApps.map((app) => {
+        const icon = portfolioData.desktopIcons.find((item) => item.appId === app.id)
+        return (
+          <button key={app.id} type="button" className="mobile-app-icon" onClick={() => onOpen(app.id)}>
+            <span className="mobile-app-icon__image">
+              <CdeIcon type={icon.icon} label="" />
             </span>
-          ))}
-        </div>
-        {portfolioData.socials.rows.map((row) => (
-          <a
-            className="mobile-socials__row"
-            href={row.link}
-            key={row.link}
-            target="_blank"
-            rel="noreferrer"
-            role="row"
-          >
-            <span role="cell">{row.port}</span>
-            <span role="cell">{row.service}</span>
-            <span role="cell">{displayUrl(row.link)}</span>
-          </a>
-        ))}
-      </div>
-    </MobileSection>
+            <span>{icon.label}</span>
+          </button>
+        )
+      })}
+    </nav>
   )
 }
 
@@ -151,6 +74,9 @@ function MobileView() {
   const [showWarning, setShowWarning] = useState(() => (
     localStorage.getItem(portfolioData.mobile.warning.storageKey) !== 'true'
   ))
+  const [openAppId, setOpenAppId] = useState(null)
+  const openApp = mobileApps.find((app) => app.id === openAppId)
+  const Content = openApp?.Content
 
   const dismissWarning = () => {
     localStorage.setItem(portfolioData.mobile.warning.storageKey, 'true')
@@ -160,17 +86,13 @@ function MobileView() {
   return (
     <main className="mobile-view">
       <MobileTopBar />
-      <div className="mobile-scroll">
-        <MobileAbout />
-        <MobileSkills />
-        <MobileProjects />
-        <MobileCerts />
-        <MobileSocials />
-        <footer className="mobile-footer">
-          {portfolioData.identity.prompt}
-          <span className="mobile-cursor">_</span>
-        </footer>
-      </div>
+      <MobileIconGrid onOpen={setOpenAppId} />
+      <MobileTaskbar />
+      {openApp && (
+        <MobileWindow title={openApp.title} onClose={() => setOpenAppId(null)}>
+          <Content />
+        </MobileWindow>
+      )}
       {showWarning && <MobileWarningDialog onContinue={dismissWarning} />}
     </main>
   )

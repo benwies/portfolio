@@ -42,12 +42,17 @@
       storageKey: 'mobile_warning_seen',
     },
     topBarLabel: 'benedikt@0xbene',
+    workspaces: ['One', 'Two', 'Three', 'Four'],
+    menuItems: ['File', 'Edit', 'Help'],
+    windowMenuButton: '-',
+    closeButton: 'X',
     sections: {
       about: 'about.txt - dtpad',
       skills: 'skills.ini',
       projects: 'projects/ - File Manager',
       certs: 'certs.csv - File Manager',
       socials: 'socials.db - Address Manager',
+      terminal: 'xterm',
     },
     certLabels: {
       issuer: 'Issuer:',
@@ -62,6 +67,18 @@
       live: '-> Live:',
       github: '-> GitHub:',
       noLink: '(no link)',
+    },
+    terminal: {
+      prompt: 'benedikt@0xbene:~$',
+      commands: ['whoami', 'ls', 'help', 'clear', 'cat about.txt', 'ping benedikt'],
+      pingTarget: 'benedikt',
+      pingLines: [
+        'PING benedikt (0xbene): 56 data bytes',
+        '64 bytes from 0xbene: icmp_seq=0 ttl=64 time=0.42 ms',
+        '64 bytes from 0xbene: icmp_seq=1 ttl=64 time=0.38 ms',
+        '--- benedikt ping statistics ---',
+        '2 packets transmitted, 2 packets received, 0% packet loss',
+      ],
     },
   },
   motd: {
