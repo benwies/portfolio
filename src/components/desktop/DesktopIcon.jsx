@@ -21,9 +21,10 @@ const iconWidth = 84
 const iconHeight = 96
 const gridStartX = 16
 const gridStartY = 16
-const gridCellWidth = 90
-const gridCellHeight = 110
+const gridCellWidth = 120
+const gridCellHeight = 130
 const dragThreshold = 8
+const iconGridStoragePrefix = 'icon_grid_v2_'
 
 const clamp = (value, min, max) => Math.max(min, Math.min(value, max))
 
@@ -49,7 +50,7 @@ export function TrashSvg() {
 
 function loadPosition(icon, index) {
   const fallback = gridToPosition({ col: 0, row: index })
-  const stored = localStorage.getItem(`icon_grid_${icon.id}`)
+  const stored = localStorage.getItem(`${iconGridStoragePrefix}${icon.id}`)
   if (!stored) return fallback
 
   try {
@@ -95,7 +96,7 @@ function cellKey(cell) {
 
 function loadGridCell(icon, index) {
   const fallback = { col: 0, row: index }
-  const stored = localStorage.getItem(`icon_grid_${icon.id}`)
+  const stored = localStorage.getItem(`${iconGridStoragePrefix}${icon.id}`)
   if (!stored) return fallback
 
   try {
@@ -131,7 +132,6 @@ function nextFreeCell(targetCell, icons, currentIconId) {
 }
 
 function DesktopIcon({ icon, index, icons }) {
-  const [selected, setSelected] = useState(false)
   const [position, setPosition] = useState(() => loadPosition(icon, index))
   const [dragState, setDragState] = useState(null)
   const openWindow = useWindowStore((state) => state.openWindow)
@@ -139,7 +139,6 @@ function DesktopIcon({ icon, index, icons }) {
   const startPointer = (event) => {
     event.preventDefault()
     event.currentTarget.setPointerCapture(event.pointerId)
-    setSelected(true)
     setDragState({
       startX: event.clientX,
       startY: event.clientY,
@@ -174,7 +173,7 @@ function DesktopIcon({ icon, index, icons }) {
       const nextCell = nextFreeCell(positionToGrid(currentPosition), icons, icon.id)
       const nextPosition = gridToPosition(nextCell)
       setPosition(nextPosition)
-      localStorage.setItem(`icon_grid_${icon.id}`, JSON.stringify(nextCell))
+      localStorage.setItem(`${iconGridStoragePrefix}${icon.id}`, JSON.stringify(nextCell))
     }
     setDragState(null)
   }
@@ -182,15 +181,15 @@ function DesktopIcon({ icon, index, icons }) {
   return (
     <button
       type="button"
-      className={selected ? 'desktop-icon is-selected' : 'desktop-icon'}
+      className="desktop-icon"
       style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
-      onClick={() => setSelected(true)}
       onDoubleClick={() => openWindow(icon.appId)}
       onPointerDown={startPointer}
       onPointerMove={movePointer}
       onPointerUp={endPointer}
       onPointerCancel={endPointer}
       onDragStart={(event) => event.preventDefault()}
+      tabIndex={-1}
       aria-label={`Open ${icon.label}`}
     >
       <span className="desktop-icon__glyph">
