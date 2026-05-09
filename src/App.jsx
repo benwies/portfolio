@@ -55,23 +55,31 @@ function App() {
 
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
+    const taskbarHeight = 52
+    const usableHeight = viewportHeight - taskbarHeight
     const neofetchTimer = window.setTimeout(() => openWindow({
       id: 'neofetch',
       position: {
         x: Math.round(viewportWidth * 0.52),
-        y: Math.round(viewportHeight * 0.13),
+        y: Math.round(usableHeight * 0.13),
       },
-      size: { width: 430, height: 310 },
-      zIndex: 1,
+      size: {
+        w: Math.max(Math.round(viewportWidth * 0.28), 340),
+        h: Math.max(Math.round(usableHeight * 0.4), 260),
+      },
+      zIndex: 10,
     }), 300)
     const motdTimer = window.setTimeout(() => openWindow({
       id: 'motd',
       position: {
         x: Math.round(viewportWidth * 0.3),
-        y: Math.round(viewportHeight * 0.37),
+        y: Math.round(usableHeight * 0.37),
       },
-      size: { width: 370, height: 340 },
-      zIndex: 2,
+      size: {
+        w: Math.max(Math.round(viewportWidth * 0.24), 320),
+        h: Math.max(Math.round(usableHeight * 0.42), 300),
+      },
+      zIndex: 20,
     }), 500)
 
     return () => {
