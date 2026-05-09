@@ -83,6 +83,7 @@ export const runCommand = ({ command, cwd, setCwd }) => {
         icon.label.replace(/\/|\.(txt|db|csv|ini|pdf)$/g, '') === app,
     )
     if (!match) return { lines: [`open: unknown app: ${app}`] }
+    if (!match.appId) return { lines: [`open: ${match.label} is not a windowed app`] }
     useWindowStore.getState().openWindow(match.appId)
     return { lines: [`opening ${match.label}`] }
   }

@@ -38,6 +38,8 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
     <Rnd
       bounds="parent"
       dragHandleClassName="window-drag-handle"
+      disableDragging={false}
+      enableResizing={!activeWindow.fixedSize}
       minHeight={minSize.height}
       minWidth={minSize.width}
       onDragStart={handleFocus}

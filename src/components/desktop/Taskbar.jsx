@@ -20,7 +20,7 @@ function formatClock(date) {
 function Taskbar() {
   const [clock, setClock] = useState(() => formatClock(new Date()))
   const openWindow = useWindowStore((state) => state.openWindow)
-  const launchers = portfolioData.frontPanel ?? portfolioData.desktopIcons
+  const launchers = (portfolioData.frontPanel ?? portfolioData.desktopIcons).filter((item) => item.appId)
 
   useEffect(() => {
     const timer = window.setInterval(() => setClock(formatClock(new Date())), 1000)

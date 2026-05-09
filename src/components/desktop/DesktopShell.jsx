@@ -1,12 +1,16 @@
+import { useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
 import ClockWidget from './ClockWidget'
 import DesktopIcon from './DesktopIcon'
+import KernelPanicOverlay from './KernelPanicOverlay'
 import Taskbar from './Taskbar'
 import TrashIcon from './TrashIcon'
 import UptimeWidget from './UptimeWidget'
 import VisitorWidget from './VisitorWidget'
 
 function DesktopShell({ children }) {
+  const [kernelPanic, setKernelPanic] = useState(false)
+
   return (
     <div className="desktop-shell">
       <main className="desktop-shell__body">
@@ -17,6 +21,7 @@ function DesktopShell({ children }) {
               icon={icon}
               index={index}
               icons={portfolioData.desktopIcons}
+              onKernelPanic={() => setKernelPanic(true)}
             />
           ))}
         </nav>
@@ -33,6 +38,7 @@ function DesktopShell({ children }) {
       </main>
 
       <Taskbar />
+      {kernelPanic && <KernelPanicOverlay onDismiss={() => setKernelPanic(false)} />}
     </div>
   )
 }

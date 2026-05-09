@@ -1,10 +1,10 @@
-export const portfolioData = {
+﻿export const portfolioData = {
   identity: {
     user: 'benedikt',
     host: '0xbene',
     name: 'Benedikt',
     role: 'Blue Team / Defensive Sec',
-    focus: 'Linux · Networking · SecOps',
+    focus: 'Linux Â· Networking Â· SecOps',
     status: '[ACTIVE] Open to work',
     prompt: 'benedikt@0xbene:~$',
   },
@@ -14,7 +14,7 @@ export const portfolioData = {
     motdOk: "OK, let's go!",
     menuButton: '-',
     minimizeButton: '_',
-    maximizeButton: '□',
+    maximizeButton: 'â–¡',
     closeButton: 'X',
     windowMenuLabel: 'Window menu',
     minimizeLabel: 'Minimize',
@@ -52,15 +52,15 @@ export const portfolioData = {
     certLabels: {
       issuer: 'Issuer:',
       status: 'Status:',
-      completed: '✓ Completed',
-      in_progress: '⟳ In Progress',
-      viewCertificate: '→ View Certificate',
-      viewCourse: '→ View Course',
+      completed: 'âœ“ Completed',
+      in_progress: 'âŸ³ In Progress',
+      viewCertificate: 'â†’ View Certificate',
+      viewCourse: 'â†’ View Course',
     },
     projectLabels: {
-      folderPrefix: '📁',
-      live: '→ Live:',
-      github: '→ GitHub:',
+      folderPrefix: 'ðŸ“',
+      live: 'â†’ Live:',
+      github: 'â†’ GitHub:',
       noLink: '(no link)',
     },
   },
@@ -69,7 +69,7 @@ export const portfolioData = {
     toolbar: ['File', 'Edit', 'Help'],
     linesBefore: [
       '================================================',
-      "  Welcome to 0xbene — Benedikt's Portfolio",
+      "  Welcome to 0xbene â€” Benedikt's Portfolio",
       '================================================',
       '',
       'Hi! This desktop is my portfolio.',
@@ -82,13 +82,15 @@ export const portfolioData = {
       '',
     ],
     links: [
-      { label: '  > About Me       → click to open about.txt', appId: 'about' },
-      { label: '  > Projects       → click to open projects/', appId: 'projects' },
-      { label: '  > Certifications → click to open certs.csv', appId: 'certs' },
-      { label: '  > Skills         → click to open skills.ini', appId: 'skills' },
-      { label: '  > Socials        → click to open socials.db', appId: 'socials' },
-      { label: '  > Resume         → click to download resume.pdf', download: '/resume.pdf' },
-      { label: '  > Terminal       → click to open terminal', appId: 'terminal' },
+      { label: '  > About Me       â†’ click to open about.txt', appId: 'about' },
+      { label: '  > Projects       â†’ click to open projects/', appId: 'projects' },
+      { label: '  > Certifications â†’ click to open certs.csv', appId: 'certs' },
+      { label: '  > Skills         â†’ click to open skills.ini', appId: 'skills' },
+      { label: '  > Socials        â†’ click to open socials.db', appId: 'socials' },
+      { label: '  > Resume         â†’ click to download resume.pdf', download: '/resume.pdf' },
+      { label: '  > Terminal       â†’ click to open terminal', appId: 'terminal' },
+      { label: '  > Snake          → click to open snake', appId: 'snake' },
+      { label: '  > Paint          → click to open paint.sh', appId: 'paint' },
     ],
     linesAfter: [
       '',
@@ -105,14 +107,14 @@ export const portfolioData = {
   neofetch: {
     title: 'xterm',
     ascii: [
-      '    ██████████████',
-      '   ████░░░░░░░████',
-      '  ████░░░░░░░░████',
-      '  ████░░░░░░░░████',
-      '  ████░░░░░░░░████',
-      '  ████░░░░░░░░████',
-      '   ████░░░░░░████',
-      '    ██████████████',
+      '    â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ',
+      '   â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆ',
+      '  â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆ',
+      '  â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆ',
+      '  â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆ',
+      '  â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆ',
+      '   â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘â–‘â–ˆâ–ˆâ–ˆâ–ˆ',
+      '    â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ',
     ],
     rows: [
       ['OS', 'SunOS 5.11 (Solaris)'],
@@ -123,7 +125,7 @@ export const portfolioData = {
       ['WM', 'dtwm'],
       ['Theme', 'CDE Default'],
       ['Role', 'Blue Team / Defensive Sec'],
-      ['Focus', 'Linux · Networking · SecOps'],
+      ['Focus', 'Linux Â· Networking Â· SecOps'],
       ['Status', '[ACTIVE] Open to work'],
     ],
   },
@@ -132,7 +134,7 @@ export const portfolioData = {
     toolbar: ['File', 'Edit', 'Help'],
     lines: [
       'Name:     Benedikt Wiesner',
-      'Role:     IT Apprentice — Application Development',
+      'Role:     IT Apprentice â€” Application Development',
       'Location: Munich, Germany',
       '',
       'About:',
@@ -237,7 +239,7 @@ export const portfolioData = {
         ],
       },
       {
-        name: 'Defensive Security — Google Cybersecurity Certificate',
+        name: 'Defensive Security â€” Google Cybersecurity Certificate',
         lines: [
           'Security frameworks (NIST CSF, CIA triad)',
           'SIEM concepts and log analysis (Splunk)',
@@ -252,7 +254,7 @@ export const portfolioData = {
         ],
       },
       {
-        name: 'Offensive Security — PNPT / TCM Security',
+        name: 'Offensive Security â€” PNPT / TCM Security',
         lines: [
           'Passive and active reconnaissance',
           'OSINT techniques',
@@ -286,7 +288,32 @@ export const portfolioData = {
     banner: 'CDE xterm - 0xbene',
     hint: 'Type help for available commands.',
     help: ['whoami', 'ls', 'cat [file]', 'cd', 'help', 'clear', 'neofetch', 'nmap contacts', 'skills --verbose', 'open [app]', 'reset desktop'],
-    files: ['README.md', 'about.txt', 'socials.db', 'certs.csv', 'projects/', 'skills.ini', 'welcome.txt'],
+    files: ['README.md', 'about.txt', 'socials.db', 'certs.csv', 'projects/', 'skills.ini', 'welcome.txt', 'snake', 'paint.sh', 'free-wifi.sh'],
+  },
+  snake: {
+    title: 'snake - game',
+    scoreLabel: 'SCORE:',
+    gameOver: 'GAME OVER — Press ENTER to restart',
+    cellSize: 20,
+    boardSize: 400,
+  },
+  paint: {
+    title: 'paint.sh - CDE Paint',
+    tools: [
+      { id: 'pencil', label: 'Pencil' },
+      { id: 'eraser', label: 'Eraser' },
+      { id: 'fill', label: 'Fill' },
+      { id: 'line', label: 'Line' },
+      { id: 'rectangle', label: 'Rectangle' },
+      { id: 'circle', label: 'Circle' },
+    ],
+    colors: ['#000000', '#ffffff', '#ff0000', '#00aa00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff', '#800000', '#006600', '#000080', '#404040', '#c0c0c0', '#ff8800', '#800080', '#7a4a20'],
+    sizes: [
+      { id: 'S', label: 'S', value: 2 },
+      { id: 'M', label: 'M', value: 6 },
+      { id: 'L', label: 'L', value: 14 },
+    ],
+    clearLabel: 'CLR',
   },
   desktopIcons: [
     { id: 'projects', label: 'projects/', appId: 'projects', icon: 'folder' },
@@ -296,6 +323,9 @@ export const portfolioData = {
     { id: 'skills', label: 'skills.ini', appId: 'skills', icon: 'skills' },
     { id: 'terminal', label: 'terminal', appId: 'terminal', icon: 'terminal' },
     { id: 'welcome', label: 'welcome.txt', appId: 'motd', icon: 'welcome' },
+    { id: 'snake', label: 'snake', appId: 'snake', icon: 'snake' },
+    { id: 'paint', label: 'paint.sh', appId: 'paint', icon: 'paint' },
+    { id: 'free-wifi', label: 'free-wifi.sh', action: 'kernelPanic', icon: 'freeWifi' },
   ],
   bootLines: [
     'SunOS Release 5.8 Version Generic_108528-29 64-bit',
@@ -373,4 +403,21 @@ export const windowDefinitions = [
     position: { x: 130, y: 130 },
     size: { width: 720, height: 420 },
   },
+  {
+    id: 'snake',
+    title: 'snake - game',
+    component: 'snake',
+    position: { x: 240, y: 90 },
+    size: { width: 420, height: 460 },
+    fixedSize: true,
+  },
+  {
+    id: 'paint',
+    title: 'paint.sh - CDE Paint',
+    component: 'paint',
+    position: { x: 180, y: 80 },
+    size: { width: 600, height: 500 },
+  },
 ]
+
+

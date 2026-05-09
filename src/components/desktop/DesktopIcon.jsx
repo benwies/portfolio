@@ -3,6 +3,9 @@ import { useWindowStore } from '../../store/windowStore'
 import addressbookIcon from '../../assets/cde-icons/netscape_addressbook.png'
 import folderIcon from '../../assets/cde-icons/folder.png'
 import settingsIcon from '../../assets/cde-icons/settings.png'
+import snakeIcon from '../../assets/cde-icons/snake.png'
+import paintIcon from '../../assets/cde-icons/paint.png'
+import freeWifiIcon from '../../assets/cde-icons/free_wifi.png'
 import spreadsheetIcon from '../../assets/cde-icons/oo_spreadsheet.png'
 import terminalIcon from '../../assets/cde-icons/terminal.png'
 import textIcon from '../../assets/cde-icons/text.png'
@@ -15,6 +18,9 @@ const iconFiles = {
   terminal: terminalIcon,
   text: textIcon,
   welcome: textIcon,
+  snake: snakeIcon,
+  paint: paintIcon,
+  freeWifi: freeWifiIcon,
 }
 
 const iconWidth = 84
@@ -96,7 +102,7 @@ function findIconAtCell(icons, targetCell, currentIconId) {
   })
 }
 
-function DesktopIcon({ icon, index, icons }) {
+function DesktopIcon({ icon, index, icons, onKernelPanic = () => {} }) {
   const [position, setPosition] = useState(() => gridToPosition(loadGridCell(icon, index)))
   const dragRef = useRef(null)
   const openWindow = useWindowStore((state) => state.openWindow)
@@ -165,7 +171,7 @@ function DesktopIcon({ icon, index, icons }) {
       type="button"
       className="desktop-icon"
       style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
-      onDoubleClick={() => openWindow(icon.appId)}
+      onDoubleClick={() => (icon.action === 'kernelPanic' ? onKernelPanic() : openWindow(icon.appId))}
       onPointerDown={startPointer}
       onPointerMove={movePointer}
       onPointerUp={endPointer}
