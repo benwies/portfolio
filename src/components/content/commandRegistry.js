@@ -10,6 +10,13 @@ export const runCommand = ({ command, cwd, setCwd }) => {
 
   if (!trimmed) return { lines: [] }
   if (base === 'clear') return { clear: true }
+  if (base === 'reset' && args[0] === 'desktop') {
+    Object.keys(localStorage)
+      .filter((key) => key.startsWith('icon_pos_'))
+      .forEach((key) => localStorage.removeItem(key))
+    window.location.reload()
+    return { lines: ['desktop icon positions reset'] }
+  }
   if (base === 'whoami') return { lines: [portfolioData.identity.user] }
   if (base === 'pwd') return { lines: [cwd] }
   if (base === 'help') return { lines: portfolioData.terminal.help }
@@ -32,9 +39,9 @@ export const runCommand = ({ command, cwd, setCwd }) => {
       lines: [
         '        .          benedikt@0xbene',
         '       / \\         ---------------',
-        '      /___\\        OS: Solaris/CDE inspired',
+        '      /___\\        OS: SunOS 5.11 (Solaris)',
         '     /     \\       WM: dtwm',
-        '    /_______\\      Shell: sh',
+        '    /_______\\      Shell: /bin/ksh',
       ],
     }
   }

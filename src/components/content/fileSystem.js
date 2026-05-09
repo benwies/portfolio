@@ -16,6 +16,13 @@ export const readFile = (name) => {
       ...portfolioData.motd.links.map((link) => link.label),
       ...portfolioData.motd.linesAfter,
     ],
+    'welcome.txt': [
+      ...portfolioData.motd.linesBefore,
+      ...portfolioData.motd.links.map((link) => link.label),
+      ...portfolioData.motd.linesAfter,
+    ],
+    'notes.txt': ['// TODO: Add notes'],
+    'snake.exe': ['// TODO: Add snake.exe'],
     'about.txt': portfolioData.about.lines,
     'socials.db': [
       '// TODO: Add social links',

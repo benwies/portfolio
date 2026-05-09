@@ -13,8 +13,9 @@ const centeredPosition = (windowItem) => {
   if (typeof window === 'undefined') return windowItem.position
 
   if (windowItem.id === 'neofetch') {
+    const x = Math.round(window.innerWidth * 0.6)
     return {
-      x: Math.max(160, Math.round(window.innerWidth * 0.6)),
+      x: Math.max(120, Math.min(x, window.innerWidth - windowItem.size.width - 24)),
       y: 40,
     }
   }

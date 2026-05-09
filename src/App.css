@@ -44,16 +44,18 @@
 }
 
 .desktop-icons {
-  position: relative;
+  position: absolute;
+  inset: 0 0 64px 0;
   z-index: 5;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 80px;
-  padding: 16px 12px;
+  width: auto;
+  padding: 0;
+  pointer-events: none;
 }
 
 .desktop-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: grid;
   grid-template-rows: 76px auto;
   justify-items: center;
@@ -67,6 +69,9 @@
   border: 0;
   font: inherit;
   cursor: default;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
 }
 
 .desktop-icon:focus-visible {
@@ -89,6 +94,36 @@
   height: 64px;
   object-fit: contain;
   image-rendering: auto;
+}
+
+.trash-icon {
+  position: fixed;
+  right: 20px;
+  bottom: 72px;
+  z-index: 20;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: 80px;
+  padding: 2px;
+  background: transparent;
+  border: 0;
+  color: #ffffff;
+  font: inherit;
+  text-shadow: 1px 1px 0 #000000;
+}
+
+.trash-icon__glyph {
+  width: 64px;
+  height: 64px;
+}
+
+.trash-icon__label {
+  max-width: 80px;
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .desktop-icon__label {
@@ -513,6 +548,82 @@
   line-height: 1.35;
 }
 
+.widget-stack {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.desktop-widget {
+  width: 130px;
+  color: #ffffff;
+  background: #2a3a3a;
+  border: 2px solid #5f9ea0;
+  font-family: 'Courier New', monospace;
+}
+
+.clock-widget {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 8px;
+}
+
+.clock-face {
+  width: 96px;
+  height: 96px;
+}
+
+.clock-face circle {
+  fill: #c8b8a8;
+  stroke: #ddeeff;
+  stroke-width: 3;
+}
+
+.clock-face path,
+.clock-face line {
+  stroke: #101818;
+  stroke-linecap: square;
+  stroke-width: 3;
+  transform-origin: 50px 50px;
+}
+
+.clock-face .clock-second {
+  stroke: #5f0000;
+  stroke-width: 2;
+}
+
+.widget-value {
+  font: 700 13px 'Courier New', monospace;
+}
+
+.compact-widget {
+  display: grid;
+  gap: 3px;
+  padding: 8px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.compact-widget strong {
+  color: #c8d8c8;
+}
+
+.trash-window {
+  display: grid;
+  place-items: center;
+  background: var(--window-inner);
+}
+
+.trash-empty {
+  color: #000000;
+  font: 700 14px 'Courier New', monospace;
+}
+
 .neofetch-grid {
   display: grid;
   grid-template-columns: 210px minmax(0, 1fr);
@@ -612,8 +723,8 @@
   }
 
   .desktop-icons {
-    width: 80px;
-    padding: 12px 8px;
+    width: auto;
+    padding: 0;
   }
 
   .desktop-icon {
