@@ -7,7 +7,7 @@ const initialWindows = windowDefinitions.map((windowDef, index) => ({
   isMinimized: false,
   isFocused: false,
   animation: null,
-  zIndex: 10 + index,
+  zIndex: 100 + index,
 }))
 
 const centeredPosition = (windowItem) => {
@@ -42,7 +42,7 @@ export const useWindowStore = create((set, get) => ({
             height: config.size.height ?? config.size.h,
           }
         : null
-      const topZ = Math.max(...state.windows.map((windowItem) => windowItem.zIndex), 10) + 1
+      const topZ = Math.max(...state.windows.map((windowItem) => windowItem.zIndex), 99) + 1
       return {
         windows: state.windows.map((windowItem) => {
           if (windowItem.id !== id) {
@@ -61,7 +61,7 @@ export const useWindowStore = create((set, get) => ({
             animation: windowItem.isOpen && windowItem.isMinimized ? 'restoring' : null,
             position: config.position ?? centeredPosition({ ...windowItem, size: nextSize }),
             size: nextSize,
-            zIndex: config.zIndex ?? topZ,
+            zIndex: config.zIndex !== undefined ? 100 + config.zIndex : topZ,
           }
         }),
       }
@@ -93,7 +93,7 @@ export const useWindowStore = create((set, get) => ({
       })),
     })),
   focusWindow: (id) => {
-    const topZ = Math.max(...get().windows.map((windowItem) => windowItem.zIndex), 10) + 1
+    const topZ = Math.max(...get().windows.map((windowItem) => windowItem.zIndex), 99) + 1
     set((state) => ({
       windows: state.windows.map((windowItem) => ({
         ...windowItem,

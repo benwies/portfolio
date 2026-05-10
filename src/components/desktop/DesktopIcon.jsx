@@ -50,6 +50,20 @@ const defaultCells = {
   pnptprep: { col: 1, row: 3 },
   calculator: { col: 1, row: 4 },
 }
+const startupPositions = {
+  projects: { x: 16, y: 16 },
+  about: { x: 16, y: 144 },
+  socials: { x: 16, y: 272 },
+  certs: { x: 16, y: 400 },
+  terminal: { x: 16, y: 528 },
+  skills: { x: 16, y: 656 },
+  welcome: { x: 16, y: 784 },
+  snake: { x: 136, y: 8 },
+  freewifi: { x: 136, y: 136 },
+  paint: { x: 136, y: 264 },
+  pnptprep: { x: 136, y: 392 },
+  calculator: { x: 136, y: 520 },
+}
 
 const clamp = (value, min, max) => Math.max(min, Math.min(value, max))
 const cellKey = (cell) => `${cell.col}:${cell.row}`
@@ -109,8 +123,23 @@ function loadGridCell(icon, index) {
   }
 }
 
+function loadIconPosition(icon, index) {
+  const stored = localStorage.getItem(storageKey(icon.id))
+  if (stored) return gridToPosition(loadGridCell(icon, index))
+
+  return clampPosition(startupPositions[icon.id] ?? gridToPosition(defaultCells[icon.id] ?? { col: 0, row: index }))
+}
+
 function saveGridCell(iconId, cell) {
   localStorage.setItem(storageKey(iconId), JSON.stringify(clampCell(cell)))
+}
+
+function clearGridCell(iconId) {
+  localStorage.removeItem(storageKey(iconId))
+}
+
+function hasStoredGridCell(iconId) {
+  return localStorage.getItem(storageKey(iconId)) !== null
 }
 
 function isInsideWidgetZone(position) {
@@ -197,6 +226,32 @@ function sanitizeStoredCells(icons) {
   }
 }
 
+function resetIconPositions(icons) {
+  const desiredPositions = {}
+
+  icons.forEach((item, itemIndex) => {
+    clearGridCell(item.id)
+    desiredPositions[item.id] = clampPosition(startupPositions[item.id] ?? gridToPosition(defaultCells[item.id] ?? { col: 0, row: itemIndex }))
+  })
+
+  const updates = {}
+  const occupied = new Set()
+
+  Object.entries(desiredPositions).forEach(([iconId, desiredPosition]) => {
+    const desiredCell = positionToGrid(desiredPosition)
+    const key = cellKey(desiredCell)
+    const needsGridFallback = occupied.has(key) || isInsideWidgetZone(desiredPosition)
+    const position = needsGridFallback
+      ? gridToPosition(findAvailableCell(desiredCell, occupied))
+      : desiredPosition
+
+    occupied.add(cellKey(positionToGrid(position)))
+    updates[iconId] = { position }
+  })
+
+  window.dispatchEvent(new CustomEvent(iconGridEvent, { detail: updates }))
+}
+
 function findIconAtCell(icons, targetCell, currentIconId) {
   return icons.find((item, itemIndex) => {
     if (item.id === currentIconId) return false
@@ -205,14 +260,22 @@ function findIconAtCell(icons, targetCell, currentIconId) {
 }
 
 function DesktopIcon({ icon, index, icons, onKernelPanic = () => {} }) {
-  const [position, setPosition] = useState(() => gridToPosition(loadGridCell(icon, index)))
+  const [position, setPosition] = useState(() => loadIconPosition(icon, index))
   const dragRef = useRef(null)
+  const previousViewportWidth = useRef(window.innerWidth)
   const openWindow = useWindowStore((state) => state.openWindow)
 
   useEffect(() => {
     const handleGridUpdate = (event) => {
-      const nextCell = event.detail?.[icon.id]
-      if (nextCell) setPosition(gridToPosition(nextCell))
+      const update = event.detail?.[icon.id]
+      if (!update) return
+
+      if (update.position) {
+        setPosition(update.position)
+        return
+      }
+
+      setPosition(gridToPosition(update))
     }
 
     window.addEventListener(iconGridEvent, handleGridUpdate)
@@ -220,10 +283,27 @@ function DesktopIcon({ icon, index, icons, onKernelPanic = () => {} }) {
   }, [icon.id])
 
   useEffect(() => {
+    if (!icons.some((item) => hasStoredGridCell(item.id))) {
+      window.setTimeout(() => resetIconPositions(icons), 0)
+    }
+  }, [icons])
+
+  useEffect(() => {
     let timer
     const handleResize = () => {
       window.clearTimeout(timer)
-      timer = window.setTimeout(() => sanitizeStoredCells(icons), resizeDebounce)
+      timer = window.setTimeout(() => {
+        const nextWidth = window.innerWidth
+        const grew = nextWidth > previousViewportWidth.current
+        previousViewportWidth.current = nextWidth
+
+        if (grew) {
+          resetIconPositions(icons)
+          return
+        }
+
+        sanitizeStoredCells(icons)
+      }, resizeDebounce)
     }
 
     window.addEventListener('resize', handleResize)
