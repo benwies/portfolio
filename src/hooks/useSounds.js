@@ -376,7 +376,7 @@ export const startAmbientNoise = () => {
 
     const masterGain = ac.createGain()
     masterGain.gain.setValueAtTime(0, ac.currentTime)
-    masterGain.gain.linearRampToValueAtTime(0.018, ac.currentTime + 4)
+    masterGain.gain.linearRampToValueAtTime(0.024, ac.currentTime + 4)
 
     const scheduleHDDTick = () => {
       const tickDelay = 2000 + Math.random() * 3000
