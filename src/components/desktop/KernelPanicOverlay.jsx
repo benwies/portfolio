@@ -1,6 +1,11 @@
 import { useEffect } from 'react'
+import { playBiosBeep } from '../../hooks/useSounds'
 
 function KernelPanicOverlay({ onDismiss }) {
+  useEffect(() => {
+    playBiosBeep()
+  }, [])
+
   useEffect(() => {
     window.addEventListener('keydown', onDismiss)
     window.addEventListener('mousedown', onDismiss)
