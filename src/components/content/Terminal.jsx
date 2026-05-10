@@ -62,8 +62,15 @@ export default function Terminal({ initialCommand }) {
     }
   }
 
+  const handleTerminalClick = (event) => {
+    const selection = window.getSelection?.()
+    if (selection?.toString()) return
+    if (event.target instanceof Element && event.target.closest('.terminal-lines')) return
+    inputRef.current?.focus()
+  }
+
   return (
-    <div className="terminal" onClick={() => inputRef.current?.focus()}>
+    <div className="terminal" onClick={handleTerminalClick}>
       <div className="terminal-lines">
         {lines.map((line, index) => (
           <div key={`${line}-${index}`} className="terminal-line">

@@ -945,12 +945,16 @@
   background: #000000;
   color: var(--terminal-text);
   font-family: 'Courier New', monospace;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .terminal-lines {
   flex: 1;
   overflow: auto;
   white-space: pre-wrap;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .terminal-line,
@@ -958,6 +962,11 @@
   min-height: 20px;
   font-size: 14px;
   line-height: 1.35;
+}
+
+.terminal-line {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .terminal-form {
