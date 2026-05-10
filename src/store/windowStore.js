@@ -32,6 +32,8 @@ const centeredPosition = (windowItem) => {
 export const useWindowStore = create((set, get) => ({
   windows: initialWindows,
   bootComplete: false,
+  activeWorkspace: 1,
+  setActiveWorkspace: (activeWorkspace) => set({ activeWorkspace }),
   openWindow: (request) =>
     set((state) => {
       const config = typeof request === 'string' ? { id: request } : request

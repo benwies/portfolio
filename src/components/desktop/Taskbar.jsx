@@ -11,10 +11,10 @@ import { useWindowStore } from '../../store/windowStore'
 import { CdeIcon } from './DesktopIcon'
 
 const visualWorkspaces = [
-  { name: 'One', label: 'One' },
-  { name: 'Two', label: 'Two' },
-  { name: 'Three', label: 'Three' },
-  { name: 'Four', label: 'Four' },
+  { id: 1, label: 'One' },
+  { id: 2, label: 'Two' },
+  { id: 3, label: 'Three' },
+  { id: 4, label: 'Four' },
 ]
 
 function formatClock(date) {
@@ -38,6 +38,8 @@ function Taskbar() {
   const windows = useWindowStore((state) => state.windows)
   const openWindow = useWindowStore((state) => state.openWindow)
   const requestMinimizeWindow = useWindowStore((state) => state.requestMinimizeWindow)
+  const activeWorkspace = useWindowStore((state) => state.activeWorkspace)
+  const setActiveWorkspace = useWindowStore((state) => state.setActiveWorkspace)
   const visibleInTaskbar = windows.filter((windowItem) => windowItem.isOpen)
 
   useEffect(() => {
@@ -130,12 +132,12 @@ function Taskbar() {
       </nav>
 
       <div className="front-panel__workspace" aria-label={portfolioData.ui.workspaceLabel}>
-        {visualWorkspaces.map((workspace, index) => (
+        {visualWorkspaces.map((workspace) => (
           <button
-            key={workspace.name}
+            key={workspace.id}
             type="button"
-            className={index === 0 ? 'front-panel__workspace-cell is-active' : 'front-panel__workspace-cell'}
-            tabIndex={-1}
+            className={activeWorkspace === workspace.id ? 'front-panel__workspace-cell is-active' : 'front-panel__workspace-cell'}
+            onClick={() => setActiveWorkspace(workspace.id)}
           >
             {workspace.label}
           </button>

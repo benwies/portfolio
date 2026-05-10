@@ -215,6 +215,7 @@
   pointer-events: none;
   background: var(--desktop-bg);
   filter: url(#desktop-noise);
+  transition: background 400ms ease;
 }
 
 .desktop-windows {
@@ -529,6 +530,7 @@
 }
 
 .front-panel__workspace-cell.is-active {
+  color: #ffffff;
   background: #7090a0;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
@@ -1796,7 +1798,7 @@
 }
 
 .mobile-view {
-  --desktop-bg: #6e8b8b;
+  --mobile-desktop-bg: #6e8b8b;
   --chrome-bg: #5f9ea0;
   --body-bg: #c8b8a8;
   --button-face: #9fbfcf;
@@ -1807,10 +1809,11 @@
   overflow: hidden;
   background:
     radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    var(--desktop-bg);
+    var(--mobile-desktop-bg);
   background-size: 4px 4px;
   color: #000000;
   font-family: 'Courier New', monospace;
+  transition: background 400ms ease;
 }
 
 .mobile-topbar {
@@ -1893,7 +1896,7 @@
   font: 700 12px 'Courier New', monospace;
 }
 
-.mobile-taskbar span {
+.mobile-taskbar button {
   display: grid;
   place-items: center;
   color: #ffffff;
@@ -1901,6 +1904,19 @@
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  font: 700 9px 'Courier New', monospace;
+  color: #000000;
+  min-width: 32px;
+  margin: 0;
+  padding: 4px 8px;
+  text-align: center;
+  user-select: none;
+}
+
+.mobile-taskbar button.is-active {
+  color: #ffffff;
+  background: #7090a0;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
 .mobile-window {

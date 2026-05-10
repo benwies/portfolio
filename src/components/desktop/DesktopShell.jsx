@@ -30,6 +30,12 @@ const fakeTerminalLines = [
 
 const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 const idleTimeout = 90000
+const workspaceColors = {
+  1: '#6E8B8B',
+  2: '#4A6B5A',
+  3: '#4A5A7A',
+  4: '#5A4A6B',
+}
 
 function createFakeTerminal(index) {
   const width = randomBetween(260, 380)
@@ -46,6 +52,7 @@ function createFakeTerminal(index) {
 
 function DesktopShell({ children }) {
   const bootComplete = useWindowStore((state) => state.bootComplete)
+  const activeWorkspace = useWindowStore((state) => state.activeWorkspace)
   const [panicState, setPanicState] = useState('idle')
   const [fakeTerminals, setFakeTerminals] = useState([])
   const [menu, setMenu] = useState(null)
@@ -135,7 +142,11 @@ function DesktopShell({ children }) {
             onClick={closeMenu}
             onContextMenu={handleContextMenu}
           >
-            <div className="desktop-bg" aria-hidden="true" />
+            <div
+              className="desktop-bg"
+              style={{ background: workspaceColors[activeWorkspace] }}
+              aria-hidden="true"
+            />
             <nav className="desktop-icons" aria-label="Desktop icons">
               {portfolioData.desktopIcons.map((icon, index) => (
                 <DesktopIcon

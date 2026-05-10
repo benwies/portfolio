@@ -9,6 +9,21 @@ import MobileSocials from './content/MobileSocials'
 import MobileTerminal from './content/MobileTerminal'
 import MobileWarningDialog from './MobileWarningDialog'
 import MobileWindow from './MobileWindow'
+import { useWindowStore } from '../../store/windowStore'
+
+const workspaceColors = {
+  1: '#6E8B8B',
+  2: '#4A6B5A',
+  3: '#4A5A7A',
+  4: '#5A4A6B',
+}
+
+const mobileWorkspaces = [
+  { id: 1, label: 'One' },
+  { id: 2, label: 'Two' },
+  { id: 3, label: 'Three' },
+  { id: 4, label: 'Four' },
+]
 
 const formatClock = (date) =>
   new Intl.DateTimeFormat('en-GB', {
@@ -43,10 +58,20 @@ function MobileTopBar() {
 }
 
 function MobileTaskbar() {
+  const activeWorkspace = useWindowStore((state) => state.activeWorkspace)
+  const setActiveWorkspace = useWindowStore((state) => state.setActiveWorkspace)
+
   return (
     <footer className="mobile-taskbar">
-      {portfolioData.mobile.workspaces.map((workspace) => (
-        <span key={workspace}>{workspace}</span>
+      {mobileWorkspaces.map((workspace) => (
+        <button
+          key={workspace.id}
+          type="button"
+          className={activeWorkspace === workspace.id ? 'is-active' : ''}
+          onClick={() => setActiveWorkspace(workspace.id)}
+        >
+          {workspace.label}
+        </button>
       ))}
     </footer>
   )
@@ -72,11 +97,15 @@ function MobileIconGrid({ onOpen }) {
 
 function MobileView({ onContinueWarning, showWarning }) {
   const [openAppId, setOpenAppId] = useState(null)
+  const activeWorkspace = useWindowStore((state) => state.activeWorkspace)
   const openApp = mobileApps.find((app) => app.id === openAppId)
   const Content = openApp?.Content
 
   return (
-    <main className="mobile-view">
+    <main
+      className="mobile-view"
+      style={{ '--mobile-desktop-bg': workspaceColors[activeWorkspace] }}
+    >
       <MobileTopBar />
       <MobileIconGrid onOpen={setOpenAppId} />
       <MobileTaskbar />
