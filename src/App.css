@@ -46,6 +46,26 @@
 
 }
 
+.audio-start-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 999999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100svh;
+  padding: 0;
+  color: #ffffff;
+  background: #000000;
+  border: 0;
+  font: 14px 'Courier New', monospace;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  text-align: center;
+  animation: blink 1.2s step-end infinite;
+}
+
 .crt-wrapper {
   width: 100vw;
   min-height: 100vh;
@@ -1470,6 +1490,17 @@
 @keyframes cde-cursor {
   50% {
     opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 0.1;
   }
 }
 

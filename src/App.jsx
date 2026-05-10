@@ -39,6 +39,7 @@ const windowComponents = {
 }
 
 function App() {
+  const [audioUnlocked, setAudioUnlocked] = useState(false)
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
   const [warningDismissed, setWarningDismissed] = useState(
     () => sessionStorage.getItem('mobile_warning_dismissed') === 'true',
@@ -55,23 +56,14 @@ function App() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  useEffect(() => {
-    const events = ['click', 'keydown', 'touchstart', 'mousedown']
-    const handleUnlock = () => {
-      unlockAudio()
-      events.forEach((eventName) => document.removeEventListener(eventName, handleUnlock))
-    }
-
-    events.forEach((eventName) => document.addEventListener(eventName, handleUnlock))
-
-    return () => {
-      events.forEach((eventName) => document.removeEventListener(eventName, handleUnlock))
-    }
-  }, [])
-
   const handleWarningDismiss = () => {
     sessionStorage.setItem('mobile_warning_dismissed', 'true')
     setWarningDismissed(true)
+  }
+
+  const handleAudioUnlock = () => {
+    unlockAudio()
+    setAudioUnlocked(true)
   }
 
   useEffect(() => {
@@ -138,6 +130,14 @@ function App() {
       window.clearTimeout(motdTimer)
     }
   }, [bootComplete, isMobile, openWindow])
+
+  if (!audioUnlocked) {
+    return (
+      <button type="button" className="audio-start-gate" onClick={handleAudioUnlock}>
+        CLICK ANYWHERE TO START
+      </button>
+    )
+  }
 
   if (isMobile) {
     if (!bootComplete) return <BootSequence />

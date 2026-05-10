@@ -52,26 +52,43 @@ export const playKeyClick = () => play(() => {
   const ac = getCtx()
   if (!ac) return
 
-  const buffer = ac.createBuffer(1, ac.sampleRate * 0.06, ac.sampleRate)
-  const data = buffer.getChannelData(0)
-  for (let index = 0; index < data.length; index += 1) {
+  const bodyBuffer = ac.createBuffer(1, ac.sampleRate * 0.05, ac.sampleRate)
+  const bodyData = bodyBuffer.getChannelData(0)
+  for (let index = 0; index < bodyData.length; index += 1) {
     const time = index / ac.sampleRate
-    data[index] = Math.sin(2 * Math.PI * 120 * time) * Math.exp(-time * 80) * 0.4
+    bodyData[index] = Math.sin(2 * Math.PI * 150 * time) * Math.exp(-time * 60) * 0.5
   }
 
-  const source = ac.createBufferSource()
-  const filter = ac.createBiquadFilter()
-  const gain = ac.createGain()
-  source.buffer = buffer
-  filter.type = 'lowpass'
-  filter.frequency.value = 800
-  filter.Q.value = 0.5
-  gain.gain.setValueAtTime(0.18, ac.currentTime)
-  gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.06)
-  source.connect(filter)
-  filter.connect(gain)
-  gain.connect(ac.destination)
-  source.start()
+  const clickBuffer = ac.createBuffer(1, ac.sampleRate * 0.015, ac.sampleRate)
+  const clickData = clickBuffer.getChannelData(0)
+  for (let index = 0; index < clickData.length; index += 1) {
+    const time = index / ac.sampleRate
+    clickData[index] = (Math.random() * 2 - 1) * Math.exp(-time * 400) * 0.8
+  }
+
+  const bodySource = ac.createBufferSource()
+  const bodyGain = ac.createGain()
+  bodySource.buffer = bodyBuffer
+  bodyGain.gain.setValueAtTime(0.20, ac.currentTime)
+  bodyGain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.05)
+
+  const clickSource = ac.createBufferSource()
+  const clickFilter = ac.createBiquadFilter()
+  const clickGain = ac.createGain()
+  clickSource.buffer = clickBuffer
+  clickFilter.type = 'bandpass'
+  clickFilter.frequency.value = 3000
+  clickFilter.Q.value = 1.5
+  clickGain.gain.setValueAtTime(0.12, ac.currentTime)
+  clickGain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.015)
+
+  bodySource.connect(bodyGain)
+  bodyGain.connect(ac.destination)
+  clickSource.connect(clickFilter)
+  clickFilter.connect(clickGain)
+  clickGain.connect(ac.destination)
+  bodySource.start()
+  clickSource.start()
 })
 
 export const playWindowOpen = () => play(() => {
