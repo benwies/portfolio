@@ -193,47 +193,6 @@ export const playWindowClose = () => play(() => {
   oscillator.stop(ac.currentTime + 0.14)
 })
 
-export const playDiskActivity = () => play(() => {
-  const ac = getCtx()
-  if (!ac) return
-
-  const seekCount = 2 + Math.floor(Math.random() * 3)
-  for (let seekIndex = 0; seekIndex < seekCount; seekIndex += 1) {
-    const offset = seekIndex * 0.018
-    const buffer = ac.createBuffer(1, ac.sampleRate * 0.012, ac.sampleRate)
-    const data = buffer.getChannelData(0)
-
-    for (let index = 0; index < data.length; index += 1) {
-      const time = index / ac.sampleRate
-      data[index] = (
-        (Math.random() * 2 - 1)
-        * Math.exp(-time * 300)
-        * (0.6 + Math.random() * 0.4)
-      )
-    }
-
-    const source = ac.createBufferSource()
-    const filter = ac.createBiquadFilter()
-    const shelf = ac.createBiquadFilter()
-    const gain = ac.createGain()
-    source.buffer = buffer
-    filter.type = 'bandpass'
-    filter.frequency.value = 900 + Math.random() * 600
-    filter.Q.value = 2
-    shelf.type = 'lowshelf'
-    shelf.frequency.value = 400
-    shelf.gain.value = 6
-    gain.gain.setValueAtTime(0.09, ac.currentTime + offset)
-    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + offset + 0.012)
-
-    source.connect(filter)
-    filter.connect(shelf)
-    shelf.connect(gain)
-    gain.connect(ac.destination)
-    source.start(ac.currentTime + offset)
-  }
-})
-
 export const playMouseClick = () => play(() => {
   const ac = getCtx()
   if (!ac) return
