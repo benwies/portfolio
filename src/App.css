@@ -939,8 +939,24 @@
   gap: 6px;
 }
 
+.terminal-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.terminal-input-wrap.is-empty.is-focused::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #ffffff;
+  content: '_';
+  animation: terminal-cursor-blink 800ms step-end infinite;
+}
+
 .terminal-form input {
   flex: 1;
+  width: 100%;
   min-width: 0;
   color: var(--terminal-text);
   caret-color: #ffffff;
@@ -948,6 +964,18 @@
   border: 0;
   outline: 0;
   font-family: 'Courier New', monospace;
+}
+
+@keyframes terminal-cursor-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .neofetch-window {

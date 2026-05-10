@@ -13,6 +13,7 @@ export default function Terminal({ initialCommand }) {
   const initialPrompt = `${portfolioData.identity.user}@${portfolioData.identity.host}:~$`
   const [cwd, setCwd] = useState(defaultCwd)
   const [input, setInput] = useState('')
+  const [isFocused, setIsFocused] = useState(false)
   const [lines, setLines] = useState(() => {
     if (!initialCommand) return initialLines
     const result = runCommand({ command: initialCommand, cwd: defaultCwd, setCwd: () => {} })
@@ -65,14 +66,23 @@ export default function Terminal({ initialCommand }) {
       </div>
       <form className="terminal-form" onSubmit={submit}>
         <span>{prompt}</span>
-        <input
-          ref={inputRef}
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          onKeyDown={handleKeyDown}
-          aria-label={portfolioData.ui.terminalCommandLabel}
-          autoComplete="off"
-        />
+        <span className={[
+          'terminal-input-wrap',
+          input ? '' : 'is-empty',
+          isFocused ? 'is-focused' : '',
+        ].filter(Boolean).join(' ')}
+        >
+          <input
+            ref={inputRef}
+            value={input}
+            onBlur={() => setIsFocused(false)}
+            onChange={(event) => setInput(event.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onKeyDown={handleKeyDown}
+            aria-label={portfolioData.ui.terminalCommandLabel}
+            autoComplete="off"
+          />
+        </span>
       </form>
     </div>
   )
