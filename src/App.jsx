@@ -76,11 +76,11 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const color = workspaceColors[activeWorkspace]
+    const color = bootComplete ? workspaceColors[activeWorkspace] : '#000000'
     document.body.style.backgroundColor = color
     document.documentElement.style.backgroundColor = color
     document.getElementById('root')?.style.setProperty('background-color', color)
-  }, [activeWorkspace])
+  }, [activeWorkspace, bootComplete])
 
   const handleWarningDismiss = () => {
     sessionStorage.setItem('mobile_warning_dismissed', 'true')

@@ -9,14 +9,12 @@ export function BootSequence() {
   const bootComplete = useWindowStore((state) => state.bootComplete)
   const setBootComplete = useWindowStore((state) => state.setBootComplete)
   const [shownLines, setShownLines] = useState(0)
-  const [exiting, setExiting] = useState(false)
   const { bootLines, ui } = portfolioData
 
   const finishBoot = useCallback((delay = 260) => {
-    setExiting(true)
     stopBootAmbient()
     playBootSound()
-    setTimeout(() => setBootComplete(true), Math.max(delay, 500))
+    setTimeout(() => setBootComplete(true), delay)
   }, [setBootComplete])
 
   useEffect(() => {
@@ -25,7 +23,7 @@ export function BootSequence() {
   }, [])
 
   useEffect(() => {
-    if (bootComplete || exiting) return undefined
+    if (bootComplete) return undefined
     if (shownLines >= bootLines.length) {
       const doneTimer = setTimeout(() => finishBoot(), 1100)
       return () => clearTimeout(doneTimer)
@@ -33,7 +31,7 @@ export function BootSequence() {
 
     const timer = setTimeout(() => setShownLines((count) => count + 1), lineDelay)
     return () => clearTimeout(timer)
-  }, [bootComplete, bootLines.length, exiting, finishBoot, shownLines])
+  }, [bootComplete, bootLines.length, finishBoot, shownLines])
 
   useEffect(() => {
     if (bootComplete) return undefined
@@ -52,7 +50,7 @@ export function BootSequence() {
   if (bootComplete) return null
 
   return (
-    <div className={exiting ? 'boot-sequence is-exiting' : 'boot-sequence'}>
+    <div className="boot-sequence">
       <div className="boot-sequence__header">
         <span>{ui.bootTitle}</span>
         <button
