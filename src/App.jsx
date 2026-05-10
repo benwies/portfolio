@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import DesktopShell from './components/desktop/DesktopShell'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
-import CRTShutdown from './components/atmosphere/CRTShutdown'
 import CRTStartup from './components/atmosphere/CRTStartup'
 import MobileView from './components/mobile/MobileView'
 import {
@@ -40,7 +39,7 @@ const windowComponents = {
 }
 
 function App() {
-  const [showCRTStartup, setShowCRTStartup] = useState(true)
+  const [crtStartupDone, setCrtStartupDone] = useState(false)
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
   const [warningDismissed, setWarningDismissed] = useState(
     () => sessionStorage.getItem('mobile_warning_dismissed') === 'true',
@@ -63,7 +62,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (showCRTStartup || !bootComplete || isMobile) return
+    if (!crtStartupDone || !bootComplete || isMobile) return
 
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
@@ -125,10 +124,10 @@ function App() {
       window.clearTimeout(neofetchTimer)
       window.clearTimeout(motdTimer)
     }
-  }, [bootComplete, isMobile, openWindow, showCRTStartup])
+  }, [bootComplete, crtStartupDone, isMobile, openWindow])
 
-  if (showCRTStartup) {
-    return <CRTStartup onComplete={() => setShowCRTStartup(false)} />
+  if (!crtStartupDone) {
+    return <CRTStartup onComplete={() => setCrtStartupDone(true)} />
   }
 
   if (isMobile) {
@@ -142,27 +141,25 @@ function App() {
     )
   }
 
+  if (!bootComplete) return <BootSequence />
+
   return (
     <>
-      <CRTShutdown />
+      <div className="vignette-overlay" />
       <div className="crt-wrapper">
         <main className="workstation">
-          {!bootComplete ? (
-            <BootSequence />
-          ) : (
-            <DesktopShell>
-              {windows
-                .filter((windowItem) => windowItem.isOpen && !windowItem.isMinimized)
-                .map((windowItem) => {
-                  const Content = windowComponents[windowItem.component]
-                  return (
-                    <Window key={windowItem.id} windowItem={windowItem}>
-                      {Content ? <Content /> : null}
-                    </Window>
-                  )
-                })}
-            </DesktopShell>
-          )}
+          <DesktopShell>
+            {windows
+              .filter((windowItem) => windowItem.isOpen && !windowItem.isMinimized)
+              .map((windowItem) => {
+                const Content = windowComponents[windowItem.component]
+                return (
+                  <Window key={windowItem.id} windowItem={windowItem}>
+                    {Content ? <Content /> : null}
+                  </Window>
+                )
+              })}
+          </DesktopShell>
         </main>
       </div>
     </>

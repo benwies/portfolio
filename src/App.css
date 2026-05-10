@@ -44,34 +44,28 @@
     cursor: auto !important;
   }
 
-  .crt-wrapper {
-    transform: none;
-  }
-
-  .crt-wrapper::after {
-    display: none;
-  }
 }
 
 .crt-wrapper {
   position: relative;
   width: 100vw;
   min-height: 100vh;
-  transform: perspective(1200px) rotateX(0.3deg);
+  overflow: hidden;
+  transform: perspective(1800px) rotateX(0.2deg);
   transform-origin: center center;
+  animation: desktop-fadein 400ms ease-out forwards;
 }
 
-.crt-wrapper::after {
-  content: '';
+.vignette-overlay {
   position: fixed;
   inset: 0;
   z-index: 9998;
   pointer-events: none;
   background: radial-gradient(
     ellipse at 50% 50%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.20) 80%,
-    rgba(0, 0, 0, 0.35) 100%
+    transparent 60%,
+    rgba(0, 0, 0, 0.15) 85%,
+    rgba(0, 0, 0, 0.25) 100%
   );
 }
 
@@ -80,7 +74,7 @@
     transform: none;
   }
 
-  .crt-wrapper::after {
+  .vignette-overlay {
     display: none;
   }
 }
@@ -1243,23 +1237,14 @@
   height: 100%;
 }
 
-.crt-startup,
-.crt-shutdown {
+.crt-startup {
   position: fixed;
   inset: 0;
   z-index: 99999999;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.crt-startup {
   background: #000000;
-}
-
-.crt-shutdown {
-  pointer-events: none;
-  background: transparent;
 }
 
 .crt-startup-dot {
@@ -1287,29 +1272,6 @@
   height: 100vh;
   background: #ffffff;
   animation: crt-fade-black 100ms ease-in forwards;
-}
-
-.crt-shutdown-collapsing {
-  width: 100vw;
-  height: 100vh;
-  background: #ffffff;
-  animation: crt-collapse 200ms ease-in forwards;
-}
-
-.crt-shutdown-line {
-  width: 100vw;
-  height: 3px;
-  background: #ffffff;
-  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.8);
-  animation: crt-line-shrink 150ms ease-in forwards;
-}
-
-.crt-shutdown-dot {
-  width: 4px;
-  height: 3px;
-  background: #ffffff;
-  box-shadow: 0 0 12px 4px rgba(255, 255, 255, 0.9);
-  animation: crt-dot-fade 100ms ease-out forwards;
 }
 
 .workstation-about-window {
@@ -1588,37 +1550,13 @@
   }
 }
 
-@keyframes crt-collapse {
+@keyframes desktop-fadein {
   from {
-    height: 100vh;
-    opacity: 0.95;
-  }
-
-  to {
-    height: 3px;
-    opacity: 1;
-  }
-}
-
-@keyframes crt-line-shrink {
-  from {
-    width: 100vw;
-  }
-
-  to {
-    width: 4px;
-  }
-}
-
-@keyframes crt-dot-fade {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  to {
     opacity: 0;
-    transform: scale(0);
+  }
+
+  to {
+    opacity: 1;
   }
 }
 
