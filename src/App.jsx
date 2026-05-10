@@ -93,7 +93,7 @@ function App() {
 
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
-    const taskbarHeight = 64
+    const taskbarHeight = 52
     const bottomMargin = 20
     const maxWindowHeight = viewportHeight - taskbarHeight - bottomMargin * 2
     const neofetchWidth = Math.min(

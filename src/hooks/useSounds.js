@@ -5,6 +5,7 @@ let ambientNodes = null
 let ambientWanted = false
 let ambientNoiseNodes = null
 let ambientNoiseWanted = false
+let ambientNoiseTickTimer = null
 
 const getCtx = () => {
   if (typeof window === 'undefined') return null
@@ -319,42 +320,100 @@ export const startAmbientNoise = () => {
     const ac = getCtx()
     if (!ac) return
 
-    const osc1 = ac.createOscillator()
-    osc1.type = 'sine'
-    osc1.frequency.value = 50
+    const hum50 = ac.createOscillator()
+    const hum100 = ac.createOscillator()
+    const hum150 = ac.createOscillator()
+    hum50.type = 'sine'
+    hum100.type = 'sine'
+    hum150.type = 'sine'
+    hum50.frequency.value = 50
+    hum100.frequency.value = 100
+    hum150.frequency.value = 150
 
-    const bufferSize = ac.sampleRate * 4
-    const noiseBuffer = ac.createBuffer(1, bufferSize, ac.sampleRate)
-    const noiseData = noiseBuffer.getChannelData(0)
-    for (let index = 0; index < bufferSize; index += 1) {
-      noiseData[index] = Math.random() * 2 - 1
+    const humGain50 = ac.createGain()
+    const humGain100 = ac.createGain()
+    const humGain150 = ac.createGain()
+    humGain50.gain.value = 0.6
+    humGain100.gain.value = 0.25
+    humGain150.gain.value = 0.1
+
+    const fanBufferSize = ac.sampleRate * 4
+    const fanBuffer = ac.createBuffer(1, fanBufferSize, ac.sampleRate)
+    const fanData = fanBuffer.getChannelData(0)
+    let lastOut = 0
+    for (let index = 0; index < fanBufferSize; index += 1) {
+      const white = Math.random() * 2 - 1
+      lastOut = (lastOut + 0.02 * white) / 1.02
+      fanData[index] = lastOut * 3.5
     }
 
-    const noiseSource = ac.createBufferSource()
-    const noiseFilter = ac.createBiquadFilter()
+    const fanSource = ac.createBufferSource()
+    fanSource.buffer = fanBuffer
+    fanSource.loop = true
+
+    const fanFilter = ac.createBiquadFilter()
+    fanFilter.type = 'bandpass'
+    fanFilter.frequency.value = 300
+    fanFilter.Q.value = 0.3
+
+    const fanGain = ac.createGain()
+    fanGain.gain.value = 0.7
+
     const masterGain = ac.createGain()
-    const humGain = ac.createGain()
-    const noiseGain = ac.createGain()
+    masterGain.gain.setValueAtTime(0, ac.currentTime)
+    masterGain.gain.linearRampToValueAtTime(0.022, ac.currentTime + 3)
 
-    noiseSource.buffer = noiseBuffer
-    noiseSource.loop = true
-    noiseFilter.type = 'lowpass'
-    noiseFilter.frequency.value = 400
-    noiseFilter.Q.value = 0.5
-    masterGain.gain.value = 0.028
-    humGain.gain.value = 0.4
-    noiseGain.gain.value = 0.6
+    const scheduleHDDTick = () => {
+      const tickDelay = 1.5 + Math.random() * 3
+      ambientNoiseTickTimer = window.setTimeout(() => {
+        if (!ambientNoiseNodes || !ambientNoiseWanted) return
 
-    osc1.connect(humGain)
-    humGain.connect(masterGain)
-    noiseSource.connect(noiseFilter)
-    noiseFilter.connect(noiseGain)
-    noiseGain.connect(masterGain)
+        const tickBuffer = ac.createBuffer(1, ac.sampleRate * 0.03, ac.sampleRate)
+        const tickData = tickBuffer.getChannelData(0)
+        for (let index = 0; index < tickData.length; index += 1) {
+          const time = index / ac.sampleRate
+          tickData[index] = (Math.random() * 2 - 1) * Math.exp(-time * 200) * 0.4
+        }
+
+        const tickSource = ac.createBufferSource()
+        const tickFilter = ac.createBiquadFilter()
+        const tickGain = ac.createGain()
+        tickSource.buffer = tickBuffer
+        tickFilter.type = 'bandpass'
+        tickFilter.frequency.value = 1200
+        tickFilter.Q.value = 2
+        tickGain.gain.value = 0.06
+        tickSource.connect(tickFilter)
+        tickFilter.connect(tickGain)
+        tickGain.connect(ac.destination)
+        tickSource.start()
+        scheduleHDDTick()
+      }, tickDelay * 1000)
+    }
+
+    hum50.connect(humGain50)
+    humGain50.connect(masterGain)
+    hum100.connect(humGain100)
+    humGain100.connect(masterGain)
+    hum150.connect(humGain150)
+    humGain150.connect(masterGain)
+    fanSource.connect(fanFilter)
+    fanFilter.connect(fanGain)
+    fanGain.connect(masterGain)
     masterGain.connect(ac.destination)
 
-    osc1.start()
-    noiseSource.start()
-    ambientNoiseNodes = { masterGain, noiseSource, osc1 }
+    hum50.start()
+    hum100.start()
+    hum150.start()
+    fanSource.start()
+    ambientNoiseNodes = {
+      masterGain,
+      noiseSource: fanSource,
+      osc1: hum50,
+      osc2: hum100,
+      osc3: hum150,
+    }
+    scheduleHDDTick()
   }
 
   if (!interacted) {
@@ -367,22 +426,34 @@ export const startAmbientNoise = () => {
 
 export const stopAmbientNoise = () => {
   ambientNoiseWanted = false
+  if (ambientNoiseTickTimer) {
+    window.clearTimeout(ambientNoiseTickTimer)
+    ambientNoiseTickTimer = null
+  }
   if (!ambientNoiseNodes) return
   const ac = getCtx()
   if (!ac) return
 
-  const { masterGain, noiseSource, osc1 } = ambientNoiseNodes
+  const {
+    masterGain,
+    noiseSource,
+    osc1,
+    osc2,
+    osc3,
+  } = ambientNoiseNodes
   masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime)
-  masterGain.gain.linearRampToValueAtTime(0, ac.currentTime + 0.5)
+  masterGain.gain.linearRampToValueAtTime(0, ac.currentTime + 0.8)
   window.setTimeout(() => {
     try {
       osc1.stop()
+      osc2.stop()
+      osc3.stop()
       noiseSource.stop()
     } catch {
       // Nodes may already be stopped by the browser.
     }
     ambientNoiseNodes = null
-  }, 600)
+  }, 900)
 }
 
 export const isAmbientNoiseRunning = () => ambientNoiseNodes !== null

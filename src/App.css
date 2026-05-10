@@ -204,7 +204,7 @@
   min-height: 0;
   height: 100%;
   overflow: hidden;
-  padding-bottom: 64px;
+  padding-bottom: 52px;
   background: transparent;
 }
 
@@ -362,6 +362,7 @@
 }
 
 .front-panel {
+  box-sizing: border-box;
   position: fixed;
   right: 0;
   bottom: 0;
@@ -371,8 +372,9 @@
   grid-template-columns: 150px 34px 34px minmax(0, 1fr) 170px;
   align-items: center;
   gap: 10px;
-  height: 64px;
-  padding: 6px 10px;
+  height: 52px;
+  padding: 4px 10px;
+  overflow: visible;
   background: var(--panel-bg);
   border-width: 2px 0 2px;
   border-style: solid;
@@ -420,9 +422,9 @@
   align-items: center;
   justify-content: center;
   min-width: 112px;
-  height: 52px;
+  height: 42px;
   margin: 0 10px;
-  padding: 4px 10px;
+  padding: 3px 10px;
   background: #9fbfcf;
   border-width: 2px;
   border-style: solid;
@@ -446,8 +448,8 @@
 .front-panel__launcher {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   font: inherit;
 }
@@ -479,7 +481,7 @@
   grid-template-rows: repeat(2, 1fr);
   gap: 2px;
   width: 132px;
-  height: 52px;
+  height: 42px;
   margin: 0 10px;
   padding: 0;
   background: transparent;
@@ -520,7 +522,7 @@
 
 .cde-window__body {
   box-sizing: border-box;
-  height: calc(100% - 26px);
+  height: calc(100% - 22px);
   overflow: auto;
   background: var(--body-bg);
   border-width: 2px;
@@ -529,17 +531,19 @@
 }
 
 .window-chrome {
-  display: grid;
-  grid-template-columns: 24px 1fr 76px;
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  height: 26px;
-  padding: 2px 3px;
+  height: 22px;
+  padding: 0 4px;
+  gap: 0;
   background: linear-gradient(90deg, var(--chrome-bg), #3a7080);
   color: #ffffff;
   user-select: none;
 }
 
 .window-chrome__title {
+  flex: 1;
   min-width: 0;
   overflow: hidden;
   text-align: center;
@@ -551,8 +555,10 @@
 
 .window-chrome__controls {
   display: flex;
+  flex-shrink: 0;
   justify-content: flex-end;
-  gap: 3px;
+  gap: 2px;
+  margin-left: 6px;
 }
 
 .window-chrome__menu-button {
@@ -561,9 +567,10 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  margin-right: 4px;
+  min-width: 14px;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
   background: #9fbfcf;
   border: 2px solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
@@ -572,16 +579,17 @@
 
 .window-chrome__menu-button span {
   display: block;
-  width: 8px;
+  width: 7px;
   height: 2px;
   background: #000000;
 }
 
 .window-chrome__button {
-  display: grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
   padding: 0;
   color: #000000;
   background: var(--button-face);

@@ -40,7 +40,7 @@ function createFakeTerminal(index) {
     width,
     height,
     x: randomBetween(0, Math.max(0, window.innerWidth - width)),
-    y: randomBetween(0, Math.max(0, window.innerHeight - height - 64)),
+    y: randomBetween(0, Math.max(0, window.innerHeight - height - 52)),
   }
 }
 
