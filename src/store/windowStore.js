@@ -58,6 +58,7 @@ export const useWindowStore = create((set, get) => ({
             isOpen: true,
             isMinimized: false,
             isFocused: true,
+            initialCommand: config.initialCommand ?? null,
             animation: windowItem.isOpen && windowItem.isMinimized ? 'restoring' : null,
             position: config.position ?? centeredPosition({ ...windowItem, size: nextSize }),
             size: nextSize,
@@ -72,6 +73,7 @@ export const useWindowStore = create((set, get) => ({
         ...windowItem,
         isOpen: windowItem.id === id ? false : windowItem.isOpen,
         isFocused: windowItem.id === id ? false : windowItem.isFocused,
+        initialCommand: windowItem.id === id ? null : windowItem.initialCommand,
         animation: windowItem.id === id ? null : windowItem.animation,
       })),
     }))

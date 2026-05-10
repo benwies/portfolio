@@ -93,7 +93,7 @@ function App() {
 
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
-    const taskbarHeight = 52
+    const taskbarHeight = 70
     const bottomMargin = 20
     const maxWindowHeight = viewportHeight - taskbarHeight - bottomMargin * 2
     const neofetchWidth = Math.min(
@@ -129,13 +129,14 @@ function App() {
       Math.min(Math.round(viewportHeight * 0.37), viewportHeight - taskbarHeight - motdHeight - bottomMargin),
     )
     const neofetchTimer = window.setTimeout(() => openWindow({
-      id: 'neofetch',
+      id: 'terminal',
       position: {
         x: neofetchX,
         y: neofetchY,
       },
       size: { w: neofetchWidth, h: neofetchHeight },
       zIndex: 10,
+      initialCommand: 'neofetch',
     }), 300)
     const motdTimer = window.setTimeout(() => openWindow({
       id: 'motd',
@@ -196,7 +197,7 @@ function App() {
                 const Content = windowComponents[windowItem.component]
                 return (
                   <Window key={windowItem.id} windowItem={windowItem}>
-                    {Content ? <Content /> : null}
+                    {Content ? <Content windowItem={windowItem} initialCommand={windowItem.initialCommand} /> : null}
                   </Window>
                 )
               })}

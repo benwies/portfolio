@@ -8,17 +8,23 @@ const initialLines = [
   portfolioData.terminal.hint,
 ]
 
-export default function Terminal() {
-  const [cwd, setCwd] = useState('/home/benedikt')
+export default function Terminal({ initialCommand }) {
+  const defaultCwd = '/home/benedikt'
+  const initialPrompt = `${portfolioData.identity.user}@${portfolioData.identity.host}:~$`
+  const [cwd, setCwd] = useState(defaultCwd)
   const [input, setInput] = useState('')
-  const [lines, setLines] = useState(initialLines)
+  const [lines, setLines] = useState(() => {
+    if (!initialCommand) return initialLines
+    const result = runCommand({ command: initialCommand, cwd: defaultCwd, setCwd: () => {} })
+    if (!result) return initialLines
+    return [`${initialPrompt} ${initialCommand}`, ...(result.lines ?? [])]
+  })
   const inputRef = useRef(null)
+  const prompt = `${portfolioData.identity.user}@${portfolioData.identity.host}:${cwd.replace('/home/benedikt', '~')}$`
 
   useEffect(() => {
     inputRef.current?.focus()
   }, [lines])
-
-  const prompt = `${portfolioData.identity.user}@${portfolioData.identity.host}:${cwd.replace('/home/benedikt', '~')}$`
 
   const submitCommand = () => {
     const result = runCommand({ command: input, cwd, setCwd })

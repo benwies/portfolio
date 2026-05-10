@@ -101,7 +101,6 @@
 .crt-bezel {
   z-index: 99995;
   border: 6px solid #000000;
-  border-bottom-width: 0;
   border-radius: 8px;
   box-shadow: inset 0 0 30px 10px rgba(0, 0, 0, 0.6);
   overflow: hidden;
@@ -203,9 +202,9 @@
 .desktop-shell__body {
   position: relative;
   min-height: 0;
-  height: 100%;
+  height: calc(100% - 70px);
   overflow: hidden;
-  padding-bottom: 52px;
+  padding-bottom: 0;
   background: transparent;
 }
 
@@ -225,7 +224,7 @@
 
 .desktop-icons {
   position: absolute;
-  inset: 0 0 64px 0;
+  inset: 0 0 70px 0;
   z-index: 50;
   width: auto;
   padding: 0;
@@ -366,15 +365,15 @@
   box-sizing: border-box;
   position: fixed;
   right: 0;
-  bottom: 0;
+  bottom: 6px;
   left: 0;
   z-index: 50;
   display: grid;
-  grid-template-columns: 150px 34px 34px minmax(0, 1fr) 170px;
+  grid-template-columns: 150px 36px 36px minmax(0, 1fr) 150px;
   align-items: center;
   gap: 10px;
-  height: 52px;
-  padding: 4px 10px;
+  height: 64px;
+  padding: 6px 8px;
   overflow: visible;
   background: var(--panel-bg);
   border-width: 2px 0 2px;
@@ -396,15 +395,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   background: #9fbfcf;
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
   color: #000000;
-  font: 700 14px 'Courier New', monospace;
+  font: 700 13px 'Courier New', monospace;
   user-select: none;
 }
 
@@ -422,20 +421,19 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 112px;
-  height: 42px;
+  min-width: 80px;
+  height: 48px;
   margin: 0 10px;
   padding: 3px 10px;
   background: #9fbfcf;
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
-  font: 700 13px 'Courier New', monospace;
-  line-height: 1.2;
+  font: 700 12px/1.3 'Courier New', monospace;
 }
 
 .front-panel__clock strong {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .front-panel__launchers {
@@ -449,8 +447,8 @@
 .front-panel__launcher {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
   padding: 0;
   font: inherit;
 }
@@ -465,14 +463,14 @@
 }
 
 .front-panel__launcher .cde-theme-icon {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
 }
 
 .front-panel__launcher-icon {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   overflow: hidden;
 }
 
@@ -481,9 +479,9 @@
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 2px;
-  width: 132px;
-  height: 42px;
-  margin: 0 10px;
+  width: 110px;
+  height: 52px;
+  margin: 0 8px;
   padding: 0;
   background: transparent;
   border: 0;
@@ -499,7 +497,7 @@
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
   background: #9fbfcf;
-  font: 700 11px 'Courier New', monospace;
+  font: 700 10px 'Courier New', monospace;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -2072,7 +2070,7 @@
 
 @media (max-width: 760px) {
   .front-panel {
-    grid-template-columns: 96px 34px 34px minmax(0, 1fr) 160px;
+    grid-template-columns: 96px 36px 36px minmax(0, 1fr) 150px;
     gap: 5px;
   }
 
