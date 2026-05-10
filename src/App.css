@@ -1322,6 +1322,91 @@
   grid-column: span 2;
 }
 
+.ctf-window {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  padding: 14px;
+  background: var(--body-bg);
+  font-family: 'Courier New', monospace;
+}
+
+.ctf-terminal {
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+  padding: 14px;
+  overflow: auto;
+  color: #00ff00;
+  background: #000000;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.ctf-success-art {
+  margin: 0;
+  color: #00ff00;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.ctf-muted {
+  color: #aaaaaa;
+}
+
+.ctf-warning {
+  color: #ffff00;
+}
+
+.ctf-cyan {
+  color: #00ffff;
+}
+
+.ctf-submit {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #000000;
+  font-size: 12px;
+}
+
+.ctf-submit__row {
+  display: flex;
+  gap: 6px;
+}
+
+.ctf-submit input {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 8px;
+  color: #000000;
+  background: #ffffff;
+  border: 2px solid;
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+  outline: none;
+  font: 13px 'Courier New', monospace;
+}
+
+.ctf-submit button {
+  padding: 5px 14px;
+  color: #000000;
+  background: var(--button-face);
+  border: 2px solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  font: 700 12px 'Courier New', monospace;
+}
+
+.ctf-submit button:active {
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+}
+
+.ctf-status {
+  min-height: 16px;
+  font: 700 12px 'Courier New', monospace;
+}
+
 .cron-notification {
   position: fixed;
   right: 20px;

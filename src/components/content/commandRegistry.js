@@ -1,9 +1,22 @@
 import { portfolioData } from '../../data/portfolioData'
-import { fileSystem, readFile } from './fileSystem'
+import {
+  getDetailedListing,
+  getDirectoryContents,
+  normalizeDir,
+  readFile,
+  readFileText,
+} from './fileSystem'
 import { useWindowStore } from '../../store/windowStore'
 import { playWindowClose } from '../../hooks/useSounds'
 
 const promptPath = (cwd) => cwd.replace('/home/benedikt', '~')
+
+const displayPath = (cwd) => {
+  if (cwd === '/home/benedikt') return '~'
+  if (cwd === '/tmp') return '/tmp'
+  if (cwd.startsWith('/home/benedikt/')) return `~/${cwd.replace('/home/benedikt/', '')}`
+  return cwd
+}
 
 const formatNeofetch = () => {
   const { ascii, rows } = portfolioData.neofetch
@@ -43,17 +56,49 @@ export const runCommand = ({ command, cwd, setCwd }) => {
   if (base === 'whoami') return { lines: [portfolioData.identity.user] }
   if (base === 'pwd') return { lines: [cwd] }
   if (base === 'help') return { lines: portfolioData.terminal.help }
-  if (base === 'ls') return { lines: fileSystem[cwd]?.files ?? [] }
-  if (base === 'cat') return { lines: readFile(args[0]) }
+  if (base === 'ls') {
+    const showHidden = args.includes('-la') || args.includes('-a') || args.includes('-al')
+    const contents = getDirectoryContents(cwd, showHidden)
+    if (!contents) return { lines: [`ls: cannot access '${displayPath(cwd)}': No such directory`] }
+    if (showHidden) return { lines: getDetailedListing(cwd) }
+    return { lines: [contents.join('  ')] }
+  }
+  if (base === 'cat') {
+    const filename = args[0]
+    if (!filename) return { lines: ['Usage: cat [file]'] }
+    return { lines: readFile(filename, cwd) }
+  }
+  if (base === 'grep') {
+    const [pattern, filename] = args
+    if (!pattern) return { lines: ['Usage: grep pattern [file]'] }
+    if (!filename) return { lines: ['Usage: grep pattern file'] }
+    const content = readFileText(filename, cwd)
+    if (!content) return { lines: [`grep: ${filename}: No such file or directory`] }
+    return {
+      lines: content
+        .split('\n')
+        .filter((line) => line.toLowerCase().includes(pattern.toLowerCase())),
+    }
+  }
   if (base === 'cd') {
     const target = args[0] ?? '/home/benedikt'
-    const next =
-      target === '..'
-        ? '/home/benedikt'
-        : target.startsWith('/')
-          ? target
-          : `/home/benedikt/${target.replace(/\/$/, '')}`
-    if (!fileSystem[next]) return { lines: [`cd: no such directory: ${target}`] }
+    if (!target || target === '~' || target === '/home/benedikt') {
+      setCwd('/home/benedikt')
+      return { lines: [] }
+    }
+    if (target === '..') {
+      setCwd('/home/benedikt')
+      return { lines: [] }
+    }
+
+    const next = normalizeDir(
+      target.startsWith('/')
+        ? target
+        : cwd === '/home/benedikt'
+          ? target.replace(/\/$/, '')
+          : `${cwd}/${target.replace(/\/$/, '')}`,
+    )
+    if (!getDirectoryContents(next)) return { lines: [`cd: ${target}: No such file or directory`] }
     setCwd(next)
     return { lines: [] }
   }

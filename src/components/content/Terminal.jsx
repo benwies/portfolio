@@ -8,6 +8,13 @@ const initialLines = [
   portfolioData.terminal.hint,
 ]
 
+const displayDir = (cwd) => {
+  if (cwd === '/home/benedikt') return '~'
+  if (cwd === '/tmp') return '/tmp'
+  if (cwd.startsWith('/home/benedikt/')) return `~/${cwd.replace('/home/benedikt/', '')}`
+  return cwd
+}
+
 export default function Terminal({ initialCommand }) {
   const defaultCwd = '/home/benedikt'
   const initialPrompt = `${portfolioData.identity.user}@${portfolioData.identity.host}:~$`
@@ -21,7 +28,7 @@ export default function Terminal({ initialCommand }) {
     return [`${initialPrompt} ${initialCommand}`, ...(result.lines ?? [])]
   })
   const inputRef = useRef(null)
-  const prompt = `${portfolioData.identity.user}@${portfolioData.identity.host}:${cwd.replace('/home/benedikt', '~')}$`
+  const prompt = `${portfolioData.identity.user}@${portfolioData.identity.host}:${displayDir(cwd)}$`
 
   useEffect(() => {
     inputRef.current?.focus()

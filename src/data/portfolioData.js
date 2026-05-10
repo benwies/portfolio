@@ -317,7 +317,7 @@
     title: 'terminal',
     banner: 'CDE xterm - 0xbene',
     hint: 'Type help for available commands.',
-    help: ['whoami', 'ls', 'cat [file]', 'cd', 'help', 'clear', 'neofetch', 'nmap contacts', 'skills --verbose', 'open [app]', 'reset desktop', 'exit        close this terminal window', 'quit        alias for exit'],
+    help: ['whoami', 'ls', 'ls -la      list all files including hidden', 'cat [file]  display file contents', 'grep        search for pattern in file: grep pattern file', 'cd /tmp     navigate to /tmp directory', 'cd', 'help', 'clear', 'neofetch', 'nmap contacts', 'skills --verbose', 'open [app]', 'reset desktop', 'exit        close this terminal window', 'quit        alias for exit'],
     files: ['README.md', 'about.txt', 'socials.db', 'certs.csv', 'projects/', 'skills.ini', 'welcome.txt', 'snake', 'paint.sh', 'free-wifi.sh'],
   },
   snake: {
@@ -365,6 +365,7 @@
     { id: 'paint', label: 'paint.sh', appId: 'paint', icon: 'paint' },
     { id: 'pnptprep', label: 'pnpt-prep/', icon: 'folder', action: 'link', url: 'https://github.com/benwies/PNPT-Study-Notes' },
     { id: 'calculator', label: 'calculator', appId: 'calculator', icon: 'calculator' },
+    { id: 'ctf', label: 'ctf.sh', appId: 'ctf', icon: 'ctf', action: 'window', col: 1, row: 5 },
     { id: 'freewifi', label: 'free-wifi.sh', action: 'kernelPanic', icon: 'freeWifi' },
   ],
   bootLines: [
@@ -466,6 +467,13 @@ export const windowDefinitions = [
     position: { x: 360, y: 120 },
     size: { width: 220, height: 320 },
     fixedSize: true,
+  },
+  {
+    id: 'ctf',
+    title: 'ctf.sh - Capture The Flag',
+    component: 'ctf',
+    position: { x: 300, y: 150 },
+    size: { width: 520, height: 440 },
   },
   {
     id: 'workstationAbout',

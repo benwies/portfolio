@@ -13,6 +13,7 @@ import textIcon from '../../assets/cde-icons/text.png'
 const iconFiles = {
   calculator: settingsIcon,
   certs: spreadsheetIcon,
+  ctf: terminalIcon,
   folder: folderIcon,
   skills: settingsIcon,
   socials: addressbookIcon,
@@ -29,7 +30,7 @@ const gridStartX = 16
 const gridStartY = 16
 const gridCellWidth = 120
 const gridCellHeight = 130
-const taskbarHeight = 64
+const taskbarHeight = 70
 const resizeDebounce = 150
 const widgetZoneWidth = 380
 const widgetZoneHeight = 620
@@ -49,6 +50,7 @@ const defaultCells = {
   paint: { col: 1, row: 2 },
   pnptprep: { col: 1, row: 3 },
   calculator: { col: 1, row: 4 },
+  ctf: { col: 1, row: 5 },
 }
 const startupPositions = {
   projects: { x: 16, y: 16 },
@@ -63,6 +65,7 @@ const startupPositions = {
   paint: { x: 136, y: 264 },
   pnptprep: { x: 136, y: 392 },
   calculator: { x: 136, y: 520 },
+  ctf: { x: 136, y: 648 },
 }
 
 const clamp = (value, min, max) => Math.max(min, Math.min(value, max))
@@ -373,7 +376,7 @@ function DesktopIcon({ icon, index, icons, onKernelPanic = () => {} }) {
       return
     }
 
-    openWindow(icon.appId)
+    openWindow(icon.appId ?? icon.id)
   }
 
   return (

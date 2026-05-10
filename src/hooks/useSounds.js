@@ -376,10 +376,10 @@ export const startAmbientNoise = () => {
 
     const masterGain = ac.createGain()
     masterGain.gain.setValueAtTime(0, ac.currentTime)
-    masterGain.gain.linearRampToValueAtTime(0.016, ac.currentTime + 4)
+    masterGain.gain.linearRampToValueAtTime(0.018, ac.currentTime + 4)
 
     const scheduleHDDTick = () => {
-      const tickDelay = 2000 + Math.random() * 4000
+      const tickDelay = 2000 + Math.random() * 3000
       ambientNoiseTickTimer = window.setTimeout(() => {
         if (!ambientNoiseNodes || !ambientNoiseWanted) return
 
@@ -397,7 +397,7 @@ export const startAmbientNoise = () => {
         tickFilter.type = 'bandpass'
         tickFilter.frequency.value = 800
         tickFilter.Q.value = 1.5
-        tickGain.gain.value = 0.04
+        tickGain.gain.value = 0.045
         tickSource.connect(tickFilter)
         tickFilter.connect(tickGain)
         tickGain.connect(ac.destination)
