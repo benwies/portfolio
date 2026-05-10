@@ -80,10 +80,11 @@
 }
 
 .crt-wrapper {
+  --sync-shift: 0px;
   width: 100vw;
   min-height: 100vh;
   overflow: hidden;
-  transform: perspective(1400px) rotateX(0.4deg) scale(1.003);
+  transform: translateX(var(--sync-shift)) perspective(1400px) rotateX(0.4deg) scale(1.003);
   transform-origin: center center;
 }
 
@@ -437,6 +438,40 @@
   opacity: 0.4;
 }
 
+.front-panel__scroll-lock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-left: 4px;
+  user-select: none;
+}
+
+.front-panel__scroll-lock-led {
+  width: 6px;
+  height: 6px;
+  background: #004400;
+  border-radius: 50%;
+  transition:
+    background 50ms,
+    box-shadow 50ms;
+}
+
+.front-panel__scroll-lock-led.is-active {
+  background: #00ff00;
+  box-shadow: 0 0 4px 1px rgba(0, 255, 0, 0.6);
+}
+
+.front-panel__scroll-lock-label {
+  color: #446644;
+  font: 700 7px/1 'Share Tech Mono', 'Lucida Console', monospace;
+  letter-spacing: 0;
+}
+
+.front-panel__scroll-lock-label.is-active {
+  color: #00ff00;
+}
+
 .btn-label-short {
   display: inline;
 }
@@ -700,7 +735,7 @@
 
 .about-cursor {
   color: #ffffff;
-  animation: about-cursor-blink 500ms steps(2) infinite;
+  animation: vt100-blink 530ms step-end infinite;
 }
 
 .data-table {
@@ -1014,7 +1049,7 @@
   left: 0;
   color: #ffffff;
   content: '_';
-  animation: terminal-cursor-blink 800ms step-end infinite;
+  animation: vt100-blink 530ms step-end infinite;
 }
 
 .terminal-form input {
@@ -1027,18 +1062,6 @@
   border: 0;
   outline: 0;
   font-family: 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace;
-}
-
-@keyframes terminal-cursor-blink {
-  0%,
-  45% {
-    opacity: 1;
-  }
-
-  46%,
-  100% {
-    opacity: 0;
-  }
 }
 
 .neofetch-window {
@@ -1729,7 +1752,7 @@
 }
 
 .neofetch-cursor {
-  animation: cde-cursor 1s steps(2) infinite;
+  animation: vt100-blink 530ms step-end infinite;
 }
 
 .boot-sequence {
@@ -1777,11 +1800,17 @@
 }
 
 .boot-sequence__cursor {
-  animation: cde-cursor 1s steps(2) infinite;
+  animation: vt100-blink 530ms step-end infinite;
 }
 
-@keyframes cde-cursor {
-  50% {
+@keyframes vt100-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
     opacity: 0;
   }
 }
@@ -1794,12 +1823,6 @@
 
   50% {
     opacity: 0.1;
-  }
-}
-
-@keyframes about-cursor-blink {
-  50% {
-    opacity: 0;
   }
 }
 
@@ -2190,7 +2213,7 @@
 }
 
 .mobile-cursor {
-  animation: cde-cursor 1s steps(2) infinite;
+  animation: vt100-blink 530ms step-end infinite;
 }
 
 .mobile-warning-overlay {

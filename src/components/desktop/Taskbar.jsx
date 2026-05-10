@@ -17,6 +17,43 @@ const visualWorkspaces = [
   { id: 4, label: 'Four', background: '#3D1B4A', border: '#6D2D8A' },
 ]
 
+function ScrollLockLED() {
+  const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    let offTimer
+    let nextTimer
+
+    const scheduleBlink = () => {
+      const delay = 2000 + Math.random() * 13000
+      nextTimer = window.setTimeout(() => {
+        setActive(true)
+        const onDuration = 100 + Math.random() * 700
+        offTimer = window.setTimeout(() => {
+          setActive(false)
+          scheduleBlink()
+        }, onDuration)
+      }, delay)
+    }
+
+    scheduleBlink()
+
+    return () => {
+      window.clearTimeout(nextTimer)
+      window.clearTimeout(offTimer)
+    }
+  }, [])
+
+  return (
+    <div className="front-panel__scroll-lock" title="SCROLL LOCK" aria-label="Scroll lock activity">
+      <span className={active ? 'front-panel__scroll-lock-led is-active' : 'front-panel__scroll-lock-led'} />
+      <span className={active ? 'front-panel__scroll-lock-label is-active' : 'front-panel__scroll-lock-label'}>
+        SCR
+      </span>
+    </div>
+  )
+}
+
 function formatClock(date) {
   return {
     date: new Intl.DateTimeFormat('en-GB', {
@@ -114,6 +151,7 @@ function Taskbar() {
         <span className="btn-label-short">{ambientOn ? 'AMB:ON' : 'AMB:OFF'}</span>
         <span className="btn-label-long">{ambientOn ? 'Ambient ON' : 'Ambient OFF'}</span>
       </button>
+      <ScrollLockLED />
 
       <nav className="front-panel__launchers" aria-label={portfolioData.ui.launcherLabel}>
         {visibleInTaskbar.map((windowItem) => (

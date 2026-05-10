@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import CRTBezel from './components/desktop/CRTBezel'
 import DesktopShell from './components/desktop/DesktopShell'
 import PulsingVignette from './components/desktop/PulsingVignette'
+import SyncGlitch from './components/desktop/SyncGlitch'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
 import MobileView from './components/mobile/MobileView'
@@ -69,6 +70,7 @@ function App() {
   const bootComplete = useWindowStore((state) => state.bootComplete)
   const openWindow = useWindowStore((state) => state.openWindow)
   const activeWorkspace = useWindowStore((state) => state.activeWorkspace)
+  const crtWrapperRef = useRef(null)
 
   useEffect(() => {
     const handleResize = () => {
@@ -230,7 +232,8 @@ function App() {
           opacity: activeWorkspace === 1 ? 0 : 0.15,
         }}
       />
-      <div className="crt-wrapper">
+      <div className="crt-wrapper" ref={crtWrapperRef}>
+        <SyncGlitch wrapperRef={crtWrapperRef} />
         <main className="workstation">
           <DesktopShell>
             {windows
