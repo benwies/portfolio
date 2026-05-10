@@ -679,8 +679,12 @@
 }
 
 .motd-body {
-  padding: 10px;
-  overflow: auto;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-wrap: break-word;
   background: #f2ecdf;
   border-width: 2px;
   border-style: solid;
@@ -688,7 +692,7 @@
   font-family: 'Courier New', monospace;
   font-size: 13px;
   line-height: 1.8;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 .motd-actions {
@@ -708,7 +712,8 @@
   line-height: 1.8;
   text-align: left;
   text-decoration: underline;
-  white-space: pre;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .motd-link:hover,
@@ -1020,15 +1025,17 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  min-height: 40px;
   min-width: 0;
-  padding: 6px 8px;
+  padding: 8px 12px;
   overflow: hidden;
-  color: #00ff00;
+  color: #ffffff;
   background: #000000;
   border-width: 2px;
   border-style: solid;
   border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
   font: 700 20px 'Courier New', monospace;
+  letter-spacing: 1px;
   text-align: right;
   white-space: nowrap;
 }
@@ -1369,7 +1376,9 @@
 }
 
 .boot-sequence__skip {
-  padding: 2px 8px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 12px;
   color: #ffffff;
   background: #000000;
   border: 1px solid #ffffff;

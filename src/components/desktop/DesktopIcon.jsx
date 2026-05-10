@@ -128,16 +128,70 @@ function avoidWidgetZone(cell) {
   return next
 }
 
+function nextCell(cell) {
+  const max = maxGrid()
+  let col = cell.col
+  let row = cell.row + 1
+
+  if (row > max.row) {
+    row = 0
+    col += 1
+  }
+
+  if (col > max.col) {
+    col = 0
+    row = 0
+  }
+
+  return { col, row }
+}
+
+function findAvailableCell(startCell, occupied) {
+  const max = maxGrid()
+  const totalCells = (max.col + 1) * (max.row + 1)
+  let candidate = clampCell(startCell)
+
+  for (let index = 0; index < totalCells; index += 1) {
+    const safeCandidate = avoidWidgetZone(candidate)
+    if (!occupied.has(cellKey(safeCandidate))) return safeCandidate
+    candidate = nextCell(candidate)
+  }
+
+  return candidate
+}
+
+function resolveCollisions(cells) {
+  const resolved = {}
+  const occupied = new Set()
+
+  Object.entries(cells).forEach(([iconId, cell]) => {
+    const safeCell = findAvailableCell(avoidWidgetZone(clampCell(cell)), occupied)
+    resolved[iconId] = safeCell
+    occupied.add(cellKey(safeCell))
+  })
+
+  return resolved
+}
+
 function sanitizeStoredCells(icons) {
+  const currentCells = {}
   const updates = {}
+
   icons.forEach((item, itemIndex) => {
-    const current = loadGridCell(item, itemIndex)
-    const safe = avoidWidgetZone(current)
-    if (cellKey(current) !== cellKey(safe)) {
-      saveGridCell(item.id, safe)
-      updates[item.id] = safe
+    currentCells[item.id] = loadGridCell(item, itemIndex)
+  })
+
+  const resolvedCells = resolveCollisions(currentCells)
+
+  icons.forEach((item) => {
+    const current = currentCells[item.id]
+    const resolved = resolvedCells[item.id]
+    if (resolved && cellKey(current) !== cellKey(resolved)) {
+      saveGridCell(item.id, resolved)
+      updates[item.id] = resolved
     }
   })
+
   if (Object.keys(updates).length) {
     window.dispatchEvent(new CustomEvent(iconGridEvent, { detail: updates }))
   }

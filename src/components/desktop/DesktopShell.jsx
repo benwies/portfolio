@@ -29,7 +29,7 @@ const fakeTerminalLines = [
 ]
 
 const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
-const idleTimeout = 20000
+const idleTimeout = 60000
 
 function createFakeTerminal(index) {
   const width = randomBetween(260, 380)
@@ -57,26 +57,35 @@ function DesktopShell({ children }) {
     if (!bootComplete) return undefined
     let timer
 
-    const resetTimer = () => {
+    const startTimer = () => {
       window.clearTimeout(timer)
-      setScreensaverActive(false)
       timer = window.setTimeout(() => setScreensaverActive(true), idleTimeout)
     }
 
-    window.addEventListener('mousemove', resetTimer)
-    window.addEventListener('mousedown', resetTimer)
-    window.addEventListener('keydown', resetTimer)
-    window.addEventListener('touchstart', resetTimer)
-    timer = window.setTimeout(() => setScreensaverActive(true), idleTimeout)
+    const handleMouseMove = () => {
+      if (screensaverActive) return
+      startTimer()
+    }
+
+    const handleDismiss = () => {
+      setScreensaverActive(false)
+      startTimer()
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mousedown', handleDismiss)
+    window.addEventListener('keydown', handleDismiss)
+    window.addEventListener('touchstart', handleDismiss)
+    startTimer()
 
     return () => {
       window.clearTimeout(timer)
-      window.removeEventListener('mousemove', resetTimer)
-      window.removeEventListener('mousedown', resetTimer)
-      window.removeEventListener('keydown', resetTimer)
-      window.removeEventListener('touchstart', resetTimer)
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mousedown', handleDismiss)
+      window.removeEventListener('keydown', handleDismiss)
+      window.removeEventListener('touchstart', handleDismiss)
     }
-  }, [bootComplete])
+  }, [bootComplete, screensaverActive])
 
   useEffect(() => {
     if (panicState !== 'animating') return undefined

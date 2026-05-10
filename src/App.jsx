@@ -39,50 +39,63 @@ const windowComponents = {
 
 function App() {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
-  const [warningDismissed, setWarningDismissed] = useState(false)
+  const [warningDismissed, setWarningDismissed] = useState(
+    () => sessionStorage.getItem('mobile_warning_dismissed') === 'true',
+  )
   const windows = useWindowStore((state) => state.windows)
   const bootComplete = useWindowStore((state) => state.bootComplete)
   const openWindow = useWindowStore((state) => state.openWindow)
 
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth < 768
-      setIsMobile(mobile)
-      if (mobile) setWarningDismissed(false)
+      setIsMobile(window.innerWidth < 768)
     }
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  const handleWarningDismiss = () => {
+    sessionStorage.setItem('mobile_warning_dismissed', 'true')
+    setWarningDismissed(true)
+  }
 
   useEffect(() => {
     if (!bootComplete || isMobile) return
 
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
-    const taskbarHeight = 52
-    const usableHeight = viewportHeight - taskbarHeight
+    const neofetchWidth = Math.min(
+      Math.max(380, Math.round(viewportWidth * 0.3)),
+      Math.min(500, viewportWidth - 40),
+    )
+    const motdWidth = Math.min(
+      Math.max(380, Math.round(viewportWidth * 0.35)),
+      Math.min(480, Math.round(viewportWidth * 0.6), viewportWidth - 40),
+    )
+    const neofetchX = Math.max(
+      20,
+      Math.min(Math.round(viewportWidth * 0.52), viewportWidth - neofetchWidth - 20),
+    )
+    const motdX = Math.max(
+      20,
+      Math.min(Math.round(viewportWidth * 0.3), viewportWidth - motdWidth - 20),
+    )
     const neofetchTimer = window.setTimeout(() => openWindow({
       id: 'neofetch',
       position: {
-        x: Math.round(viewportWidth * 0.52),
-        y: Math.round(usableHeight * 0.13),
+        x: neofetchX,
+        y: Math.round(viewportHeight * 0.13),
       },
-      size: {
-        w: Math.max(Math.round(viewportWidth * 0.28), 340),
-        h: Math.max(Math.round(usableHeight * 0.4), 260),
-      },
+      size: { w: neofetchWidth, h: 310 },
       zIndex: 10,
     }), 300)
     const motdTimer = window.setTimeout(() => openWindow({
       id: 'motd',
       position: {
-        x: Math.round(viewportWidth * 0.3),
-        y: Math.round(usableHeight * 0.37),
+        x: motdX,
+        y: Math.round(viewportHeight * 0.37),
       },
-      size: {
-        w: Math.max(Math.round(viewportWidth * 0.24), 320),
-        h: Math.max(Math.round(usableHeight * 0.42), 300),
-      },
+      size: { w: motdWidth, h: 340 },
       zIndex: 20,
     }), 500)
 
@@ -93,10 +106,12 @@ function App() {
   }, [bootComplete, isMobile, openWindow])
 
   if (isMobile) {
+    if (!bootComplete) return <BootSequence />
+
     return (
       <MobileView
         showWarning={!warningDismissed}
-        onContinueWarning={() => setWarningDismissed(true)}
+        onContinueWarning={handleWarningDismiss}
       />
     )
   }

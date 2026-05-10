@@ -108,7 +108,6 @@ function ScreensaverOverlay({ onDeactivate }) {
       className="screensaver-overlay"
       onClick={onDeactivate}
       onKeyDown={onDeactivate}
-      onMouseMove={onDeactivate}
       onMouseDown={onDeactivate}
       onTouchStart={onDeactivate}
       tabIndex={0}
