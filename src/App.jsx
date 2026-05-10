@@ -64,38 +64,57 @@ function App() {
 
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
+    const taskbarHeight = 64
+    const bottomMargin = 20
+    const maxWindowHeight = viewportHeight - taskbarHeight - bottomMargin * 2
     const neofetchWidth = Math.min(
-      Math.max(380, Math.round(viewportWidth * 0.3)),
-      Math.min(500, viewportWidth - 40),
+      Math.max(520, Math.round(viewportWidth * 0.38)),
+      Math.min(720, viewportWidth - 40),
+    )
+    const neofetchHeight = Math.min(
+      Math.max(390, Math.round((viewportHeight - taskbarHeight) * 0.5)),
+      maxWindowHeight,
     )
     const motdWidth = Math.min(
-      Math.max(380, Math.round(viewportWidth * 0.35)),
-      Math.min(480, Math.round(viewportWidth * 0.6), viewportWidth - 40),
+      Math.max(500, Math.round(viewportWidth * 0.42)),
+      Math.min(660, Math.round(viewportWidth * 0.72), viewportWidth - 40),
+    )
+    const motdHeight = Math.min(
+      Math.max(440, Math.round((viewportHeight - taskbarHeight) * 0.56)),
+      maxWindowHeight,
     )
     const neofetchX = Math.max(
       20,
       Math.min(Math.round(viewportWidth * 0.52), viewportWidth - neofetchWidth - 20),
     )
+    const neofetchY = Math.max(
+      20,
+      Math.min(Math.round(viewportHeight * 0.13), viewportHeight - taskbarHeight - neofetchHeight - bottomMargin),
+    )
     const motdX = Math.max(
       20,
       Math.min(Math.round(viewportWidth * 0.3), viewportWidth - motdWidth - 20),
+    )
+    const motdY = Math.max(
+      20,
+      Math.min(Math.round(viewportHeight * 0.37), viewportHeight - taskbarHeight - motdHeight - bottomMargin),
     )
     const neofetchTimer = window.setTimeout(() => openWindow({
       id: 'neofetch',
       position: {
         x: neofetchX,
-        y: Math.round(viewportHeight * 0.13),
+        y: neofetchY,
       },
-      size: { w: neofetchWidth, h: 310 },
+      size: { w: neofetchWidth, h: neofetchHeight },
       zIndex: 10,
     }), 300)
     const motdTimer = window.setTimeout(() => openWindow({
       id: 'motd',
       position: {
         x: motdX,
-        y: Math.round(viewportHeight * 0.37),
+        y: motdY,
       },
-      size: { w: motdWidth, h: 340 },
+      size: { w: motdWidth, h: motdHeight },
       zIndex: 20,
     }), 500)
 
