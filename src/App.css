@@ -438,40 +438,6 @@
   opacity: 0.4;
 }
 
-.front-panel__scroll-lock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  margin-left: 4px;
-  user-select: none;
-}
-
-.front-panel__scroll-lock-led {
-  width: 6px;
-  height: 6px;
-  background: #004400;
-  border-radius: 50%;
-  transition:
-    background 50ms,
-    box-shadow 50ms;
-}
-
-.front-panel__scroll-lock-led.is-active {
-  background: #00ff00;
-  box-shadow: 0 0 4px 1px rgba(0, 255, 0, 0.6);
-}
-
-.front-panel__scroll-lock-label {
-  color: #446644;
-  font: 700 7px/1 'Share Tech Mono', 'Lucida Console', monospace;
-  letter-spacing: 0;
-}
-
-.front-panel__scroll-lock-label.is-active {
-  color: #00ff00;
-}
-
 .btn-label-short {
   display: inline;
 }
