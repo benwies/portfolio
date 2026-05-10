@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
-import { playBootSound } from '../../hooks/useSounds'
+import { playBootAmbient, playBootSound, stopBootAmbient, unlockAudio } from '../../hooks/useSounds'
 import { useWindowStore } from '../../store/windowStore'
 
 const lineDelay = 260
@@ -14,9 +14,15 @@ export function BootSequence() {
 
   const finishBoot = useCallback((delay = 260) => {
     setExiting(true)
+    stopBootAmbient()
     playBootSound()
     setTimeout(() => setBootComplete(true), Math.max(delay, 500))
   }, [setBootComplete])
+
+  useEffect(() => {
+    playBootAmbient()
+    return () => stopBootAmbient()
+  }, [])
 
   useEffect(() => {
     if (bootComplete || exiting) return undefined
@@ -49,7 +55,14 @@ export function BootSequence() {
     <div className={exiting ? 'boot-sequence is-exiting' : 'boot-sequence'}>
       <div className="boot-sequence__header">
         <span>{ui.bootTitle}</span>
-        <button type="button" className="boot-sequence__skip" onClick={() => finishBoot()}>
+        <button
+          type="button"
+          className="boot-sequence__skip"
+          onClick={() => {
+            unlockAudio()
+            finishBoot()
+          }}
+        >
           {ui.bootSkip}
         </button>
       </div>

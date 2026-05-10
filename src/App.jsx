@@ -3,7 +3,7 @@ import DesktopShell from './components/desktop/DesktopShell'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
 import MobileView from './components/mobile/MobileView'
-import { resumeAudioContext } from './hooks/useSounds'
+import { unlockAudio } from './hooks/useSounds'
 import {
   AboutWindow,
   CalcWindow,
@@ -56,18 +56,16 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const resumeAudio = () => {
-      resumeAudioContext()
-      document.removeEventListener('click', resumeAudio)
-      document.removeEventListener('keydown', resumeAudio)
+    const events = ['click', 'keydown', 'touchstart', 'mousedown']
+    const handleUnlock = () => {
+      unlockAudio()
+      events.forEach((eventName) => document.removeEventListener(eventName, handleUnlock))
     }
 
-    document.addEventListener('click', resumeAudio)
-    document.addEventListener('keydown', resumeAudio)
+    events.forEach((eventName) => document.addEventListener(eventName, handleUnlock))
 
     return () => {
-      document.removeEventListener('click', resumeAudio)
-      document.removeEventListener('keydown', resumeAudio)
+      events.forEach((eventName) => document.removeEventListener(eventName, handleUnlock))
     }
   }, [])
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
-import { resumeAudioContext } from '../../hooks/useSounds'
+import { unlockAudio } from '../../hooks/useSounds'
 import { isSoundEnabled, toggleSound } from '../../store/soundStore'
 import { useWindowStore } from '../../store/windowStore'
 import { CdeIcon } from './DesktopIcon'
@@ -19,9 +19,9 @@ function formatClock(date) {
       month: 'short',
     }).format(date),
     time: new Intl.DateTimeFormat('en-GB', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
     }).format(date),
   }
 }
@@ -57,7 +57,7 @@ function Taskbar() {
 
   const handleSoundToggle = () => {
     const next = toggleSound()
-    if (next) resumeAudioContext()
+    if (next) unlockAudio()
     setSoundOn(next)
   }
 
@@ -74,7 +74,7 @@ function Taskbar() {
         title={soundOn ? 'Sound: ON' : 'Sound: OFF'}
         aria-label={soundOn ? 'Sound on' : 'Sound off'}
       >
-        {soundOn ? '♪' : 'X'}
+        {soundOn ? 'ON' : 'X'}
       </button>
 
       <nav className="front-panel__launchers" aria-label={portfolioData.ui.launcherLabel}>
