@@ -68,6 +68,8 @@ function Taskbar() {
       if (ambientOn) startAmbientNoise()
     } else {
       stopAmbientNoise()
+      setAmbientOn(false)
+      localStorage.setItem('ambient_enabled', 'false')
     }
     setSoundOn(next)
   }
@@ -91,21 +93,24 @@ function Taskbar() {
       </time>
       <button
         type="button"
-        className="front-panel__sound"
+        className={soundOn ? 'front-panel__sound is-active' : 'front-panel__sound'}
         onClick={handleSoundToggle}
-        title={soundOn ? 'Sound: ON' : 'Sound: OFF'}
+        title="Toggle all UI sounds"
         aria-label={soundOn ? 'Sound on' : 'Sound off'}
       >
-        {soundOn ? 'ON' : 'X'}
+        <span className="btn-label-short">{soundOn ? 'SND:ON' : 'SND:OFF'}</span>
+        <span className="btn-label-long">{soundOn ? 'Sound ON' : 'Sound OFF'}</span>
       </button>
       <button
         type="button"
-        className="front-panel__sound front-panel__ambient"
+        className={ambientOn ? 'front-panel__sound front-panel__ambient is-active' : 'front-panel__sound front-panel__ambient'}
+        disabled={!soundOn}
         onClick={handleAmbientToggle}
-        title={ambientOn ? 'Background noise: ON' : 'Background noise: OFF'}
+        title="Toggle background ambient noise"
         aria-label={ambientOn ? 'Background noise on' : 'Background noise off'}
       >
-        {ambientOn ? '\u224b' : '\u25cb'}
+        <span className="btn-label-short">{ambientOn ? 'AMB:ON' : 'AMB:OFF'}</span>
+        <span className="btn-label-long">{ambientOn ? 'Ambient ON' : 'Ambient OFF'}</span>
       </button>
 
       <nav className="front-panel__launchers" aria-label={portfolioData.ui.launcherLabel}>
