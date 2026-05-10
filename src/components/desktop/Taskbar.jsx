@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
+import { resumeAudioContext } from '../../hooks/useSounds'
+import { isSoundEnabled, toggleSound } from '../../store/soundStore'
 import { useWindowStore } from '../../store/windowStore'
 import { CdeIcon } from './DesktopIcon'
 
@@ -26,6 +28,7 @@ function formatClock(date) {
 
 function Taskbar() {
   const [clock, setClock] = useState(() => formatClock(new Date()))
+  const [soundOn, setSoundOn] = useState(() => isSoundEnabled())
   const windows = useWindowStore((state) => state.windows)
   const openWindow = useWindowStore((state) => state.openWindow)
   const requestMinimizeWindow = useWindowStore((state) => state.requestMinimizeWindow)
@@ -52,12 +55,27 @@ function Taskbar() {
     return portfolioData.desktopIcons.find((item) => item.appId === windowItem.id)?.icon ?? 'text'
   }
 
+  const handleSoundToggle = () => {
+    const next = toggleSound()
+    if (next) resumeAudioContext()
+    setSoundOn(next)
+  }
+
   return (
     <footer className="front-panel" aria-label="CDE Front Panel">
       <time className="front-panel__clock" dateTime={`${clock.date} ${clock.time}`} aria-label={portfolioData.ui.clockLabel}>
         <span>{clock.date}</span>
         <strong>{clock.time}</strong>
       </time>
+      <button
+        type="button"
+        className="front-panel__sound"
+        onClick={handleSoundToggle}
+        title={soundOn ? 'Sound: ON' : 'Sound: OFF'}
+        aria-label={soundOn ? 'Sound on' : 'Sound off'}
+      >
+        {soundOn ? '♪' : 'X'}
+      </button>
 
       <nav className="front-panel__launchers" aria-label={portfolioData.ui.launcherLabel}>
         {visibleInTaskbar.map((windowItem) => (

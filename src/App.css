@@ -62,24 +62,30 @@
 }
 
 .vignette-overlay {
-  z-index: 9998;
+  z-index: 2147483646;
   background: radial-gradient(
     ellipse at 50% 50%,
     transparent 55%,
     rgba(0, 0, 0, 0.15) 80%,
     rgba(0, 0, 0, 0.28) 100%
   );
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 .scanlines-overlay {
-  z-index: 9999;
+  z-index: 2147483647;
   background: repeating-linear-gradient(
     to bottom,
     transparent 0,
-    transparent 2px,
-    rgba(0, 0, 0, 0.05) 2px,
-    rgba(0, 0, 0, 0.05) 3px
+    transparent 3px,
+    rgba(0, 0, 0, 0.03) 3px,
+    rgba(0, 0, 0, 0.03) 4px
   );
+  isolation: isolate;
+  mix-blend-mode: multiply;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 .workstation {
@@ -125,7 +131,7 @@
   z-index: 0;
   pointer-events: none;
   background: var(--desktop-bg);
-  filter: url('#desktop-noise');
+  filter: url(#desktop-noise);
 }
 
 .desktop-windows {
@@ -279,7 +285,7 @@
   left: 0;
   z-index: 50;
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr) 170px;
+  grid-template-columns: 150px 34px minmax(0, 1fr) 170px;
   align-items: center;
   gap: 10px;
   height: 64px;
@@ -292,11 +298,32 @@
 
 .front-panel__clock,
 .front-panel__workspace,
+.front-panel__sound,
 .front-panel__launcher {
   background: var(--button-face);
   border-width: 3px;
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+}
+
+.front-panel__sound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: #9fbfcf;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  color: #000000;
+  font: 700 14px 'Courier New', monospace;
+  user-select: none;
+}
+
+.front-panel__sound:active {
+  border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
 }
 
 .front-panel__clock {
@@ -1915,7 +1942,7 @@
 
 @media (max-width: 760px) {
   .front-panel {
-    grid-template-columns: 96px minmax(0, 1fr) 160px;
+    grid-template-columns: 96px 34px minmax(0, 1fr) 160px;
     gap: 5px;
   }
 

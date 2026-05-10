@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react'
 import { Rnd } from 'react-rnd'
+import { playWindowClose, playWindowOpen } from '../../hooks/useSounds'
 import WindowChrome from './WindowChrome'
 import { useWindowManager } from './useWindowManager'
 
@@ -23,6 +25,7 @@ function getGeometry(windowItem) {
 
 export function Window({ children, window: windowItem, windowItem: fallbackWindow }) {
   const activeWindow = windowItem ?? fallbackWindow
+  const playedOpenSound = useRef(false)
   const {
     clearWindowAnimation,
     closeWindow,
@@ -31,8 +34,16 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
     requestMinimizeWindow,
     updateWindowGeometry,
   } = useWindowManager()
+  const shouldRender = activeWindow?.isOpen && !activeWindow.isMinimized
 
-  if (!activeWindow?.isOpen || activeWindow.isMinimized) return null
+  useEffect(() => {
+    if (shouldRender && !playedOpenSound.current) {
+      playedOpenSound.current = true
+      playWindowOpen()
+    }
+  }, [shouldRender])
+
+  if (!shouldRender) return null
 
   const { position, size } = getGeometry(activeWindow)
   const handleFocus = () => focusWindow(activeWindow.id)
@@ -61,6 +72,11 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
     if (activeWindow.animation === 'restoring') {
       clearWindowAnimation(activeWindow.id)
     }
+  }
+
+  const handleClose = () => {
+    playWindowClose()
+    closeWindow(activeWindow.id)
   }
 
   return (
@@ -110,7 +126,7 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
           canMaximize={!isDialog && !activeWindow.fixedSize}
           canMinimize={!isDialog}
           isFocused={activeWindow.isFocused}
-          onClose={() => closeWindow(activeWindow.id)}
+          onClose={handleClose}
           onMinimize={() => requestMinimizeWindow(activeWindow.id)}
           title={activeWindow.title}
         />

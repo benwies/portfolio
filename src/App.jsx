@@ -3,6 +3,7 @@ import DesktopShell from './components/desktop/DesktopShell'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
 import MobileView from './components/mobile/MobileView'
+import { resumeAudioContext } from './hooks/useSounds'
 import {
   AboutWindow,
   CalcWindow,
@@ -52,6 +53,22 @@ function App() {
     }
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    const resumeAudio = () => {
+      resumeAudioContext()
+      document.removeEventListener('click', resumeAudio)
+      document.removeEventListener('keydown', resumeAudio)
+    }
+
+    document.addEventListener('click', resumeAudio)
+    document.addEventListener('keydown', resumeAudio)
+
+    return () => {
+      document.removeEventListener('click', resumeAudio)
+      document.removeEventListener('keydown', resumeAudio)
+    }
   }, [])
 
   const handleWarningDismiss = () => {

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
+import { playKeyClick } from '../../hooks/useSounds'
 import { runCommand } from './commandRegistry'
 
 const initialLines = [
@@ -35,6 +36,7 @@ export default function Terminal() {
   }
 
   const handleKeyDown = (event) => {
+    playKeyClick()
     if (event.key === 'Enter') {
       event.preventDefault()
       submitCommand()

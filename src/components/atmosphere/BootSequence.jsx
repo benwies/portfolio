@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
+import { playBootSound } from '../../hooks/useSounds'
 import { useWindowStore } from '../../store/windowStore'
 
 const lineDelay = 260
@@ -13,7 +14,8 @@ export function BootSequence() {
 
   const finishBoot = useCallback((delay = 260) => {
     setExiting(true)
-    setTimeout(() => setBootComplete(true), delay)
+    playBootSound()
+    setTimeout(() => setBootComplete(true), Math.max(delay, 500))
   }, [setBootComplete])
 
   useEffect(() => {
