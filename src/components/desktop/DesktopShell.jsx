@@ -31,10 +31,10 @@ const fakeTerminalLines = [
 const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 const idleTimeout = 90000
 const workspaceColors = {
-  1: '#6E8B8B',
-  2: '#1a3a2a',
-  3: '#1a1a3a',
-  4: '#2a1a2a',
+  1: '#5C8A8A',
+  2: '#1B4332',
+  3: '#1B2A4A',
+  4: '#3D1B4A',
 }
 
 function createFakeTerminal(index) {
@@ -144,7 +144,7 @@ function DesktopShell({ children }) {
           >
             <div
               className="desktop-bg"
-              style={{ background: workspaceColors[activeWorkspace] }}
+              style={{ backgroundColor: workspaceColors[activeWorkspace] }}
               aria-hidden="true"
             />
             <nav className="desktop-icons" aria-label="Desktop icons">

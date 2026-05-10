@@ -47,6 +47,13 @@ const windowComponents = {
   workstationAbout: WorkstationAboutWindow,
 }
 
+const workspaceColors = {
+  1: '#5C8A8A',
+  2: '#1B4332',
+  3: '#1B2A4A',
+  4: '#3D1B4A',
+}
+
 function App() {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
   const [audioUnlocked, setAudioUnlocked] = useState(() => (
@@ -58,6 +65,7 @@ function App() {
   const windows = useWindowStore((state) => state.windows)
   const bootComplete = useWindowStore((state) => state.bootComplete)
   const openWindow = useWindowStore((state) => state.openWindow)
+  const activeWorkspace = useWindowStore((state) => state.activeWorkspace)
 
   useEffect(() => {
     const handleResize = () => {
@@ -66,6 +74,13 @@ function App() {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  useEffect(() => {
+    const color = workspaceColors[activeWorkspace]
+    document.body.style.backgroundColor = color
+    document.documentElement.style.backgroundColor = color
+    document.getElementById('root')?.style.setProperty('background-color', color)
+  }, [activeWorkspace])
 
   const handleWarningDismiss = () => {
     sessionStorage.setItem('mobile_warning_dismissed', 'true')
@@ -190,6 +205,13 @@ function App() {
       <div className="crt-edge-blur" />
       <div className="vignette-overlay" />
       <div className="scanlines-overlay" />
+      <div
+        className="workspace-tint-overlay"
+        style={{
+          backgroundColor: workspaceColors[activeWorkspace],
+          opacity: activeWorkspace === 1 ? 0 : 0.15,
+        }}
+      />
       <div className="crt-wrapper">
         <main className="workstation">
           <DesktopShell>

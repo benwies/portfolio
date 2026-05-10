@@ -171,6 +171,17 @@
   );
 }
 
+.workspace-tint-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  mix-blend-mode: color;
+  transition:
+    background-color 400ms ease,
+    opacity 400ms ease;
+}
+
 .workstation {
   --desktop-bg: #6e8b8b;
   --panel-bg: #8eb0be;
@@ -215,7 +226,7 @@
   pointer-events: none;
   background: var(--desktop-bg);
   filter: url(#desktop-noise);
-  transition: background-color 500ms ease;
+  transition: background-color 400ms ease;
 }
 
 .desktop-windows {
