@@ -29,7 +29,7 @@ const fakeTerminalLines = [
 ]
 
 const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
-const idleTimeout = 60000
+const idleTimeout = 90000
 
 function createFakeTerminal(index) {
   const width = randomBetween(260, 380)
