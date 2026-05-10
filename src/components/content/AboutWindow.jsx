@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
+import { playTypeClick } from '../../hooks/useSounds'
 
 const { about } = portfolioData
 const fullText = [about.title, '', ...about.lines].join('\n')
@@ -17,6 +18,10 @@ function AboutWindow() {
     const interval = window.setInterval(() => {
       setDisplayed(fullText.slice(0, index))
       index += 1
+      const currentChar = fullText[index - 1]
+      if (currentChar && currentChar !== ' ' && currentChar !== '\n') {
+        playTypeClick()
+      }
       if (index > fullText.length) {
         window.clearInterval(interval)
         setIsTyping(false)

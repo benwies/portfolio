@@ -91,6 +91,59 @@ export const playKeyClick = () => play(() => {
   clickSource.start()
 })
 
+export const playTypeClick = () => play(() => {
+  const ac = getCtx()
+  if (!ac) return
+
+  const pitchVariation = 0.85 + Math.random() * 0.3
+  const bodyBuffer = ac.createBuffer(1, ac.sampleRate * 0.045, ac.sampleRate)
+  const bodyData = bodyBuffer.getChannelData(0)
+  for (let index = 0; index < bodyData.length; index += 1) {
+    const time = index / ac.sampleRate
+    bodyData[index] = (
+      Math.sin(2 * Math.PI * 130 * pitchVariation * time)
+      * Math.exp(-time * 70)
+      * 0.35
+    )
+  }
+
+  const tickBuffer = ac.createBuffer(1, ac.sampleRate * 0.012, ac.sampleRate)
+  const tickData = tickBuffer.getChannelData(0)
+  for (let index = 0; index < tickData.length; index += 1) {
+    const time = index / ac.sampleRate
+    tickData[index] = (Math.random() * 2 - 1) * Math.exp(-time * 500) * 0.6
+  }
+
+  const bodySource = ac.createBufferSource()
+  const bodyFilter = ac.createBiquadFilter()
+  const bodyGain = ac.createGain()
+  bodySource.buffer = bodyBuffer
+  bodyFilter.type = 'lowpass'
+  bodyFilter.frequency.value = 900
+  bodyFilter.Q.value = 0.4
+  bodyGain.gain.setValueAtTime(0.13, ac.currentTime)
+  bodyGain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.045)
+
+  const tickSource = ac.createBufferSource()
+  const tickFilter = ac.createBiquadFilter()
+  const tickGain = ac.createGain()
+  tickSource.buffer = tickBuffer
+  tickFilter.type = 'bandpass'
+  tickFilter.frequency.value = 2500 * pitchVariation
+  tickFilter.Q.value = 1.2
+  tickGain.gain.setValueAtTime(0.07, ac.currentTime)
+  tickGain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.012)
+
+  bodySource.connect(bodyFilter)
+  bodyFilter.connect(bodyGain)
+  bodyGain.connect(ac.destination)
+  tickSource.connect(tickFilter)
+  tickFilter.connect(tickGain)
+  tickGain.connect(ac.destination)
+  bodySource.start()
+  tickSource.start()
+})
+
 export const playWindowOpen = () => play(() => {
   const ac = getCtx()
   if (!ac) return
