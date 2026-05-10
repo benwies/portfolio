@@ -9,11 +9,12 @@ import freeWifiIcon from '../../assets/cde-icons/free_wifi.png'
 import spreadsheetIcon from '../../assets/cde-icons/oo_spreadsheet.png'
 import terminalIcon from '../../assets/cde-icons/terminal.png'
 import textIcon from '../../assets/cde-icons/text.png'
+import ctfIcon from '../../assets/cde-icons/ctf_error.png'
 
 const iconFiles = {
   calculator: settingsIcon,
   certs: spreadsheetIcon,
-  ctf: terminalIcon,
+  ctf: ctfIcon,
   folder: folderIcon,
   skills: settingsIcon,
   socials: addressbookIcon,

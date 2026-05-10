@@ -472,8 +472,8 @@ export const windowDefinitions = [
     id: 'ctf',
     title: 'ctf.sh - Capture The Flag',
     component: 'ctf',
-    position: { x: 300, y: 150 },
-    size: { width: 520, height: 440 },
+    position: { x: 260, y: 90 },
+    size: { width: 720, height: 560 },
   },
   {
     id: 'workstationAbout',
