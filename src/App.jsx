@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import DesktopShell from './components/desktop/DesktopShell'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
+import CRTShutdown from './components/atmosphere/CRTShutdown'
+import CRTStartup from './components/atmosphere/CRTStartup'
 import MobileView from './components/mobile/MobileView'
 import {
   AboutWindow,
@@ -38,6 +40,7 @@ const windowComponents = {
 }
 
 function App() {
+  const [showCRTStartup, setShowCRTStartup] = useState(true)
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
   const [warningDismissed, setWarningDismissed] = useState(
     () => sessionStorage.getItem('mobile_warning_dismissed') === 'true',
@@ -60,7 +63,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (!bootComplete || isMobile) return
+    if (showCRTStartup || !bootComplete || isMobile) return
 
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight
@@ -122,7 +125,11 @@ function App() {
       window.clearTimeout(neofetchTimer)
       window.clearTimeout(motdTimer)
     }
-  }, [bootComplete, isMobile, openWindow])
+  }, [bootComplete, isMobile, openWindow, showCRTStartup])
+
+  if (showCRTStartup) {
+    return <CRTStartup onComplete={() => setShowCRTStartup(false)} />
+  }
 
   if (isMobile) {
     if (!bootComplete) return <BootSequence />
@@ -136,24 +143,29 @@ function App() {
   }
 
   return (
-    <main className="workstation">
-      {!bootComplete ? (
-        <BootSequence />
-      ) : (
-        <DesktopShell>
-          {windows
-            .filter((windowItem) => windowItem.isOpen && !windowItem.isMinimized)
-            .map((windowItem) => {
-              const Content = windowComponents[windowItem.component]
-              return (
-                <Window key={windowItem.id} windowItem={windowItem}>
-                  {Content ? <Content /> : null}
-                </Window>
-              )
-            })}
-        </DesktopShell>
-      )}
-    </main>
+    <>
+      <CRTShutdown />
+      <div className="crt-wrapper">
+        <main className="workstation">
+          {!bootComplete ? (
+            <BootSequence />
+          ) : (
+            <DesktopShell>
+              {windows
+                .filter((windowItem) => windowItem.isOpen && !windowItem.isMinimized)
+                .map((windowItem) => {
+                  const Content = windowComponents[windowItem.component]
+                  return (
+                    <Window key={windowItem.id} windowItem={windowItem}>
+                      {Content ? <Content /> : null}
+                    </Window>
+                  )
+                })}
+            </DesktopShell>
+          )}
+        </main>
+      </div>
+    </>
   )
 }
 
