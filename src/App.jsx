@@ -4,7 +4,13 @@ import DesktopShell from './components/desktop/DesktopShell'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
 import MobileView from './components/mobile/MobileView'
-import { playMouseClick, unlockAudio } from './hooks/useSounds'
+import {
+  playMouseClick,
+  startAmbientNoise,
+  stopAmbientNoise,
+  unlockAudio,
+} from './hooks/useSounds'
+import { isAmbientEnabled } from './store/soundStore'
 import {
   AboutWindow,
   CalcWindow,
@@ -146,6 +152,12 @@ function App() {
       window.clearTimeout(motdTimer)
     }
   }, [bootComplete, isMobile, openWindow])
+
+  useEffect(() => {
+    if (!bootComplete || isMobile) return undefined
+    if (isAmbientEnabled()) startAmbientNoise()
+    return () => stopAmbientNoise()
+  }, [bootComplete, isMobile])
 
   if (!audioUnlocked && !isMobile) {
     return (

@@ -13,14 +13,23 @@ function AboutWindow() {
 
   useEffect(() => {
     let index = 0
+    let lastSoundTime = 0
     let cursorTimer
 
     const interval = window.setInterval(() => {
       setDisplayed(fullText.slice(0, index))
       index += 1
       const currentChar = fullText[index - 1]
-      if (currentChar && currentChar !== ' ' && currentChar !== '\n') {
+      const now = Date.now()
+      const minSoundInterval = 55 + Math.random() * 30
+      if (
+        currentChar
+        && currentChar !== ' '
+        && currentChar !== '\n'
+        && now - lastSoundTime > minSoundInterval
+      ) {
         playTypeClick()
+        lastSoundTime = now
       }
       if (index > fullText.length) {
         window.clearInterval(interval)

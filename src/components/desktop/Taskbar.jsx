@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react'
 import { portfolioData } from '../../data/portfolioData'
-import { unlockAudio } from '../../hooks/useSounds'
-import { isSoundEnabled, toggleSound } from '../../store/soundStore'
+import { startAmbientNoise, stopAmbientNoise, unlockAudio } from '../../hooks/useSounds'
+import {
+  isAmbientEnabled,
+  isSoundEnabled,
+  toggleAmbient,
+  toggleSound,
+} from '../../store/soundStore'
 import { useWindowStore } from '../../store/windowStore'
 import { CdeIcon } from './DesktopIcon'
 
@@ -29,6 +34,7 @@ function formatClock(date) {
 function Taskbar() {
   const [clock, setClock] = useState(() => formatClock(new Date()))
   const [soundOn, setSoundOn] = useState(() => isSoundEnabled())
+  const [ambientOn, setAmbientOn] = useState(() => isAmbientEnabled())
   const windows = useWindowStore((state) => state.windows)
   const openWindow = useWindowStore((state) => state.openWindow)
   const requestMinimizeWindow = useWindowStore((state) => state.requestMinimizeWindow)
@@ -57,8 +63,24 @@ function Taskbar() {
 
   const handleSoundToggle = () => {
     const next = toggleSound()
-    if (next) unlockAudio()
+    if (next) {
+      unlockAudio()
+      if (ambientOn) startAmbientNoise()
+    } else {
+      stopAmbientNoise()
+    }
     setSoundOn(next)
+  }
+
+  const handleAmbientToggle = () => {
+    const next = toggleAmbient()
+    setAmbientOn(next)
+    if (next) {
+      unlockAudio()
+      startAmbientNoise()
+      return
+    }
+    stopAmbientNoise()
   }
 
   return (
@@ -75,6 +97,15 @@ function Taskbar() {
         aria-label={soundOn ? 'Sound on' : 'Sound off'}
       >
         {soundOn ? 'ON' : 'X'}
+      </button>
+      <button
+        type="button"
+        className="front-panel__sound front-panel__ambient"
+        onClick={handleAmbientToggle}
+        title={ambientOn ? 'Background noise: ON' : 'Background noise: OFF'}
+        aria-label={ambientOn ? 'Background noise on' : 'Background noise off'}
+      >
+        {ambientOn ? '\u224b' : '\u25cb'}
       </button>
 
       <nav className="front-panel__launchers" aria-label={portfolioData.ui.launcherLabel}>

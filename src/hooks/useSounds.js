@@ -3,6 +3,8 @@ let interacted = false
 let pendingActions = []
 let ambientNodes = null
 let ambientWanted = false
+let ambientNoiseNodes = null
+let ambientNoiseWanted = false
 
 const getCtx = () => {
   if (typeof window === 'undefined') return null
@@ -306,3 +308,81 @@ export const stopBootAmbient = () => {
     ambientNodes = null
   }, 900)
 }
+
+export const startAmbientNoise = () => {
+  if (!soundEnabled()) return
+  if (ambientNoiseNodes) return
+  ambientNoiseWanted = true
+
+  const startNoise = () => {
+    if (!ambientNoiseWanted || ambientNoiseNodes || !soundEnabled()) return
+    const ac = getCtx()
+    if (!ac) return
+
+    const osc1 = ac.createOscillator()
+    osc1.type = 'sine'
+    osc1.frequency.value = 50
+
+    const bufferSize = ac.sampleRate * 4
+    const noiseBuffer = ac.createBuffer(1, bufferSize, ac.sampleRate)
+    const noiseData = noiseBuffer.getChannelData(0)
+    for (let index = 0; index < bufferSize; index += 1) {
+      noiseData[index] = Math.random() * 2 - 1
+    }
+
+    const noiseSource = ac.createBufferSource()
+    const noiseFilter = ac.createBiquadFilter()
+    const masterGain = ac.createGain()
+    const humGain = ac.createGain()
+    const noiseGain = ac.createGain()
+
+    noiseSource.buffer = noiseBuffer
+    noiseSource.loop = true
+    noiseFilter.type = 'lowpass'
+    noiseFilter.frequency.value = 400
+    noiseFilter.Q.value = 0.5
+    masterGain.gain.value = 0.028
+    humGain.gain.value = 0.4
+    noiseGain.gain.value = 0.6
+
+    osc1.connect(humGain)
+    humGain.connect(masterGain)
+    noiseSource.connect(noiseFilter)
+    noiseFilter.connect(noiseGain)
+    noiseGain.connect(masterGain)
+    masterGain.connect(ac.destination)
+
+    osc1.start()
+    noiseSource.start()
+    ambientNoiseNodes = { masterGain, noiseSource, osc1 }
+  }
+
+  if (!interacted) {
+    pendingActions.push(startNoise)
+    return
+  }
+
+  startNoise()
+}
+
+export const stopAmbientNoise = () => {
+  ambientNoiseWanted = false
+  if (!ambientNoiseNodes) return
+  const ac = getCtx()
+  if (!ac) return
+
+  const { masterGain, noiseSource, osc1 } = ambientNoiseNodes
+  masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime)
+  masterGain.gain.linearRampToValueAtTime(0, ac.currentTime + 0.5)
+  window.setTimeout(() => {
+    try {
+      osc1.stop()
+      noiseSource.stop()
+    } catch {
+      // Nodes may already be stopped by the browser.
+    }
+    ambientNoiseNodes = null
+  }, 600)
+}
+
+export const isAmbientNoiseRunning = () => ambientNoiseNodes !== null
