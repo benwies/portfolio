@@ -22,6 +22,11 @@ export default function Terminal() {
 
   const submitCommand = () => {
     const result = runCommand({ command: input, cwd, setCwd })
+    if (!result) {
+      setInput('')
+      return
+    }
+
     if (result.clear) {
       setLines([])
     } else {

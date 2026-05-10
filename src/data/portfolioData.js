@@ -317,7 +317,7 @@
     title: 'terminal',
     banner: 'CDE xterm - 0xbene',
     hint: 'Type help for available commands.',
-    help: ['whoami', 'ls', 'cat [file]', 'cd', 'help', 'clear', 'neofetch', 'nmap contacts', 'skills --verbose', 'open [app]', 'reset desktop'],
+    help: ['whoami', 'ls', 'cat [file]', 'cd', 'help', 'clear', 'neofetch', 'nmap contacts', 'skills --verbose', 'open [app]', 'reset desktop', 'exit        close this terminal window', 'quit        alias for exit'],
     files: ['README.md', 'about.txt', 'socials.db', 'certs.csv', 'projects/', 'skills.ini', 'welcome.txt', 'snake', 'paint.sh', 'free-wifi.sh'],
   },
   snake: {

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
+import CRTBezel from './components/desktop/CRTBezel'
 import DesktopShell from './components/desktop/DesktopShell'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
 import MobileView from './components/mobile/MobileView'
-import { unlockAudio } from './hooks/useSounds'
+import { playMouseClick, unlockAudio } from './hooks/useSounds'
 import {
   AboutWindow,
   CalcWindow,
@@ -39,8 +40,10 @@ const windowComponents = {
 }
 
 function App() {
-  const [audioUnlocked, setAudioUnlocked] = useState(false)
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
+  const [audioUnlocked, setAudioUnlocked] = useState(() => (
+    window.innerWidth < 768 || sessionStorage.getItem('audio_unlocked') === 'true'
+  ))
   const [warningDismissed, setWarningDismissed] = useState(
     () => sessionStorage.getItem('mobile_warning_dismissed') === 'true',
   )
@@ -63,8 +66,21 @@ function App() {
 
   const handleAudioUnlock = () => {
     unlockAudio()
+    sessionStorage.setItem('audio_unlocked', 'true')
     setAudioUnlocked(true)
   }
+
+  useEffect(() => {
+    if (isMobile || !audioUnlocked) return undefined
+
+    const handleMouseDown = () => {
+      unlockAudio()
+      playMouseClick()
+    }
+
+    document.addEventListener('mousedown', handleMouseDown)
+    return () => document.removeEventListener('mousedown', handleMouseDown)
+  }, [audioUnlocked, isMobile])
 
   useEffect(() => {
     if (!bootComplete || isMobile) return
@@ -131,7 +147,7 @@ function App() {
     }
   }, [bootComplete, isMobile, openWindow])
 
-  if (!audioUnlocked) {
+  if (!audioUnlocked && !isMobile) {
     return (
       <button type="button" className="audio-start-gate" onClick={handleAudioUnlock}>
         CLICK ANYWHERE TO START
@@ -154,6 +170,9 @@ function App() {
 
   return (
     <>
+      <CRTBezel />
+      <div className="crt-reflection" />
+      <div className="crt-edge-blur" />
       <div className="vignette-overlay" />
       <div className="scanlines-overlay" />
       <div className="crt-wrapper">

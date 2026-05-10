@@ -1,6 +1,7 @@
 import { portfolioData } from '../../data/portfolioData'
 import { fileSystem, readFile } from './fileSystem'
 import { useWindowStore } from '../../store/windowStore'
+import { playWindowClose } from '../../hooks/useSounds'
 
 const promptPath = (cwd) => cwd.replace('/home/benedikt', '~')
 
@@ -27,6 +28,11 @@ export const runCommand = ({ command, cwd, setCwd }) => {
 
   if (!trimmed) return { lines: [] }
   if (base === 'clear') return { clear: true }
+  if (base === 'exit' || base === 'quit') {
+    playWindowClose()
+    useWindowStore.getState().closeWindow('terminal')
+    return null
+  }
   if (base === 'reset' && args[0] === 'desktop') {
     Object.keys(localStorage)
       .filter((key) => key.startsWith('icon_grid_') || key.startsWith('icon_pos_'))

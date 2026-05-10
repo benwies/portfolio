@@ -134,6 +134,32 @@ export const playWindowClose = () => play(() => {
   oscillator.stop(ac.currentTime + 0.14)
 })
 
+export const playMouseClick = () => play(() => {
+  const ac = getCtx()
+  if (!ac) return
+
+  const buffer = ac.createBuffer(1, ac.sampleRate * 0.025, ac.sampleRate)
+  const data = buffer.getChannelData(0)
+  for (let index = 0; index < data.length; index += 1) {
+    const time = index / ac.sampleRate
+    data[index] = (Math.random() * 2 - 1) * Math.exp(-time * 220) * 0.35
+  }
+
+  const source = ac.createBufferSource()
+  const filter = ac.createBiquadFilter()
+  const gain = ac.createGain()
+  source.buffer = buffer
+  filter.type = 'bandpass'
+  filter.frequency.value = 1800
+  filter.Q.value = 1
+  gain.gain.setValueAtTime(0.055, ac.currentTime)
+  gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.025)
+  source.connect(filter)
+  filter.connect(gain)
+  gain.connect(ac.destination)
+  source.start()
+})
+
 export const playBootSound = () => play(() => {
   const ac = getCtx()
   if (!ac) return
