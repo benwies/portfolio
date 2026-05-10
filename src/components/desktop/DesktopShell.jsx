@@ -32,9 +32,9 @@ const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) 
 const idleTimeout = 90000
 const workspaceColors = {
   1: '#6E8B8B',
-  2: '#4A6B5A',
-  3: '#4A5A7A',
-  4: '#5A4A6B',
+  2: '#1a3a2a',
+  3: '#1a1a3a',
+  4: '#2a1a2a',
 }
 
 function createFakeTerminal(index) {

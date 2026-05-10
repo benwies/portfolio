@@ -11,10 +11,10 @@ import { useWindowStore } from '../../store/windowStore'
 import { CdeIcon } from './DesktopIcon'
 
 const visualWorkspaces = [
-  { id: 1, label: 'One' },
-  { id: 2, label: 'Two' },
-  { id: 3, label: 'Three' },
-  { id: 4, label: 'Four' },
+  { id: 1, label: 'One', accent: '#6E8B8B' },
+  { id: 2, label: 'Two', accent: '#2d6a4f' },
+  { id: 3, label: 'Three', accent: '#2d2d6a' },
+  { id: 4, label: 'Four', accent: '#4a2d6a' },
 ]
 
 function formatClock(date) {
@@ -137,6 +137,7 @@ function Taskbar() {
             key={workspace.id}
             type="button"
             className={activeWorkspace === workspace.id ? 'front-panel__workspace-cell is-active' : 'front-panel__workspace-cell'}
+            style={activeWorkspace === workspace.id ? { background: workspace.accent } : undefined}
             onClick={() => setActiveWorkspace(workspace.id)}
           >
             {workspace.label}

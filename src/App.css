@@ -215,7 +215,7 @@
   pointer-events: none;
   background: var(--desktop-bg);
   filter: url(#desktop-noise);
-  transition: background 400ms ease;
+  transition: background-color 500ms ease;
 }
 
 .desktop-windows {

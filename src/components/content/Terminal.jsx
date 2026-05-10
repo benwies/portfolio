@@ -28,11 +28,18 @@ export default function Terminal({ initialCommand }) {
     return [`${initialPrompt} ${initialCommand}`, ...(result.lines ?? [])]
   })
   const inputRef = useRef(null)
+  const containerRef = useRef(null)
   const prompt = `${portfolioData.identity.user}@${portfolioData.identity.host}:${displayDir(cwd)}$`
 
   useEffect(() => {
     inputRef.current?.focus()
   }, [lines])
+
+  useEffect(() => {
+    if (!isFocused) return undefined
+    const timer = window.setTimeout(() => inputRef.current?.focus(), 50)
+    return () => window.clearTimeout(timer)
+  }, [isFocused])
 
   const submitCommand = () => {
     const result = runCommand({ command: input, cwd, setCwd })
@@ -65,12 +72,12 @@ export default function Terminal({ initialCommand }) {
   const handleTerminalClick = (event) => {
     const selection = window.getSelection?.()
     if (selection?.toString()) return
-    if (event.target instanceof Element && event.target.closest('.terminal-lines')) return
+    if (event.target instanceof Element && event.target.closest('.terminal-form')) return
     inputRef.current?.focus()
   }
 
   return (
-    <div className="terminal" onClick={handleTerminalClick}>
+    <div className="terminal" ref={containerRef} onClick={handleTerminalClick}>
       <div className="terminal-lines">
         {lines.map((line, index) => (
           <div key={`${line}-${index}`} className="terminal-line">
