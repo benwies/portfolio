@@ -135,6 +135,7 @@ function DesktopShell({ children }) {
             onClick={closeMenu}
             onContextMenu={handleContextMenu}
           >
+            <div className="desktop-bg" aria-hidden="true" />
             <nav className="desktop-icons" aria-label="Desktop icons">
               {portfolioData.desktopIcons.map((icon, index) => (
                 <DesktopIcon

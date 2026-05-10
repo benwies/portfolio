@@ -46,6 +46,42 @@
 
 }
 
+.crt-wrapper {
+  width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
+  transform: perspective(1800px) rotateX(0.2deg);
+  transform-origin: center center;
+}
+
+.vignette-overlay,
+.scanlines-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.vignette-overlay {
+  z-index: 9998;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.15) 80%,
+    rgba(0, 0, 0, 0.28) 100%
+  );
+}
+
+.scanlines-overlay {
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 0, 0, 0.05) 2px,
+    rgba(0, 0, 0, 0.05) 3px
+  );
+}
+
 .workstation {
   --desktop-bg: #6e8b8b;
   --panel-bg: #8eb0be;
@@ -80,10 +116,16 @@
   height: 100%;
   overflow: hidden;
   padding-bottom: 64px;
-  background:
-    radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    var(--desktop-bg);
-  background-size: 4px 4px;
+  background: transparent;
+}
+
+.desktop-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--desktop-bg);
+  filter: url('#desktop-noise');
 }
 
 .desktop-windows {
@@ -94,7 +136,7 @@
 .desktop-icons {
   position: absolute;
   inset: 0 0 64px 0;
-  z-index: 5;
+  z-index: 50;
   width: auto;
   padding: 0;
   pointer-events: none;

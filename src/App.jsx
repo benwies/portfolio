@@ -138,20 +138,26 @@ function App() {
   if (!bootComplete) return <BootSequence />
 
   return (
-    <main className="workstation">
-      <DesktopShell>
-        {windows
-          .filter((windowItem) => windowItem.isOpen && !windowItem.isMinimized)
-          .map((windowItem) => {
-            const Content = windowComponents[windowItem.component]
-            return (
-              <Window key={windowItem.id} windowItem={windowItem}>
-                {Content ? <Content /> : null}
-              </Window>
-            )
-          })}
-      </DesktopShell>
-    </main>
+    <>
+      <div className="vignette-overlay" />
+      <div className="scanlines-overlay" />
+      <div className="crt-wrapper">
+        <main className="workstation">
+          <DesktopShell>
+            {windows
+              .filter((windowItem) => windowItem.isOpen && !windowItem.isMinimized)
+              .map((windowItem) => {
+                const Content = windowComponents[windowItem.component]
+                return (
+                  <Window key={windowItem.id} windowItem={windowItem}>
+                    {Content ? <Content /> : null}
+                  </Window>
+                )
+              })}
+          </DesktopShell>
+        </main>
+      </div>
+    </>
   )
 }
 
