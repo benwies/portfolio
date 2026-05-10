@@ -201,8 +201,8 @@ export const playBiosBeep = () => play(() => {
   const gain = ac.createGain()
   oscillator.type = 'square'
   oscillator.frequency.value = 880
-  gain.gain.setValueAtTime(0.28, ac.currentTime)
-  gain.gain.setValueAtTime(0.28, ac.currentTime + 0.38)
+  gain.gain.setValueAtTime(0.11, ac.currentTime)
+  gain.gain.setValueAtTime(0.11, ac.currentTime + 0.38)
   gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.42)
   oscillator.connect(gain)
   gain.connect(ac.destination)
