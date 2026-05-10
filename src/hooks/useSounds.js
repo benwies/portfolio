@@ -6,6 +6,8 @@ let ambientWanted = false
 let ambientNoiseNodes = null
 let ambientNoiseWanted = false
 let ambientNoiseTickTimer = null
+let screensaverNodes = null
+let screensaverWanted = false
 const ambientNoiseVolume = 0.024
 
 const getCtx = () => {
@@ -189,6 +191,47 @@ export const playWindowClose = () => play(() => {
   gain.connect(ac.destination)
   oscillator.start()
   oscillator.stop(ac.currentTime + 0.14)
+})
+
+export const playDiskActivity = () => play(() => {
+  const ac = getCtx()
+  if (!ac) return
+
+  const seekCount = 2 + Math.floor(Math.random() * 3)
+  for (let seekIndex = 0; seekIndex < seekCount; seekIndex += 1) {
+    const offset = seekIndex * 0.018
+    const buffer = ac.createBuffer(1, ac.sampleRate * 0.012, ac.sampleRate)
+    const data = buffer.getChannelData(0)
+
+    for (let index = 0; index < data.length; index += 1) {
+      const time = index / ac.sampleRate
+      data[index] = (
+        (Math.random() * 2 - 1)
+        * Math.exp(-time * 300)
+        * (0.6 + Math.random() * 0.4)
+      )
+    }
+
+    const source = ac.createBufferSource()
+    const filter = ac.createBiquadFilter()
+    const shelf = ac.createBiquadFilter()
+    const gain = ac.createGain()
+    source.buffer = buffer
+    filter.type = 'bandpass'
+    filter.frequency.value = 900 + Math.random() * 600
+    filter.Q.value = 2
+    shelf.type = 'lowshelf'
+    shelf.frequency.value = 400
+    shelf.gain.value = 6
+    gain.gain.setValueAtTime(0.09, ac.currentTime + offset)
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + offset + 0.012)
+
+    source.connect(filter)
+    filter.connect(shelf)
+    shelf.connect(gain)
+    gain.connect(ac.destination)
+    source.start(ac.currentTime + offset)
+  }
 })
 
 export const playMouseClick = () => play(() => {
@@ -471,6 +514,89 @@ export const stopAmbientNoise = () => {
     }
     ambientNoiseNodes = null
   }, 900)
+}
+
+export const startScreensaverSound = () => {
+  if (!soundEnabled() || screensaverNodes) return
+  screensaverWanted = true
+
+  const startSound = () => {
+    if (!screensaverWanted || screensaverNodes || !soundEnabled()) return
+    const ac = getCtx()
+    if (!ac) return
+
+    const osc1 = ac.createOscillator()
+    const osc2 = ac.createOscillator()
+    const osc3 = ac.createOscillator()
+    const gain1 = ac.createGain()
+    const gain2 = ac.createGain()
+    const gain3 = ac.createGain()
+    const masterGain = ac.createGain()
+
+    osc1.type = 'sine'
+    osc2.type = 'sine'
+    osc3.type = 'triangle'
+    osc1.frequency.value = 38
+    osc2.frequency.value = 42
+    osc3.frequency.value = 76
+    gain1.gain.value = 0.5
+    gain2.gain.value = 0.4
+    gain3.gain.value = 0.2
+    masterGain.gain.setValueAtTime(0, ac.currentTime)
+    masterGain.gain.linearRampToValueAtTime(0.035, ac.currentTime + 2)
+
+    osc1.connect(gain1)
+    gain1.connect(masterGain)
+    osc2.connect(gain2)
+    gain2.connect(masterGain)
+    osc3.connect(gain3)
+    gain3.connect(masterGain)
+    masterGain.connect(ac.destination)
+
+    osc1.start()
+    osc2.start()
+    osc3.start()
+    screensaverNodes = {
+      masterGain,
+      osc1,
+      osc2,
+      osc3,
+    }
+  }
+
+  if (!interacted) {
+    pendingActions.push(startSound)
+    return
+  }
+
+  startSound()
+}
+
+export const stopScreensaverSound = () => {
+  screensaverWanted = false
+  if (!screensaverNodes) return
+  const ac = getCtx()
+  if (!ac) return
+
+  const {
+    masterGain,
+    osc1,
+    osc2,
+    osc3,
+  } = screensaverNodes
+  masterGain.gain.cancelScheduledValues(ac.currentTime)
+  masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime)
+  masterGain.gain.linearRampToValueAtTime(0, ac.currentTime + 1.5)
+  window.setTimeout(() => {
+    try {
+      osc1.stop()
+      osc2.stop()
+      osc3.stop()
+    } catch {
+      // Nodes may already be stopped by the browser.
+    }
+    screensaverNodes = null
+  }, 1600)
 }
 
 export const pauseAmbientNoise = () => {

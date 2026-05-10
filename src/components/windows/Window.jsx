@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Rnd } from 'react-rnd'
-import { playWindowClose, playWindowOpen } from '../../hooks/useSounds'
+import { playDiskActivity, playWindowClose, playWindowOpen } from '../../hooks/useSounds'
 import WindowChrome from './WindowChrome'
 import { useWindowManager } from './useWindowManager'
 
@@ -40,6 +40,7 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
     if (shouldRender && !playedOpenSound.current) {
       playedOpenSound.current = true
       playWindowOpen()
+      playDiskActivity()
     }
   }, [shouldRender])
 
@@ -76,6 +77,7 @@ export function Window({ children, window: windowItem, windowItem: fallbackWindo
 
   const handleClose = () => {
     playWindowClose()
+    playDiskActivity()
     closeWindow(activeWindow.id)
   }
 

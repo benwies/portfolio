@@ -158,6 +158,7 @@
     rgba(0, 0, 0, 0.15) 80%,
     rgba(0, 0, 0, 0.28) 100%
   );
+  transition: opacity 4000ms ease-in-out;
 }
 
 .scanlines-overlay {
@@ -957,9 +958,21 @@
   overflow: hidden;
   background: #000000;
   color: var(--terminal-text);
-  font-family: 'Courier New', monospace;
+  font-family: 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace;
   user-select: text;
   -webkit-user-select: text;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+}
+
+.terminal * {
+  font-family: 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace !important;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
 }
 
 .terminal-lines {
@@ -974,7 +987,7 @@
 .terminal-form {
   min-height: 20px;
   font-size: 14px;
-  line-height: 1.35;
+  line-height: 1.6;
 }
 
 .terminal-line {
@@ -1011,7 +1024,7 @@
   background: transparent;
   border: 0;
   outline: 0;
-  font-family: 'Courier New', monospace;
+  font-family: 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace;
 }
 
 @keyframes terminal-cursor-blink {
@@ -1032,9 +1045,21 @@
   overflow: hidden;
   background: #000000;
   color: #ffffff;
-  font-family: 'Courier New', monospace;
+  font-family: 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace;
   font-size: 11px;
   line-height: 1.25;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+}
+
+.neofetch-window * {
+  font-family: 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace !important;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
 }
 
 .desktop-widget-zone {
@@ -1062,7 +1087,11 @@
   border-width: 3px;
   border-style: solid;
   border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
-  font-family: 'Courier New', monospace;
+  font-family: 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
 }
 
 .sysstats-widget {
@@ -1072,7 +1101,7 @@
   min-height: 160px;
   padding: 8px;
   align-content: start;
-  font: 700 11px 'Courier New', monospace;
+  font: 700 11px 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace;
 }
 
 .sysstats-widget strong {
@@ -1120,12 +1149,12 @@
 
 .widget-value {
   color: #000000;
-  font: 700 22px 'Courier New', monospace;
+  font: 700 22px 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace;
 }
 
 .widget-label {
   color: #4b555a;
-  font: 700 10px 'Courier New', monospace;
+  font: 700 10px 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace;
   letter-spacing: 0;
 }
 
@@ -1708,9 +1737,13 @@
   padding: 18px;
   background: #000000;
   color: #ffffff;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
+  font-family: 'Share Tech Mono', 'Lucida Console', 'Courier New', monospace;
+  font-size: 15px;
   transition: opacity 260ms ease;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
 }
 
 .boot-sequence.is-exiting {

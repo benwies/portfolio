@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import CRTBezel from './components/desktop/CRTBezel'
 import DesktopShell from './components/desktop/DesktopShell'
+import PulsingVignette from './components/desktop/PulsingVignette'
 import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
 import MobileView from './components/mobile/MobileView'
@@ -220,7 +221,7 @@ function App() {
       <CRTBezel />
       <div className="crt-reflection" />
       <div className="crt-edge-blur" />
-      <div className="vignette-overlay" />
+      <PulsingVignette />
       <div className="scanlines-overlay" />
       <div
         className="workspace-tint-overlay"

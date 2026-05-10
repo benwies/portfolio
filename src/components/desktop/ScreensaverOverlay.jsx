@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { startScreensaverSound, stopScreensaverSound } from '../../hooks/useSounds'
 
 const cellWidth = 12
 const cellHeight = 16
@@ -56,6 +57,11 @@ function move(pipe, cols, rows) {
 
 function ScreensaverOverlay({ onDeactivate }) {
   const canvasRef = useRef(null)
+
+  useEffect(() => {
+    startScreensaverSound()
+    return () => stopScreensaverSound()
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
