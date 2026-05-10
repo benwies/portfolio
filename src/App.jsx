@@ -5,7 +5,9 @@ import Window from './components/windows/Window'
 import BootSequence from './components/atmosphere/BootSequence'
 import MobileView from './components/mobile/MobileView'
 import {
+  pauseAmbientNoise,
   playMouseClick,
+  resumeAmbientNoise,
   startAmbientNoise,
   stopAmbientNoise,
   unlockAudio,
@@ -175,6 +177,21 @@ function App() {
     if (!bootComplete || isMobile) return undefined
     if (isAmbientEnabled()) startAmbientNoise()
     return () => stopAmbientNoise()
+  }, [bootComplete, isMobile])
+
+  useEffect(() => {
+    if (!bootComplete || isMobile) return undefined
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        pauseAmbientNoise()
+        return
+      }
+      resumeAmbientNoise()
+    }
+
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => document.removeEventListener('visibilitychange', handleVisibility)
   }, [bootComplete, isMobile])
 
   if (!audioUnlocked && !isMobile) {

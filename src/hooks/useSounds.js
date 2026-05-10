@@ -6,6 +6,7 @@ let ambientWanted = false
 let ambientNoiseNodes = null
 let ambientNoiseWanted = false
 let ambientNoiseTickTimer = null
+const ambientNoiseVolume = 0.024
 
 const getCtx = () => {
   if (typeof window === 'undefined') return null
@@ -376,7 +377,7 @@ export const startAmbientNoise = () => {
 
     const masterGain = ac.createGain()
     masterGain.gain.setValueAtTime(0, ac.currentTime)
-    masterGain.gain.linearRampToValueAtTime(0.024, ac.currentTime + 4)
+    masterGain.gain.linearRampToValueAtTime(ambientNoiseVolume, ac.currentTime + 4)
 
     const scheduleHDDTick = () => {
       const tickDelay = 2000 + Math.random() * 3000
@@ -470,6 +471,28 @@ export const stopAmbientNoise = () => {
     }
     ambientNoiseNodes = null
   }, 900)
+}
+
+export const pauseAmbientNoise = () => {
+  if (!ambientNoiseNodes) return
+  const ac = getCtx()
+  if (!ac) return
+
+  const { masterGain } = ambientNoiseNodes
+  masterGain.gain.cancelScheduledValues(ac.currentTime)
+  masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime)
+  masterGain.gain.linearRampToValueAtTime(0, ac.currentTime + 0.3)
+}
+
+export const resumeAmbientNoise = () => {
+  if (!ambientNoiseNodes || !ambientNoiseWanted || !soundEnabled()) return
+  const ac = getCtx()
+  if (!ac) return
+
+  const { masterGain } = ambientNoiseNodes
+  masterGain.gain.cancelScheduledValues(ac.currentTime)
+  masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime)
+  masterGain.gain.linearRampToValueAtTime(ambientNoiseVolume, ac.currentTime + 0.5)
 }
 
 export const isAmbientNoiseRunning = () => ambientNoiseNodes !== null
